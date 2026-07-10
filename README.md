@@ -46,21 +46,21 @@ The address field passes through a versioned normalizer that removes labeled con
 Requirements:
 
 - Node.js 20 or newer
-- Poppler (`brew install poppler` on macOS, `apt-get install poppler-utils` on Debian or Ubuntu)
 - a Gemini API key created in Google AI Studio
-- a local checkout of VRDU for the bundled benchmark scenarios
+- Poppler to reproduce the saved raster benchmark (`brew install poppler` on macOS, `apt-get install poppler-utils` on Debian or Ubuntu)
 
 ```bash
 npm install
 cp .env.example .env.local
 ```
 
-Set `GEMINI_API_KEY` in `.env.local`, then build the local benchmark pack:
+Set `GEMINI_API_KEY` in `.env.local`, then validate the bundled benchmark pack:
 
 ```bash
-python3 scripts/prepare_vrdu_subset.py /path/to/vrdu
 npm run data:validate
 ```
+
+If Poppler is unavailable, add `GEMINI_PDF_INPUT_MODE=inline` to `.env.local`. The app will send the original PDF to Gemini and use the browser's PDF viewer, matching the hosted input path. This is useful for running the demo, but it does not reproduce the saved benchmark.
 
 Start the app:
 
@@ -88,17 +88,17 @@ The full document list adds rotated pages, dense tables, negative and zero amoun
 
 The saved benchmark was produced locally with Poppler. Each PDF page was rendered as a JPEG at 180 DPI and sent to Gemini with `resolution: high`. This is the input path behind every headline quality, latency, token, and cost number below.
 
-Vercel does not provide the Poppler binaries used by the local renderer. Hosted reruns therefore send the original PDF through the Interactions API as an inline document at API-default resolution. The browser also previews the original PDF directly instead of requesting 150 DPI page images from the server.
+Without Poppler, set `GEMINI_PDF_INPUT_MODE=inline`. Vercel selects this mode automatically because it does not provide the Poppler binaries used by the local renderer. In both cases, reruns send the original PDF through the Interactions API as an inline document at API-default resolution. The browser previews the original PDF directly instead of requesting 150 DPI page images from the server.
 
-| | Local benchmark path | Vercel rerun path |
+| | With Poppler | Without Poppler / Vercel |
 | --- | --- | --- |
 | Model input | 180 DPI JPEG pages | Inline PDF document |
 | Media resolution | Explicit `high` | API default |
 | Preview | Poppler-rendered 150 DPI image | Browser PDF viewer |
-| Upload limit | 50 MB, up to 20 rendered pages | 4 MB |
+| Upload limit | 50 MB, up to 20 rendered pages | 50 MB locally; 4 MB on Vercel |
 | Benchmark status | Measured on all 12 documents | Not yet measured as a paired run |
 
-The model, JSON schema, thinking level, `store=false`, normalization, validation, and partner review policy are otherwise unchanged. Input mode is still part of the evaluation tuple: native PDF and rasterized pages can produce different fields, token counts, latency, and cost. The saved dashboard remains a snapshot of the 180 DPI run and should not be read as a measurement of Vercel reruns.
+The model, JSON schema, thinking level, `store=false`, normalization, validation, and partner review policy are otherwise unchanged. Input mode is still part of the evaluation tuple: native PDF and rasterized pages can produce different fields, token counts, latency, and cost. Therefore **yes, running without Poppler can affect benchmark results**. The saved dashboard remains a snapshot of the 180 DPI run and should not be read as a measurement of inline-PDF reruns. A single hosted baseline smoke test matched its gold record, but only a paired run over all 12 documents can establish whether quality and operating metrics transfer.
 
 Run the saved 12-document harness with either model:
 

@@ -13,7 +13,7 @@ export function GET() {
     api: "interactions",
     pdfInputMode: inputMode,
     pdfInput: inputMode === "inline_pdf_document" ? "Inline PDF fallback" : "High-resolution pages",
-    benchmarkPreview: process.env.VERCEL === "1" ? "inline_pdf" : "page_images",
+    benchmarkPreview: inputMode === "inline_pdf_document" ? "inline_pdf" : "page_images",
     maxPdfBytes: process.env.VERCEL === "1" ? 4 * 1024 * 1024 : 50 * 1024 * 1024,
   });
 }
