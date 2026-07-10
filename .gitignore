@@ -29,3 +29,4 @@ outputs/*
 # Internal planning notes are not part of the public project.
 EXECUTION_PLAN.md
 PARTNER_ENGINEERING_BRIEFING.md
+.vercel
