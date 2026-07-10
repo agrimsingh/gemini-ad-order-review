@@ -600,6 +600,7 @@ function DocumentPanel({
 }) {
   const pageCount = selected?.page_count ?? 1;
   const hostedEmpty = !uploadedFile && !sourcesAvailable;
+  const embeddedPdf = Boolean(uploadedFile) || (!hostedEmpty && benchmarkPreviewMode === "inline_pdf");
   return (
     <section className="document-panel">
       <div className="document-toolbar">
@@ -614,7 +615,7 @@ function DocumentPanel({
         </div>
       </div>
 
-      <div className="pdf-stage">
+      <div className={`pdf-stage ${embeddedPdf ? "pdf-stage-embed" : ""}`}>
         {uploadedFile ? (
           <iframe title="Uploaded PDF document preview" src={previewUrl} />
         ) : hostedEmpty ? (
@@ -688,7 +689,7 @@ function PreRunDecision({
         </div>
         <GateRule icon={<Braces size={15} />} label="Valid schema" />
         <GateRule icon={<Clock3 size={15} />} label="Dates ordered and amount parseable" />
-        <GateRule icon={<TableProperties size={15} />} label="Line items remain in review" />
+        <GateRule icon={<TableProperties size={15} />} label="Line-item posting stays manual" />
       </div>
 
       <div className="pre-run-evidence">
@@ -795,9 +796,9 @@ function CompletedDecision({
           <strong>{accepted ? "AUTO-ACCEPT" : "SEND TO REVIEW"}</strong>
           <small>{accepted ? "All required partner fields are present." : routeReason(result.validation)}</small>
         </section>
-        <section className="decision-lane rows-review">
-          <span>LINE ITEMS</span>
-          <strong>KEEP IN REVIEW</strong>
+        <section className="decision-lane rows-manual">
+          <span>LINE-ITEM SCOPE</span>
+          <strong>MANUAL POSTING</strong>
           <small className="lane-evidence">
             {comparison ? (
               <>
@@ -810,6 +811,7 @@ function CompletedDecision({
                 <span>Partner routing still uses deterministic checks.</span>
               </>
             )}
+            <span>V1 never auto-posts rows; this is a scope boundary, not an extraction failure.</span>
             <span>{primary ? `Benchmark: ${percent(primary.lineItemF1)} exact-row F1 on ${primary.lineItemGoldRowsScored ?? "scored"} rows` : "Saved benchmark unavailable"}</span>
           </small>
         </section>
@@ -936,7 +938,7 @@ function BenchmarkView({
       <section className="policy-section">
         <div className="policy-copy">
           <span className="eyebrow">EXAMPLE PARTNER POLICY</span>
-          <h2>Auto-accept complete headers. Review line items.</h2>
+          <h2>Auto-accept complete headers. Keep line-item posting manual.</h2>
           <p><strong>Required:</strong> advertiser · order / contract ID · flight dates · gross amount<br /><span>Absent in source means review, not extraction error.</span></p>
         </div>
         <div className="policy-rails">
@@ -1066,7 +1068,7 @@ function ValidationChecks({ validation, compact = false }: { validation: Validat
       <CheckRow label="Required partner fields" value={validation.missingCritical.length ? `${capitalize(formatFieldList(validation.missingCritical))} absent` : "all 5 present"} ok={validation.missingCritical.length === 0} wide />
       <CheckRow label="JSON schema" value={validation.schemaValid ? "valid" : "invalid"} ok={validation.schemaValid} />
       <CheckRow label="Dates and money" value={validation.dateOrderOk && validation.grossAmountParseable ? "valid" : "needs review"} ok={validation.dateOrderOk && validation.grossAmountParseable} />
-      <CheckRow label="Rows (review only)" value={validation.rowShapeValid ? "complete" : "sparse rows"} ok={validation.rowShapeValid} advisory />
+      <CheckRow label="Row structure" value={validation.rowShapeValid ? "complete" : "sparse rows"} ok={validation.rowShapeValid} advisory />
       {!compact && <CheckRow label="Arithmetic reconciliation" value={validation.reconciliation.replace("_", " ")} ok={validation.reconciliation !== "mismatch"} advisory />}
     </div>
   );
