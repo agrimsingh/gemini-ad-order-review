@@ -1,0 +1,145 @@
+{
+  "generatedAt": "2026-07-10T05:23:16.872Z",
+  "model": "gemini-3.5-flash",
+  "controlledVariables": {
+    "mediaInstruction": "The supplied media contains one document. Extract it now.",
+    "promptHashes": {
+      "rasterized_pdf_pages": [
+        "abde18beb05b"
+      ],
+      "inline_pdf_document": [
+        "abde18beb05b"
+      ]
+    },
+    "schemaHashes": {
+      "rasterized_pdf_pages": [
+        "d4dbd5526f2d"
+      ],
+      "inline_pdf_document": [
+        "d4dbd5526f2d"
+      ]
+    },
+    "thinking": "minimal",
+    "store": false,
+    "normalizationVersion": "address-contact-v1"
+  },
+  "aggregates": {
+    "rasterized_pdf_pages": {
+      "model": "gemini-3.5-flash",
+      "documentsAttempted": 12,
+      "documentsCompleted": 12,
+      "schemaValidity": 1,
+      "acceptanceRate": 0.6666666666666666,
+      "acceptedCriticalFieldAccuracy": 1,
+      "perFieldPassRate": 0.8640776699029126,
+      "hallucinationRate": 0.06796116504854369,
+      "missingValueRate": 0.019417475728155338,
+      "lineItemPrecision": 0.5904761904761905,
+      "lineItemRecall": 0.5794392523364486,
+      "lineItemF1": 0.5849056603773585,
+      "lineItemDocumentsScored": 11,
+      "lineItemGoldRowsScored": 107,
+      "lineItemGoldRowsTotal": 171,
+      "matchedRowLeafAccuracy": 0.9648648648648649,
+      "criticalFieldsAllCorrectRate": 0.8333333333333334,
+      "latencyMs": {
+        "median": 4540,
+        "p95": 32540
+      },
+      "tokens": {
+        "input": 40124,
+        "output": 15927,
+        "thought": 0
+      },
+      "estimatedCostUsd": 0.20352900000000002,
+      "estimatedCostPerAcceptedDocumentUsd": 0.025441125000000002,
+      "failedDocuments": [],
+      "reviewSlices": [
+        {
+          "documentId": "0892f433-a82d-eae3-d2ae-e578edea8656",
+          "slice": "density",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        },
+        {
+          "documentId": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2",
+          "slice": "missing_fields",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        },
+        {
+          "documentId": "464180-senate-conservatives-action-request-form",
+          "slice": "out_of_scope",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        },
+        {
+          "documentId": "749e7f7f-371f-772d-62e9-2970b3883d56",
+          "slice": "financial_edge",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        }
+      ],
+      "acceptedSemanticFailures": []
+    },
+    "inline_pdf_document": {
+      "model": "gemini-3.5-flash",
+      "documentsAttempted": 12,
+      "documentsCompleted": 12,
+      "schemaValidity": 1,
+      "acceptanceRate": 0.75,
+      "acceptedCriticalFieldAccuracy": 1,
+      "perFieldPassRate": 0.8640776699029126,
+      "hallucinationRate": 0.06796116504854369,
+      "missingValueRate": 0.009708737864077669,
+      "lineItemPrecision": 0.29523809523809524,
+      "lineItemRecall": 0.2897196261682243,
+      "lineItemF1": 0.29245283018867924,
+      "lineItemDocumentsScored": 11,
+      "lineItemGoldRowsScored": 107,
+      "lineItemGoldRowsTotal": 171,
+      "matchedRowLeafAccuracy": 0.7943661971830986,
+      "criticalFieldsAllCorrectRate": 0.9166666666666666,
+      "latencyMs": {
+        "median": 4198,
+        "p95": 31139
+      },
+      "tokens": {
+        "input": 21632,
+        "output": 16320,
+        "thought": 0
+      },
+      "estimatedCostUsd": 0.17932800000000002,
+      "estimatedCostPerAcceptedDocumentUsd": 0.019925333333333337,
+      "failedDocuments": [],
+      "reviewSlices": [
+        {
+          "documentId": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2",
+          "slice": "missing_fields",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        },
+        {
+          "documentId": "464180-senate-conservatives-action-request-form",
+          "slice": "out_of_scope",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        },
+        {
+          "documentId": "749e7f7f-371f-772d-62e9-2970b3883d56",
+          "slice": "financial_edge",
+          "reasons": [
+            "critical_field_missing"
+          ]
+        }
+      ],
+      "acceptedSemanticFailures": []
+    }
+  }
+}
