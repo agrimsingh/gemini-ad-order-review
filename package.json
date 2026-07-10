@@ -10,9 +10,9 @@
     "data:validate": "python3 scripts/validate_vrdu_subset.py",
     "eval": "node --env-file=.env.local --import tsx scripts/run_benchmark.ts",
     "eval:rescore": "node --import tsx scripts/rescore_benchmark.ts",
-    "slides:dev": "bun --cwd slides run dev",
-    "slides:build": "bun --cwd slides run build",
-    "slides:export": "bun --cwd slides run export",
+    "slides:dev": "bun run --cwd slides dev",
+    "slides:build": "bun run --cwd slides build",
+    "slides:export": "bun run --cwd slides export",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "start": "next start"

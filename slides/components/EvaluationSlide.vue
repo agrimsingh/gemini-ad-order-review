@@ -7,7 +7,7 @@
 
     <header class="slide-heading compact-heading">
       <p class="eyebrow">Operating measure</p>
-      <h1>Measure the decision the partner will make</h1>
+      <h1>Measure review saved without hiding accepted errors</h1>
       <p class="lede">How much review disappears at an acceptable error rate, and where do the remaining errors cluster?</p>
     </header>
 
@@ -22,7 +22,7 @@
           <div class="model-name"><span>Primary</span><strong>Gemini 3.5 Flash</strong></div>
           <div class="model-measure"><span>Auto-accept</span><strong>75.0%</strong></div>
           <div class="model-measure"><span>Accepted key fields</span><strong>100%</strong></div>
-          <div class="model-measure"><span>Cost / accepted</span><strong>$0.0231</strong></div>
+          <div class="model-measure"><span>Total cost / accepted</span><strong>$0.0231</strong></div>
           <div class="decision-tag">Use</div>
         </div>
 
@@ -30,7 +30,7 @@
           <div class="model-name"><span>Cost challenger</span><strong>Gemini 3.1 Flash-Lite</strong></div>
           <div class="model-measure"><span>Auto-accept</span><strong>66.7%</strong></div>
           <div class="model-measure bad-measure"><span>Accepted key fields</span><strong>87.5%</strong></div>
-          <div class="model-measure"><span>Cost / accepted</span><strong>$0.0042</strong></div>
+          <div class="model-measure"><span>Total cost / accepted</span><strong>$0.0042</strong></div>
           <div class="decision-tag reject-tag">Hold</div>
         </div>
 
@@ -39,7 +39,7 @@
 
       <aside class="eval-method">
         <div class="golden-set">
-          <p class="section-label">Demo golden set</p>
+          <p class="section-label">VRDU Ad-buy Forms demo set</p>
           <div class="dataset-line"><strong>12</strong><span>unseen-template documents</span></div>
           <div class="dataset-line"><strong>32</strong><span>pages across dense, rotated, OCR, and financial-edge slices</span></div>
           <div class="dataset-line"><strong>107</strong><span>trustworthy line-item labels scored</span></div>
@@ -58,7 +58,7 @@
     <div class="quality-strip" aria-label="Primary model evaluation metrics">
       <div><span>Schema valid</span><strong>100%</strong></div>
       <div><span>Header field pass</span><strong>88.3%</strong></div>
-      <div><span>Exact row F1</span><strong>29.1%</strong><small>31 exact · 106 model / 107 gold rows</small></div>
+      <div><span>Exact row F1</span><strong>29.1%</strong><small>31 exact · 106 extracted / 107 reference rows</small></div>
       <div><span>Aligned row fields</span><strong>79.2%</strong><small>301 of 380 fields</small></div>
     </div>
   </div>

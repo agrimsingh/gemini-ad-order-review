@@ -40,7 +40,7 @@
         <div class="pipe-step outcome-step">
           <span>05 · Route + report</span>
           <strong>Accept or review</strong>
-          <small>VRDU score when gold exists</small>
+          <small>compare with labels when available</small>
         </div>
       </div>
 
@@ -56,14 +56,14 @@
           <p>Dates and money stay as strings until deterministic parsers handle them. Net Total never silently becomes Gross Amount.</p>
         </div>
         <div>
-          <p class="section-label">No model confidence</p>
-          <h2>Acceptance comes from evidence</h2>
-          <p>Field checks, review corrections, and golden-set regressions are observable. A self-reported score is not used for routing.</p>
+          <p class="section-label">No confidence score in the gate</p>
+          <h2>Use checks and measured error rates</h2>
+          <p>Field checks, review corrections, and benchmark regressions are observable. The model's own score is not used for routing.</p>
         </div>
         <div>
-          <p class="section-label">Advisory amount check</p>
-          <h2>The benchmark often does not add up</h2>
-          <p>Only about 81% of eligible VRDU documents reconcile to gross, so arithmetic mismatch cannot be an automatic failure.</p>
+          <p class="section-label">VRDU Ad-buy Forms benchmark</p>
+          <h2>19% of eligible documents do not reconcile</h2>
+          <p>Gross does not equal the labeled row totals in those documents. We report the mismatch but do not fail the document.</p>
         </div>
       </section>
     </main>

@@ -27,9 +27,9 @@
         </div>
 
         <div class="result-strip" aria-label="Primary benchmark result">
-          <div><strong>75.0%</strong><span>auto-accept rate</span></div>
+          <div><strong>3.7s</strong><span>median decision time</span></div>
           <div><strong>100%</strong><span>accepted key fields correct</span></div>
-          <div><strong>$0.0231</strong><span>workload cost per accepted doc</span></div>
+          <div><strong>$0.0231</strong><span>total run cost / accepted doc</span></div>
         </div>
       </section>
 
@@ -37,7 +37,7 @@
         <p class="section-label">Where the line sits</p>
         <div class="scope-item scope-pass">
           <span>Header fields</span>
-          <strong>Ready for a guarded pilot</strong>
+          <strong>Promising enough for a controlled pilot</strong>
           <p>The gate removes routine review while preserving a visible queue.</p>
         </div>
         <div class="scope-item scope-review">

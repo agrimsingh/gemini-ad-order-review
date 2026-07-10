@@ -50,7 +50,7 @@
 
     <footer class="friction-close">
       <span>What partners need</span>
-      <strong>One reference path for extraction, semantic validation, review routing, benchmark comparison, and production monitoring.</strong>
+      <strong>A useful reference should show what happens after the model returns JSON.</strong>
     </footer>
   </div>
 </template>

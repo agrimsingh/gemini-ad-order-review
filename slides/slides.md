@@ -42,11 +42,11 @@ I use minimal thinking because this is extraction, and store is explicitly false
 <EvaluationSlide />
 
 <!--
-The evaluator measures the same path the partner would run. A saved benchmark document and a live upload both go through extraction, deterministic checks, and the review gate. Gold comparison is attached afterward and never changes the route.
+The evaluator measures the same path the partner would run. A saved benchmark document and a live upload both go through extraction, deterministic checks, and the review gate. Comparison with the reference labels happens afterward and never changes the route.
 
 The paired model run makes the trade-off concrete. Flash-Lite was much cheaper, but it allowed one incorrect critical header through the gate. Under this policy, that disqualifies it as the primary model even though its average cost looks better.
 
-Exact-row F1 needs context. The primary model produced 31 exact matches from 106 predicted rows and 107 gold rows. Among rows that could be aligned, 301 of 380 individual fields matched. That gap shows where row grouping or one bad value turns a mostly correct row into an exact miss.
+Exact-row F1 needs context. The primary model produced 31 exact matches from 106 extracted rows and 107 reference rows. Among rows that could be aligned, 301 of 380 individual fields matched. That gap shows where row grouping or one bad value turns a mostly correct row into an exact miss.
 
 Twelve documents are enough to exercise the harness, but too few to set a production threshold. One result moves a rate by 8.3 percentage points. A partner pilot should expand to 100 to 200 jointly labeled documents, add confidence intervals, and monitor review corrections plus random audits of accepted documents.
 -->
@@ -62,5 +62,5 @@ The PDF issue was separate and reproducible in code. Interactions rejected both 
 
 The other two issues affect trust. Structured output can be valid and still choose the wrong business value. Benchmarks can also contain ambiguous or corrupt labels. Both require explicit field definitions, provenance, deterministic checks, and monitoring around the model.
 
-The practical product request is an executable reference that continues past JSON generation. It should show semantic validation, review routing, benchmark comparison, privacy settings, telemetry, and production monitoring in one path.
+Most extraction examples stop once the model returns JSON. Partners also need to see how that output is checked, routed, measured, and monitored in production.
 -->
