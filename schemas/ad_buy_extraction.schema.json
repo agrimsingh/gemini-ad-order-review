@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.local/schemas/ad-buy-extraction-v1.json",
+  "title": "Ad Buy Form Extraction v1",
+  "description": "Raw, source-faithful extraction from a visually rich advertising order, contract, invoice, credit memo, or request form. Every property is required in JSON; absent or illegible source values must be null.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "document": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "property": {
+          "type": ["string", "null"],
+          "description": "Legal station or media-property name printed with the station address. Prefer that entity name over a logo, market label, network affiliation, or call sign. Use a call sign only when no entity name is printed. Return null when absent."
+        },
+        "tv_address": {
+          "type": ["string", "null"],
+          "description": "Station postal address only. Exclude the station or company name, logo text, market label, network affiliation, and call sign. Collapse line breaks to single spaces; otherwise preserve source wording."
+        },
+        "advertiser": {
+          "type": ["string", "null"],
+          "description": "Advertiser, candidate, campaign, committee, or organization purchasing the advertising."
+        },
+        "agency": {
+          "type": ["string", "null"],
+          "description": "Advertising or media-buying agency shown on the document. Do not substitute the advertiser."
+        },
+        "product": {
+          "type": ["string", "null"],
+          "description": "Product, campaign, issue, or advertised subject shown in the product field."
+        },
+        "contract_num": {
+          "type": ["string", "null"],
+          "description": "Underlying media-buy identifier as source text. Use an explicit Contract #; otherwise use an explicit Order #. Do not use an Invoice #, even when it is the only identifier shown. Keep the selected value as a string so leading zeros are preserved."
+        },
+        "flight_from": {
+          "type": ["string", "null"],
+          "description": "Overall campaign or contract start date exactly as shown. Do not convert formats."
+        },
+        "flight_to": {
+          "type": ["string", "null"],
+          "description": "Overall campaign or contract end date exactly as shown. Do not convert formats."
+        },
+        "gross_amount": {
+          "type": ["string", "null"],
+          "description": "Explicit Gross Amount, Contract Amount, or Grand Total on an order or contract, exactly as printed. For a credit memo, use the explicit credit amount including sign or parentheses. Do not substitute Net Total, Invoice Total, a line-item subtotal, or a calculated sum."
+        }
+      },
+      "required": [
+        "property",
+        "tv_address",
+        "advertiser",
+        "agency",
+        "product",
+        "contract_num",
+        "flight_from",
+        "flight_to",
+        "gross_amount"
+      ]
+    },
+    "line_items": {
+      "type": "array",
+      "description": "One object per visible schedule or program row, in document reading order. Use an empty array when no line items are present.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "channel": {
+            "type": ["string", "null"],
+            "description": "Channel, station, network, or feed shown for this row."
+          },
+          "program_desc": {
+            "type": ["string", "null"],
+            "description": "Program, daypart, spot, or schedule description for this row."
+          },
+          "program_start_date": {
+            "type": ["string", "null"],
+            "description": "Row-level start date exactly as shown. Do not infer it from the overall flight dates."
+          },
+          "program_end_date": {
+            "type": ["string", "null"],
+            "description": "Row-level end date exactly as shown. Do not infer it from the overall flight dates."
+          },
+          "sub_amount": {
+            "type": ["string", "null"],
+            "description": "Row-level subtotal or amount exactly as printed. Return null if the row has no explicit amount."
+          }
+        },
+        "required": [
+          "channel",
+          "program_desc",
+          "program_start_date",
+          "program_end_date",
+          "sub_amount"
+        ]
+      }
+    }
+  },
+  "required": ["document", "line_items"]
+}

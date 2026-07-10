@@ -1,0 +1,11 @@
+{
+  "48310d93-0e1d-5377-b3e1-8bcdfaaa6422": {
+    "source_evidence": "Page 1 prints Schedule Dates 02/01/20-02/12/20. The VRDU row annotations truncate dates and splice Comments text into program_desc.",
+    "document_overrides": {
+      "flight_from": "02/01/20",
+      "flight_to": "02/12/20"
+    },
+    "score_line_items": false,
+    "line_item_score_exclusion_reason": "Source audit found truncated row dates and Comments text spliced into program descriptions."
+  }
+}

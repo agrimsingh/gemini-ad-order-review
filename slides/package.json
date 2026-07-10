@@ -1,0 +1,17 @@
+{
+  "name": "gemini-ad-order-review-briefing",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun node_modules/@slidev/cli/bin/slidev.mjs slides.md --port 3030",
+    "build": "bun node_modules/@slidev/cli/bin/slidev.mjs build slides.md",
+    "export": "bun node_modules/@slidev/cli/bin/slidev.mjs export slides.md --output ../docs/partner-engineering-briefing.pdf"
+  },
+  "dependencies": {
+    "@fontsource-variable/manrope": "5.2.8",
+    "@fontsource/jetbrains-mono": "5.2.8",
+    "@slidev/cli": "52.17.0",
+    "@slidev/theme-default": "0.25.0",
+    "playwright-chromium": "1.61.1"
+  }
+}

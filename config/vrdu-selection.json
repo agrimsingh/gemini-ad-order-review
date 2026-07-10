@@ -1,0 +1,86 @@
+[
+  {
+    "filename": "1b3d499b-17c6-eca9-1255-29ea55100b3d.pdf",
+    "slice": "demo",
+    "difficulty": "medium",
+    "demo_rank": 1,
+    "include_reason": "Primary live-demo document: one scanned page, all nine header fields, six repeated line items, and complete line-item amounts."
+  },
+  {
+    "filename": "00c3353e-a25f-574a-a9db-39a41579895a.pdf",
+    "slice": "baseline",
+    "difficulty": "easy",
+    "demo_rank": 2,
+    "include_reason": "Fast smoke test with one page, one line item, and a complete amount reconciliation."
+  },
+  {
+    "filename": "c1ede720-d1f9-dcb4-e56f-65bf46300e84.pdf",
+    "slice": "baseline",
+    "difficulty": "medium",
+    "demo_rank": 3,
+    "include_reason": "Compact one-page form with all nine header fields and four complete line items."
+  },
+  {
+    "filename": "493546-warren-for-senate-est-12911-10-26-12-10-28-12.pdf",
+    "slice": "layout",
+    "difficulty": "hard",
+    "demo_rank": 4,
+    "include_reason": "Rotated multi-page layout with all nine header fields and 21 line items; tests native visual understanding."
+  },
+  {
+    "filename": "0892f433-a82d-eae3-d2ae-e578edea8656.pdf",
+    "slice": "density",
+    "difficulty": "hard",
+    "demo_rank": 5,
+    "include_reason": "Dense three-page table with 31 line items and a complete amount reconciliation."
+  },
+  {
+    "filename": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2.pdf",
+    "slice": "missing_fields",
+    "difficulty": "medium",
+    "demo_rank": 6,
+    "include_reason": "Invoice contains both Invoice # and Order # plus a Net Total but no explicit Gross Amount; tests the partner identifier precedence and gross-vs-net field contract."
+  },
+  {
+    "filename": "464180-senate-conservatives-action-request-form.pdf",
+    "slice": "out_of_scope",
+    "difficulty": "hard",
+    "demo_rank": 7,
+    "include_reason": "Advertising request sheet rather than an invoice; only agency is labeled, making it a strong hallucination and routing trap."
+  },
+  {
+    "filename": "749e7f7f-371f-772d-62e9-2970b3883d56.pdf",
+    "slice": "financial_edge",
+    "difficulty": "medium",
+    "demo_rank": 8,
+    "include_reason": "Credit memo with a negative gross amount and no line items; tests parentheses-style money parsing."
+  },
+  {
+    "filename": "c442b691-e6c8-7e9d-3970-a205dc05b56d.pdf",
+    "slice": "financial_edge",
+    "difficulty": "hard",
+    "demo_rank": 9,
+    "include_reason": "Zero gross amount alongside non-zero line-item amounts; demonstrates why arithmetic consistency is advisory, not a hard accuracy rule."
+  },
+  {
+    "filename": "5691cccd-228d-fab4-6d9b-bbf8df92a94a.pdf",
+    "slice": "financial_edge",
+    "difficulty": "hard",
+    "demo_rank": 10,
+    "include_reason": "All nine header fields are present, but the single annotated line amount does not equal gross; another legitimate arithmetic anomaly."
+  },
+  {
+    "filename": "782276fb-5d1c-af75-b44f-d75997a7b168.pdf",
+    "slice": "ocr_quality",
+    "difficulty": "stress",
+    "demo_rank": 11,
+    "include_reason": "Eight-page scan with 37 line items and malformed OCR in the labeled gross amount; tests parser and label-quality handling."
+  },
+  {
+    "filename": "48310d93-0e1d-5377-b3e1-8bcdfaaa6422.pdf",
+    "slice": "long_document",
+    "difficulty": "stress",
+    "demo_rank": 12,
+    "include_reason": "Ten-page form with all nine header fields, 64 line items, and partial line-item amounts; bounded stress test for latency and output completeness."
+  }
+]

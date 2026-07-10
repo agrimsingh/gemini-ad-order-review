@@ -1,0 +1,38 @@
+{
+  "name": "gemini-ad-buy-workbench",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "data:adjudicate": "node --import tsx scripts/apply_vrdu_adjudications.ts",
+    "data:validate": "python3 scripts/validate_vrdu_subset.py",
+    "eval": "node --env-file=.env.local --import tsx scripts/run_benchmark.ts",
+    "eval:rescore": "node --import tsx scripts/rescore_benchmark.ts",
+    "slides:dev": "bun --cwd slides run dev",
+    "slides:build": "bun --cwd slides run build",
+    "slides:export": "bun --cwd slides run export",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@google/genai": "^2.4.0",
+    "lucide-react": "^0.546.0",
+    "next": "^15.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tsx": "^4.21.0",
+    "typescript": "~5.8.2",
+    "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "postcss": "^8.5.10"
+  }
+}

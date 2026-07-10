@@ -1,0 +1,94 @@
+Build a full-stack web app called "Ad Spend Extraction Workbench." This is an operational tool, not a landing page.
+
+The benchmark is part of the product path. The live flow is:
+PDF -> Gemini 3.5 Flash via Interactions API -> schema-constrained extraction -> independent normalization/validation -> READY or REVIEW -> gold comparison when available -> quality/latency/token report.
+
+Use React on the client and the AI Studio server-side Node runtime. Keep GEMINI_API_KEY server-side. Use @google/genai 2.3.0 or newer. Use interactions.create, not generateContent.
+
+Seed one public VRDU sample:
+- id: 00c3353e-a25f-574a-a9db-39a41579895a
+- title: WSIL-TV baseline order
+- slice: baseline
+- difficulty: easy
+- PDF URL: https://raw.githubusercontent.com/google-research-datasets/vrdu/main/ad-buy-form/main/pdfs/00c3353e-a25f-574a-a9db-39a41579895a.pdf
+
+Proxy the public PDF through a server route for preview and extraction. Also support uploading a local PDF at runtime. Do not require the benchmark files to be bundled into the project.
+
+Use this exact gold extraction for the seeded sample:
+{
+  "document": {
+    "property": "WSIL-TV",
+    "tv_address": null,
+    "advertiser": "Committee to Elect Mike Carr",
+    "agency": "Committee to Elect Mike Carr",
+    "product": "Mike Carr for Jackson Co States Atty",
+    "contract_num": "14086",
+    "flight_from": "03/03/20",
+    "flight_to": "03/03/20",
+    "gross_amount": "$600.00"
+  },
+  "line_items": [
+    {
+      "channel": "3",
+      "program_desc": "Tuesday Prime Other Your Voice Your Vote",
+      "program_start_date": "03/03/20",
+      "program_end_date": "03/03/20",
+      "sub_amount": "$600.00"
+    }
+  ]
+}
+
+Create one shared JSON Schema with this shape:
+- top-level object, additionalProperties false, required: document and line_items
+- document is an object with additionalProperties false
+- every document property is required and has type [string, null]: property, tv_address, advertiser, agency, product, contract_num, flight_from, flight_to, gross_amount
+- line_items is a required array
+- every line item is an object with additionalProperties false
+- every line-item property is required and has type [string, null]: channel, program_desc, program_start_date, program_end_date, sub_amount
+
+Add clear descriptions to the schema: extract values as printed, preserve identifiers as strings, return null when absent or illegible, never calculate gross_amount, preserve dates and money as source text, and emit one line item per visible schedule row in reading order. For property, prefer the legal station/entity printed beside the postal address over logo, market, network, or call-sign text. tv_address contains postal address only and excludes entity/branding text. For this order-ingestion workflow, contract_num means the underlying media-buy identifier: use Contract #, otherwise Order #, and never Invoice #. gross_amount means an explicit Gross Amount, Contract Amount, or Grand Total on an order or contract, or the explicit amount on a credit memo; never substitute Net Total or Invoice Total.
+
+Use this extraction system instruction:
+"Extract only values visibly present in the supplied PDF. Return null for absent, illegible, or ambiguous values; never infer. Preserve source wording for identifiers, dates, and money, collapsing whitespace only. For property, prefer the legal station/entity printed beside its postal address; do not use a logo, market label, network affiliation, or call sign when that entity is present. tv_address contains postal address only. contract_num means the underlying media-buy identifier: use Contract # when present, otherwise Order #. When both Order # and Invoice # are present, use Order #. Never populate contract_num from Invoice # alone. gross_amount means an explicit Gross Amount, Contract Amount, or Grand Total on an order or contract; for a credit memo use the explicit credit amount. Do not substitute Net Total, Invoice Total, a line-item subtotal, or a calculated sum. Emit one line_items object per visible schedule row in document order. Do not copy overall dates into row dates unless printed in the row. Sparse output is better than filling a field with a different business concept. Return only the schema-defined JSON."
+
+The extraction server call must use:
+- model: gemini-3.5-flash
+- store: false
+- render PDF pages server-side and send ordered JPEG image items with resolution high
+- system_instruction above
+- response_format { type: "text", mime_type: "application/json", schema: extractionSchema }
+- generation_config { thinking_level: "minimal" }
+- no temperature, top_p, top_k, candidate_count, or thinking_budget
+
+Parse interaction.output_text as JSON and validate it server-side against the same schema with Ajv 2020. Run semantic validation separately.
+
+After extraction, run deterministic application validation:
+- acceptance fields: advertiser, contract_num, flight_from, flight_to, gross_amount
+- parse money to integer cents; support currency symbols, commas, minus signs, and parentheses
+- parse common US dates while preserving the displayed source value
+- check flight_from <= flight_to when both parse
+- count missing line-item cells
+- compare line-item amounts with gross only as an ADVISORY anomaly
+- REVIEW on invalid schema, any missing acceptance field, an unparseable present gross amount, or impossible date order
+- report invalid/sparse line-item rows separately; line items remain review-only and do not block header READY
+- otherwise READY
+- return explicit reasons; do not produce a confidence score
+
+For the seeded sample, compare the extraction with gold after normalization. Report schema validity, per-field pass/fail, gold-null overfill, missing values, line-item precision/recall/F1, matched-row leaf accuracy, critical-fields-all-correct, latency, and available input/output/thought/total tokens. Gold-null overfill is a semantic disagreement with the annotation, not proof that source text was fabricated.
+
+UI:
+- dense desktop workbench sized for 1440x900
+- fixed top bar: product name, gemini-3.5-flash, API status
+- left rail: seeded sample selected by default and Upload PDF
+- center: large PDF preview
+- right: READY/REVIEW, reasons, nine document fields, compact line-item table
+- tabs: Extraction, Validation, Gold Comparison, Raw JSON
+- a Run extraction button is the clear primary action
+- show latency and token usage near the status
+- neutral work-focused palette; green/amber/red only for state
+- Lucide icons; no hero, gradients, marketing copy, decorative cards, or nested cards
+- stable panel dimensions, readable tables, and no overlapping text
+- loading, API error, invalid JSON, missing key, and unavailable sample states
+- never silently substitute mock extraction data; label any fixture or cached result
+
+Before finishing, run the app, fix build/runtime errors, verify the public sample PDF renders, and verify the server can make a real Gemini request. If interactions.create is unavailable in the generated runtime, surface the exact error in the UI and keep the integration isolated in one server module for the next fix pass. Do not replace it with client-side API calls.
