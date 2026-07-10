@@ -20,7 +20,6 @@ slides/tmp-slide-*.html
 outputs/*
 !outputs/EVALUATION_SUMMARY.md
 !outputs/evaluation-public.json
-!outputs/input-mode-comparison-public.json
 
 # Internal planning notes are not part of the public project.
 EXECUTION_PLAN.md

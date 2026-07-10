@@ -96,36 +96,15 @@ Without Poppler, set `GEMINI_PDF_INPUT_MODE=inline`. Vercel selects this mode au
 | Media resolution | Explicit `high` | API default |
 | Preview | Poppler-rendered 150 DPI image | Browser PDF viewer |
 | Upload limit | 50 MB, up to 20 rendered pages | 50 MB locally; 4 MB on Vercel |
-| Benchmark status | Source of the saved headline benchmark | One controlled 12-document paired run; not the headline |
+| Benchmark status | Measured benchmark: 9 / 12 bypass review | Live fallback only; no benchmark claims |
 
-Does this change the benchmark? Yes. Native PDFs and rasterized pages can produce different fields, token counts, latency, and cost. The saved dashboard is still the 180 DPI run; it is not a measurement of inline-PDF reruns. The model, JSON schema, thinking level, `store=false`, normalization, validation, and partner review policy are otherwise unchanged.
-
-A separate one-pass comparison held the prompt hash, schema hash, model, thinking level, storage setting, normalization, and document order constant while changing only the input mode and its resolution:
-
-| Metric | 180 DPI pages | Inline PDF |
-| --- | ---: | ---: |
-| Schema validity | 100% | 100% |
-| Header-field pass | 86.4% | 86.4% |
-| Auto-accepted key fields correct | 100% | 100% |
-| Documents auto-accepted | 8 / 12 | 9 / 12 |
-| Exact-row F1 | 58.5% | 29.2% |
-| Input tokens | 40,124 | 21,632 |
-| Median latency | 4.54 s | 4.20 s |
-| Total estimated cost | $0.2035 | $0.1793 |
-
-The row-F1 gap came entirely from the 31-row dense-table document: inline PDF copied the overall flight dates into every row, contrary to the field contract, while the raster run left those row cells null. This shows that the modes are not interchangeable. Inline PDF also used fewer tokens and cost less in this pass. One run is not enough to rank the modes, and the paired raster result does not replace the saved 29.1% row-F1 snapshot. Repeated runs or a larger co-labeled set are required before changing the primary path. The aggregate evidence is in [outputs/input-mode-comparison-public.json](outputs/input-mode-comparison-public.json).
+Native PDFs and rasterized pages can produce different fields, token counts, latency, and cost, so metrics do not transfer between them. Every published benchmark number in this README, the app's saved evaluation, and the partner briefing comes from the same Poppler-rendered 180 DPI run. Hosted inline-PDF reruns are live examples only and do not update the benchmark.
 
 Run the saved 12-document harness with either model:
 
 ```bash
 npm run eval -- gemini-3.5-flash
 npm run eval -- gemini-3.1-flash-lite
-```
-
-Run a controlled Poppler-versus-inline-PDF comparison with the same prompt and model settings:
-
-```bash
-npm run eval:inputs -- gemini-3.5-flash
 ```
 
 Recompute validation and comparison after deterministic code changes without paying for another model run:

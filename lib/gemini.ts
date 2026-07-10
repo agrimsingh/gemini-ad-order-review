@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 import { GoogleGenAI } from "@google/genai";
 import { renderPdfPages } from "@/lib/pdf";
-import { configuredPdfInputMode, type PdfInputMode } from "@/lib/runtime-config";
+import { configuredPdfInputMode } from "@/lib/runtime-config";
 import { isExtractionShape, validateExtraction } from "@/shared/evaluation";
 import { NORMALIZATION_VERSION, normalizeExtraction } from "@/shared/normalization";
 import { EXTRACTION_PROMPT, EXTRACTION_SCHEMA } from "@/shared/schema";
@@ -14,11 +14,6 @@ export const SUPPORTED_MODELS = [
 ] as const;
 
 export type SupportedModel = (typeof SUPPORTED_MODELS)[number];
-
-type ExtractionOptions = {
-  inputMode?: PdfInputMode;
-  mediaInstruction?: string;
-};
 
 const INPUT_RATES: Record<SupportedModel, number> = {
   "gemini-3.5-flash": 1.5 / 1_000_000,
@@ -70,7 +65,6 @@ export function isSupportedModel(value: string): value is SupportedModel {
 export async function extractPdf(
   pdfBuffer: Buffer,
   model: SupportedModel,
-  options: ExtractionOptions = {},
 ): Promise<ExtractionResponse> {
   const apiKey = process.env.GEMINI_API_KEY ?? process.env.GOOGLE_API_KEY;
   if (!apiKey) throw new Error("GEMINI_API_KEY is not configured.");
@@ -78,7 +72,7 @@ export async function extractPdf(
   const thinking: "minimal" | "low" =
     model === "gemini-3.1-pro-preview" ? "low" : "minimal";
   const started = performance.now();
-  const inputMode = options.inputMode ?? configuredPdfInputMode();
+  const inputMode = configuredPdfInputMode();
   const mediaInput = inputMode === "inline_pdf_document"
     ? [{
         type: "document" as const,
@@ -91,12 +85,9 @@ export async function extractPdf(
         mime_type: "image/jpeg" as const,
         resolution: "high" as const,
       }));
-  const mediaInstruction = options.mediaInstruction ?? (
-    inputMode === "inline_pdf_document"
-      ? "The input is one PDF document. Extract it now."
-      : "The images are consecutive pages from one PDF. Extract this document now."
-  );
-  const requestPrompt = `${EXTRACTION_PROMPT}\n\n${mediaInstruction}`;
+  const requestPrompt = inputMode === "inline_pdf_document"
+    ? `${EXTRACTION_PROMPT}\n\nThe input is one PDF document. Extract it now.`
+    : `${EXTRACTION_PROMPT}\n\nThe images are consecutive pages from one PDF. Extract this document now.`;
   const ai = new GoogleGenAI({ apiKey });
   const interaction = await ai.interactions.create({
     model,
