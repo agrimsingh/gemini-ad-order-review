@@ -1,0 +1,29 @@
+{
+  "document": {
+    "property": "KMEG",
+    "tv_address": "100 Gold Circle Dr Dakota Dunes, SD 57049",
+    "advertiser": "Todd Wieck-Sheriff Woodbury County",
+    "agency": null,
+    "product": null,
+    "contract_num": "1390338",
+    "flight_from": "04/22/20",
+    "flight_to": "05/28/20",
+    "gross_amount": null
+  },
+  "line_items": [
+    {
+      "channel": "KMEG",
+      "program_desc": "M-F 630p-7p",
+      "program_start_date": "05/12/20",
+      "program_end_date": "05/12/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "KMEG",
+      "program_desc": "M-F 630p-7p",
+      "program_start_date": "05/14/20",
+      "program_end_date": "05/28/20",
+      "sub_amount": null
+    }
+  ]
+}

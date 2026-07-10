@@ -1,0 +1,162 @@
+{
+  "document": {
+    "property": "WHDH-TV",
+    "tv_address": "7 Bulfinch Place Boston, MA 02114-2977",
+    "advertiser": "WARREN FOR SENATE 2012 (3373)",
+    "agency": "Media Strategies & Research (1800)",
+    "product": "POLITICAL CANDIDATE (1051)",
+    "contract_num": "48952",
+    "flight_from": "10/26/12-10",
+    "flight_to": "/28/12",
+    "gross_amount": "$27,200.00"
+  },
+  "line_items": [
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$350.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$350.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$2,300.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$2,300.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/27/12-10",
+      "program_end_date": "/27/12",
+      "sub_amount": "$800.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/28/12-10",
+      "program_end_date": "/28/12",
+      "sub_amount": "$500.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$850.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$850.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/28/",
+      "program_end_date": "/28/12",
+      "sub_amount": "$400.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/",
+      "program_end_date": "/26/12",
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/27/",
+      "program_end_date": "/27/12",
+      "sub_amount": "$400.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$5,000.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/27/",
+      "program_end_date": "/27/12",
+      "sub_amount": "$4,000.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/27/",
+      "program_end_date": "/27/12",
+      "sub_amount": "$1,300.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/28/12-10",
+      "program_end_date": "/28/12",
+      "sub_amount": "$1,600.00"
+    },
+    {
+      "channel": "WHDH Boston (WHDH)",
+      "program_desc": null,
+      "program_start_date": "10/26/12-10",
+      "program_end_date": "/26/12",
+      "sub_amount": "$1,000.00"
+    }
+  ]
+}

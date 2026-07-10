@@ -1,0 +1,43 @@
+{
+  "document": {
+    "property": "WAOW-WYOW Television Inc",
+    "tv_address": "1908 Grand AVE Wausau, WI 54403-6870",
+    "advertiser": "Tom Tiffany WI US House Dis 7 (33722)",
+    "agency": "FlexPoint Media Inc --EDI (5042)",
+    "product": "Political - US House (1096)",
+    "contract_num": "564143",
+    "flight_from": "02/11/",
+    "flight_to": "/17/20",
+    "gross_amount": "$575.00"
+  },
+  "line_items": [
+    {
+      "channel": "WAOW+ CW (EAOW)",
+      "program_desc": null,
+      "program_start_date": "02/11/",
+      "program_end_date": "/14/20",
+      "sub_amount": "$300.00"
+    },
+    {
+      "channel": "WAOW+ CW (EAOW)",
+      "program_desc": null,
+      "program_start_date": "02/17/",
+      "program_end_date": "/17/20",
+      "sub_amount": "$75.00"
+    },
+    {
+      "channel": "WAOW+ CW (EAOW)",
+      "program_desc": null,
+      "program_start_date": "02/11/",
+      "program_end_date": "/14/20",
+      "sub_amount": "$160.00"
+    },
+    {
+      "channel": "WAOW+ CW (EAOW)",
+      "program_desc": null,
+      "program_start_date": "02/17/",
+      "program_end_date": "/17/20",
+      "sub_amount": "$40.00"
+    }
+  ]
+}

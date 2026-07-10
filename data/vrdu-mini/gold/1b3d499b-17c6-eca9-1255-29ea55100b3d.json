@@ -1,0 +1,57 @@
+{
+  "document": {
+    "property": "WSMH",
+    "tv_address": "G-3463 W Pierson Rd Flint, MI 48504",
+    "advertiser": "Priorities USA Action (72141)",
+    "agency": "Targeted Platform Media (15945)",
+    "product": "POLITICAL ISSUE (ns) (1187)",
+    "contract_num": "4243543",
+    "flight_from": "06/30/",
+    "flight_to": "/06/20",
+    "gross_amount": "$1,910.00"
+  },
+  "line_items": [
+    {
+      "channel": "Flint (WSMH)",
+      "program_desc": "People's Court",
+      "program_start_date": "06/30/",
+      "program_end_date": "/03/20",
+      "sub_amount": "$160.00"
+    },
+    {
+      "channel": "Flint (WSMH)",
+      "program_desc": "Big Bang Theory",
+      "program_start_date": "07/06/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$200.00"
+    },
+    {
+      "channel": "Flint (WSMH)",
+      "program_desc": "Big Bang Theory",
+      "program_start_date": "07/06/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$350.00"
+    },
+    {
+      "channel": "Flint (WSMH)",
+      "program_desc": "Two And A Half Men",
+      "program_start_date": "06/30/",
+      "program_end_date": "/03/20",
+      "sub_amount": "$700.00"
+    },
+    {
+      "channel": "Flint (WSMH)",
+      "program_desc": "Fox 66 News At Ten",
+      "program_start_date": "06/30/",
+      "program_end_date": "/03/20",
+      "sub_amount": "$250.00"
+    },
+    {
+      "channel": "Flint (WSMH)",
+      "program_desc": "Fox 66 News At Ten",
+      "program_start_date": "07/06/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$250.00"
+    }
+  ]
+}

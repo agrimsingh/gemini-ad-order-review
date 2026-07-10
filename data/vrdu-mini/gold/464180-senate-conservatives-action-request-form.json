@@ -1,0 +1,14 @@
+{
+  "document": {
+    "property": null,
+    "tv_address": null,
+    "advertiser": null,
+    "agency": "Target Enterprises, LTD",
+    "product": null,
+    "contract_num": null,
+    "flight_from": null,
+    "flight_to": null,
+    "gross_amount": null
+  },
+  "line_items": []
+}

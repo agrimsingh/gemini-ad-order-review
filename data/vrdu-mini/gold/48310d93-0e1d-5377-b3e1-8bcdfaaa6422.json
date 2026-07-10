@@ -1,0 +1,463 @@
+{
+  "document": {
+    "property": "WKOW Television Inc",
+    "tv_address": "5727 Tokay Blvd. Madison, WI 53719-1219",
+    "advertiser": "Mike Bloomberg 2020 Inc (33528)",
+    "agency": "Assembly --EDI (2523)",
+    "product": "Political President (1094)",
+    "contract_num": "565197",
+    "flight_from": "02/01/20",
+    "flight_to": "02/12/20",
+    "gross_amount": "$22,215.00"
+  },
+  "line_items": [
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/03/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$160.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43 ****BOOKEND**** [BOOKE",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43 ****BOOKEND**** [BOOKE",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$40.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A 27 Nws Wake-Up Wisco",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A 27 Nws Wake-Up Wisco",
+      "program_start_date": "02/03/",
+      "program_end_date": "/06/20 /",
+      "sub_amount": "$500.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A 27 Nws Wake-Up Wisco",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A 27 Nws Wake-Up Wisco",
+      "program_start_date": "02/03/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Live with Kelly & Ry",
+      "program_start_date": "02/04/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$480.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Live with Kelly & Ry ****BOOKEND**** [BOOKE",
+      "program_start_date": "02/03/",
+      "program_end_date": "/03/20",
+      "sub_amount": "$120.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW) (",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Tamron Hall",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$100.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Dr. Phil",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Dr. Phil",
+      "program_start_date": "02/03/",
+      "program_end_date": "/04/20",
+      "sub_amount": "$240.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Ellen",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Ellen",
+      "program_start_date": "02/03/",
+      "program_end_date": "/04/20",
+      "sub_amount": "$300.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A 27 News @ 6P",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$1,400.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW()",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/03/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$920.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A 27 News @ 10P",
+      "program_start_date": "02/03/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Jimmy Kimmel",
+      "program_start_date": "02/03/",
+      "program_end_date": "/06/20",
+      "sub_amount": "$420.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake Up Wisconsin Wk",
+      "program_start_date": "02/01/",
+      "program_end_date": "/01/20",
+      "sub_amount": "$60.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A GMA Sat",
+      "program_start_date": "02/01/",
+      "program_end_date": "/01/20",
+      "sub_amount": "$170.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A GMA Sat",
+      "program_start_date": "02/05/",
+      "program_end_date": "/07/20 /",
+      "sub_amount": "$20.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/05/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$480.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW()",
+      "program_desc": "Live Event/Exception - ABC SR",
+      "program_start_date": "02/05/20",
+      "program_end_date": null,
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/05/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$900.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$250.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$500.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$460.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$280.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$240.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/07/",
+      "program_end_date": "/07/20",
+      "sub_amount": "$140.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$80.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$80.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$250.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$250.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW()",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$750.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$480.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$480.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$80.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$80.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$360.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$720.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$450.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$900.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$700.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$700.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$460.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$460.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$280.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$280.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/11/",
+      "program_end_date": "/11/20",
+      "sub_amount": "$700.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/11/",
+      "program_end_date": "/11/20",
+      "sub_amount": "$325.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/12/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$450.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW) (",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/12/",
+      "program_end_date": "/12/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "NA @placement/Exception",
+      "program_start_date": "02/12/20",
+      "program_end_date": null,
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/08/",
+      "program_end_date": "/08/20",
+      "sub_amount": "$60.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/08/",
+      "program_end_date": "/08/20",
+      "sub_amount": "$170.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/11/",
+      "program_end_date": "/11/20",
+      "sub_amount": "$450.00"
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Wake-Up Wisconsin 43",
+      "program_start_date": "02/12/",
+      "program_end_date": "/12/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW)",
+      "program_desc": "NA @placement/Exception",
+      "program_start_date": "02/12/20",
+      "program_end_date": null,
+      "sub_amount": null
+    },
+    {
+      "channel": "WKOW ABC (WKOW()",
+      "program_desc": "COMMENTS APPLY TO SUB LINES A THRU A Inside Edition",
+      "program_start_date": "02/10/",
+      "program_end_date": "/12/20",
+      "sub_amount": "$240.00"
+    }
+  ]
+}

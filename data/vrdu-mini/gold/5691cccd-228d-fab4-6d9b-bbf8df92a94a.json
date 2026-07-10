@@ -1,0 +1,22 @@
+{
+  "document": {
+    "property": "WHP",
+    "tv_address": "125 West 55th St New York, NY 10019",
+    "advertiser": "Priorities Usa Action",
+    "agency": "TARGETED PLATFORM MEDIA",
+    "product": "TV",
+    "contract_num": "26802736",
+    "flight_from": "5/19/20",
+    "flight_to": "5/25/20",
+    "gross_amount": "$22,820.00"
+  },
+  "line_items": [
+    {
+      "channel": null,
+      "program_desc": "Ellen",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$900.00"
+    }
+  ]
+}

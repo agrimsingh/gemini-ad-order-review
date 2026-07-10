@@ -15,11 +15,6 @@ slides/dist/
 slides/candidates/
 slides/tmp-slide-*.html
 
-# VRDU does not declare redistribution terms. Rebuild this local pack from an
-# upstream checkout instead of committing source PDFs or derived row labels.
-data/vrdu-mini/*
-!data/vrdu-mini/README.md
-
 # Keep aggregate evidence public; raw model runs and the PDF-bearing AI Studio
 # pack remain local.
 outputs/*

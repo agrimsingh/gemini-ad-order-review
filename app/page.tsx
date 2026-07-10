@@ -177,6 +177,7 @@ export default function Home() {
   });
   const [sourcesAvailable, setSourcesAvailable] = useState<boolean | null>(null);
   const [pdfInputLabel, setPdfInputLabel] = useState("Detecting input mode");
+  const [benchmarkPreviewMode, setBenchmarkPreviewMode] = useState<"page_images" | "inline_pdf">("page_images");
   const [maxPdfBytes, setMaxPdfBytes] = useState(50 * 1024 * 1024);
   const [evaluation, setEvaluation] = useState<EvaluationPayload>({ primary: null, challenger: null });
   const [evaluationState, setEvaluationState] = useState<"loading" | "ready" | "error">("loading");
@@ -243,6 +244,7 @@ export default function Home() {
       .then((health) => {
         setKeyConfigured(Boolean(health.keyConfigured));
         setPdfInputLabel(health.pdfInput ?? "PDF document");
+        if (health.benchmarkPreview === "inline_pdf") setBenchmarkPreviewMode("inline_pdf");
         if (Number.isFinite(health.maxPdfBytes)) setMaxPdfBytes(health.maxPdfBytes);
       })
       .catch(() => {
@@ -509,6 +511,7 @@ export default function Home() {
             pageNumber={pageNumber}
             sourcesAvailable={sourcesAvailable === true}
             mediaLabel={pdfInputLabel}
+            benchmarkPreviewMode={benchmarkPreviewMode}
             onPageChange={setPageNumber}
             onReset={resetRun}
             onUpload={() => inputRef.current?.click()}
@@ -578,6 +581,7 @@ function DocumentPanel({
   pageNumber,
   sourcesAvailable,
   mediaLabel,
+  benchmarkPreviewMode,
   onPageChange,
   onReset,
   onUpload,
@@ -589,6 +593,7 @@ function DocumentPanel({
   pageNumber: number;
   sourcesAvailable: boolean;
   mediaLabel: string;
+  benchmarkPreviewMode: "page_images" | "inline_pdf";
   onPageChange: React.Dispatch<React.SetStateAction<number>>;
   onReset: () => void;
   onUpload: () => void;
@@ -619,6 +624,8 @@ function DocumentPanel({
             <p>The PDF stays transient and the API request uses <code>store=false</code>.</p>
             <button onClick={onUpload}><Upload size={15} /> Choose PDF</button>
           </div>
+        ) : benchmarkPreviewMode === "inline_pdf" ? (
+          <iframe title={`PDF preview of ${TITLES[selectedId] ?? "benchmark document"}`} src={`/api/documents/${selectedId}/pdf#page=${pageNumber}`} />
         ) : (
           <>
             <div className="preview-toolbar">
@@ -637,7 +644,7 @@ function DocumentPanel({
       <div className="document-footer">
         <span><FileText size={13} />{uploadedFile ? "Uploaded PDF" : hostedEmpty ? "Bring your own PDF" : `${pageCount} page${pageCount === 1 ? "" : "s"}`}</span>
         <span>{uploadedFile || hostedEmpty ? "No benchmark comparison" : `${selected?.line_item_count ?? 0} annotated row${selected?.line_item_count === 1 ? "" : "s"}`}</span>
-        <span>{uploadedFile ? mediaLabel : hostedEmpty ? "Source files not deployed" : "High-resolution page images"}</span>
+        <span>{uploadedFile ? mediaLabel : hostedEmpty ? "Source files not deployed" : benchmarkPreviewMode === "inline_pdf" ? "Browser PDF preview" : "High-resolution page images"}</span>
       </div>
     </section>
   );

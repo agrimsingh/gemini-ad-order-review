@@ -1,0 +1,274 @@
+{
+  "document": {
+    "property": "WFRV",
+    "tv_address": "5000 Riverside Dr Building 5 Suite 200 Mary Chuy Irving, TX 75039",
+    "advertiser": "POL/Michael Bloomberg/President/US/Dem",
+    "agency": null,
+    "product": "MIKE BLOOMBERG 2020",
+    "contract_num": "2343198",
+    "flight_from": "01/18/20",
+    "flight_to": "01/24/20",
+    "gross_amount": "$19,845.00"
+  },
+  "line_items": [
+    {
+      "channel": "WFRV",
+      "program_desc": "Local News",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$80.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local News",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$40.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local News",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$60.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local News",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$120.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local News",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$60.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "CBS This Morning",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$120.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "CBS This Morning",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$60 00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "CBS This Morning",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$120.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "CBS This Morning",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$60.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 Live",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$525.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Price is Right",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$525.00"
+    },
+    {
+      "channel": null,
+      "program_desc": null,
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/26/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Y&R",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$700.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 News at Noon",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$675.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Bold & Beautiful",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$900.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "The Talk",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$400.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "The Talk",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$200.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Let's Make A Deal",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$300 00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Let's Make A Deal",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$100.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "4p Local News",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$675.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 News at 5:00",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$525.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 News at 6:00",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$525.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 News at 6:30",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$525.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 News at 10p",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$750.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Local 5 News Replay",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/24/20",
+      "sub_amount": "$75.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Late Show",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/23/20",
+      "sub_amount": "$400.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Late Late Show",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/23/20",
+      "sub_amount": "$200 00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Mon Hour 1",
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/20/20",
+      "sub_amount": "$600 00"
+    },
+    {
+      "channel": null,
+      "program_desc": null,
+      "program_start_date": "01/20/20",
+      "program_end_date": "01/26/20",
+      "sub_amount": null
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "NCIS",
+      "program_start_date": "01/21/20",
+      "program_end_date": "01/21/20",
+      "sub_amount": "$1,800.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Sa Discover Wisconsin",
+      "program_start_date": "01/18/20",
+      "program_end_date": "01/18/20",
+      "sub_amount": "$325.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Sat Local News at 10p",
+      "program_start_date": "01/18/20",
+      "program_end_date": "01/18/20",
+      "sub_amount": "$250 00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Elementary",
+      "program_start_date": "01/18/20",
+      "program_end_date": "01/18/20",
+      "sub_amount": "$50.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "AFC Championship",
+      "program_start_date": "01/19/20",
+      "program_end_date": "01/19/20",
+      "sub_amount": "$7,500.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "LN Su",
+      "program_start_date": "01/19/20",
+      "program_end_date": "01/19/20",
+      "sub_amount": "$250.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Sports Extra",
+      "program_start_date": "01/19/20",
+      "program_end_date": "01/19/20",
+      "sub_amount": "$250.00"
+    },
+    {
+      "channel": "WFRV",
+      "program_desc": "Elementary",
+      "program_start_date": "01/19/20",
+      "program_end_date": "01/19/20",
+      "sub_amount": "$100.00"
+    }
+  ]
+}

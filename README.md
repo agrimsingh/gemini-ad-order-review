@@ -1,6 +1,6 @@
 # Gemini Ad Order Review
 
-This is a working document-extraction and review-gating prototype for media-buy orders, contracts, invoices, credit memos, and request sheets. It sends high-resolution page images to Gemini, validates the structured response in deterministic code, and decides whether the document has enough information to bypass header review.
+This is a working document-extraction and review-gating prototype for media-buy orders, contracts, invoices, credit memos, and request sheets. Locally it sends high-resolution page images to Gemini; the Vercel deployment sends the original PDF as an inline document. Both paths validate the structured response in deterministic code and decide whether the document has enough information to bypass header review.
 
 The app also includes an evaluation harness built around the VRDU Ad-buy Forms dataset. Every model run can be compared with gold labels and reported with quality, latency, token, and cost metrics.
 
@@ -84,6 +84,22 @@ The full document list adds rotated pages, dense tables, negative and zero amoun
 
 ## Evaluation
 
+### Local and hosted input paths
+
+The saved benchmark was produced locally with Poppler. Each PDF page was rendered as a JPEG at 180 DPI and sent to Gemini with `resolution: high`. This is the input path behind every headline quality, latency, token, and cost number below.
+
+Vercel does not provide the Poppler binaries used by the local renderer. Hosted reruns therefore send the original PDF through the Interactions API as an inline document at API-default resolution. The browser also previews the original PDF directly instead of requesting 150 DPI page images from the server.
+
+| | Local benchmark path | Vercel rerun path |
+| --- | --- | --- |
+| Model input | 180 DPI JPEG pages | Inline PDF document |
+| Media resolution | Explicit `high` | API default |
+| Preview | Poppler-rendered 150 DPI image | Browser PDF viewer |
+| Upload limit | 50 MB, up to 20 rendered pages | 4 MB |
+| Benchmark status | Measured on all 12 documents | Not yet measured as a paired run |
+
+The model, JSON schema, thinking level, `store=false`, normalization, validation, and partner review policy are otherwise unchanged. Input mode is still part of the evaluation tuple: native PDF and rasterized pages can produce different fields, token counts, latency, and cost. The saved dashboard remains a snapshot of the 180 DPI run and should not be read as a measurement of Vercel reruns.
+
 Run the saved 12-document harness with either model:
 
 ```bash
@@ -114,9 +130,9 @@ Exact-row F1 is deliberately strict. A line item receives credit only when chann
 
 The 12-document set is too small to set a production threshold. One result moves a reported rate by 8.3 percentage points. A partner pilot should use 100 to 200 stratified, jointly reviewed documents before choosing an operating threshold.
 
-## Dataset and redistribution
+## Dataset
 
-The public repository does not contain VRDU PDFs or derived row labels. The archived upstream repository does not declare redistribution terms. `scripts/prepare_vrdu_subset.py` rebuilds the fixed local pack from your own checkout using:
+The repository contains the fixed 12-document VRDU demo subset and its evaluation labels so the hosted workflow can rerun the same documents shown in the saved benchmark. The archived upstream repository does not declare redistribution terms; confirm the intended use before republishing the subset elsewhere. The pack can also be rebuilt from an upstream checkout with `scripts/prepare_vrdu_subset.py` using:
 
 - `config/vrdu-selection.json` for document selection;
 - `config/vrdu-adjudications.json` for source-verified corrections and score exclusions.
@@ -127,7 +143,7 @@ Five disputed header labels are excluded from headline metrics. A source audit a
 
 I started the UI in Google AI Studio Build. The builder returned `RpcError: The caller does not have permission` after a paid key was selected and across several model choices. I moved the app to local Next.js so the integration work could continue while keeping the Gemini request path, schema, and settings explicit.
 
-The other API snag was PDF resolution. Interactions rejected resolution controls on PDF document items, while image items accepted them. The app renders pages locally and sends high-resolution image inputs instead. [FRICTION_LOG.md](FRICTION_LOG.md) records the evidence, partner impact, workaround, and product request for each issue.
+The other API snag was PDF resolution. Interactions rejected resolution controls on PDF document items, while image items accepted them. The local app therefore renders pages and sends high-resolution image inputs. The Vercel deployment cannot use that Poppler path, so its live reruns use the clearly labeled inline-PDF fallback described above. [FRICTION_LOG.md](FRICTION_LOG.md) records the evidence, partner impact, workaround, and product request for each issue.
 
 ## Project map
 

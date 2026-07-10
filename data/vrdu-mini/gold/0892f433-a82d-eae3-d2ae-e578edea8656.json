@@ -1,0 +1,232 @@
+{
+  "document": {
+    "property": null,
+    "tv_address": "125 West 55th St New York, NY 10019",
+    "advertiser": "Congressional Leadership Fund",
+    "agency": "FlexPoint Media Inc.",
+    "product": "PA-10",
+    "contract_num": "26900215",
+    "flight_from": "10/21/20",
+    "flight_to": "10/27/20",
+    "gross_amount": "$90,725.00"
+  },
+  "line_items": [
+    {
+      "channel": null,
+      "program_desc": "Early Morning News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$450.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Early Morning News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$450.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Early Morning News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$625.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Early Morning News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$1,250.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "The Early Show",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$900.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "The Early Show",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$900.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "The Early Show",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$200.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Face The State",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$200.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "CBS Sunday Morning",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Face The Nation",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$600.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Price Is Right",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "WHP News at 12N",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Dr. Phil",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$300.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "WHP News At 5P",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "WHP News At 530P",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Eyewitness News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Eyewitness News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "CBS Evening News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$3,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Wheel Of Fortune",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$15,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Jeopardy",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$17,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Wheel Of Fortune",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Jeopardy",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$1,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Eyewitness News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Eyewitness News",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$1,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "S.W.A.T.-CBS",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$1,750.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Blue Bloods-CBS",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$3,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "60 Minutes-CBS",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$5,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "NCIS: New Orleans-CBS",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,000.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "NFL Today",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$2,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "NFL Sunday Early",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$7,500.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "NFL Sunday Late",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$9,000.00"
+    }
+  ]
+}

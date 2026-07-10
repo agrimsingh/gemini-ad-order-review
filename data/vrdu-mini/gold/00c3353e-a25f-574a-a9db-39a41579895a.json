@@ -1,0 +1,22 @@
+{
+  "document": {
+    "property": "WSIL-TV",
+    "tv_address": null,
+    "advertiser": "Committee to Elect Mike Carr",
+    "agency": "Committee to Elect Mike Carr",
+    "product": "Mike Carr for Jackson Co States Atty",
+    "contract_num": "14086",
+    "flight_from": "03/03/20",
+    "flight_to": "03/03/20",
+    "gross_amount": "$600.00"
+  },
+  "line_items": [
+    {
+      "channel": "3",
+      "program_desc": "Tuesday Prime Other Your Voice Your Vote",
+      "program_start_date": "03/03/20",
+      "program_end_date": "03/03/20",
+      "sub_amount": "$600.00"
+    }
+  ]
+}

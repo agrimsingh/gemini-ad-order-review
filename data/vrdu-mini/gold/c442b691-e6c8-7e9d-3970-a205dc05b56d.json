@@ -1,0 +1,43 @@
+{
+  "document": {
+    "property": null,
+    "tv_address": "125 West 55th St New York, NY 10019",
+    "advertiser": "Biden For President",
+    "agency": "Media Buying and Analytics",
+    "product": "Primary",
+    "contract_num": "26660798",
+    "flight_from": "1/28/20",
+    "flight_to": "2/3/20",
+    "gross_amount": "$0.00"
+  },
+  "line_items": [
+    {
+      "channel": null,
+      "program_desc": "Judge Mathis",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$125.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Big Bang Theory",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$100.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Big Bang Theory",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$20.00"
+    },
+    {
+      "channel": null,
+      "program_desc": "Dateline-MYNET2",
+      "program_start_date": null,
+      "program_end_date": null,
+      "sub_amount": "$100.00"
+    }
+  ]
+}

@@ -11,7 +11,7 @@ const publicManifestPath = path.join(process.cwd(), "data", "vrdu-public-manifes
 let manifestCache: ManifestEntry[] | null = null;
 
 function localSourcesEnabled() {
-  return process.env.VERCEL !== "1" && fs.existsSync(manifestPath);
+  return fs.existsSync(manifestPath);
 }
 
 export function getManifest() {
