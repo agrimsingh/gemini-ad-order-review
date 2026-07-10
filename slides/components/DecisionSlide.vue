@@ -27,9 +27,9 @@
         </div>
 
         <div class="result-strip" aria-label="Primary benchmark result">
-          <div><strong>3.7s</strong><span>median decision time</span></div>
+          <div><strong>4.1s</strong><span>median decision time</span></div>
           <div><strong>100%</strong><span>accepted key fields correct</span></div>
-          <div><strong>$0.0231</strong><span>total run cost / accepted doc</span></div>
+          <div><strong>$0.0234</strong><span>total run cost / accepted doc</span></div>
         </div>
       </section>
 
@@ -43,7 +43,7 @@
         <div class="scope-item scope-review">
           <span>Line items</span>
           <strong>Keep human review</strong>
-          <p><b>29.1% exact-row F1</b> across 107 trustworthy rows. One wrong field makes the whole row incorrect.</p>
+          <p><b>59.2% exact-row F1</b> across 107 trustworthy rows. One wrong field makes the whole row incorrect.</p>
         </div>
       </aside>
     </main>

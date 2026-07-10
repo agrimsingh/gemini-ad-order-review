@@ -12,19 +12,19 @@
       "properties": {
         "property": {
           "type": ["string", "null"],
-          "description": "Legal station or media-property name printed with the station address. Prefer that entity name over a logo, market label, network affiliation, or call sign. Use a call sign only when no entity name is printed. Return null when absent."
+          "description": "Broadcast station or media property the buy is for. Prefer an explicitly labeled Station or Property value. Otherwise prefer the legal station/entity printed beside the postal address over a logo, market label, network affiliation, or call sign. Use a call sign only when no better name is printed. Do not use a national rep-firm letterhead (for example Katz) when a station call sign or Station field is present. Return null when absent."
         },
         "tv_address": {
           "type": ["string", "null"],
-          "description": "Station postal address only. Exclude the station or company name, logo text, market label, network affiliation, and call sign. Collapse line breaks to single spaces; otherwise preserve source wording."
+          "description": "Document postal address only. Use the printed street address even when it sits under a rep-firm or agency letterhead rather than beside the station name. Exclude the station or company name, logo text, market label, network affiliation, and call sign. Collapse line breaks to single spaces; otherwise preserve source wording. Return null only when no postal address is printed."
         },
         "advertiser": {
           "type": ["string", "null"],
-          "description": "Advertiser, candidate, campaign, committee, or organization purchasing the advertising."
+          "description": "Advertiser, candidate, campaign, committee, or organization purchasing the advertising. Organization name only — exclude street address, city/state/ZIP, and phone numbers printed under the name."
         },
         "agency": {
           "type": ["string", "null"],
-          "description": "Advertising or media-buying agency shown on the document. Do not substitute the advertiser."
+          "description": "Advertising or media-buying agency name only. Do not substitute the advertiser. Exclude street address, city/state/ZIP, and phone numbers printed under the agency name."
         },
         "product": {
           "type": ["string", "null"],
@@ -68,7 +68,7 @@
         "properties": {
           "channel": {
             "type": ["string", "null"],
-            "description": "Channel, station, network, or feed shown for this row."
+            "description": "Station, market, feed, or call-sign style channel for this schedule row when that concept is printed (for example WFRV, Flint (WSMH), or 3). Do not use revision/makegood codes, daypart-only text, program names, rates, or spot counts. Return null when the row has no channel/station column."
           },
           "program_desc": {
             "type": ["string", "null"],
@@ -76,11 +76,11 @@
           },
           "program_start_date": {
             "type": ["string", "null"],
-            "description": "Row-level start date exactly as shown. Do not infer it from the overall flight dates."
+            "description": "Start date printed in an explicit date cell on this schedule row. Do not use overall Flight dates, week-band column headers (for example 5/19 - 5/19), or spot-count cells under those headers."
           },
           "program_end_date": {
             "type": ["string", "null"],
-            "description": "Row-level end date exactly as shown. Do not infer it from the overall flight dates."
+            "description": "End date printed in an explicit date cell on this schedule row. Do not use overall Flight dates, week-band column headers, or spot-count cells under those headers."
           },
           "sub_amount": {
             "type": ["string", "null"],

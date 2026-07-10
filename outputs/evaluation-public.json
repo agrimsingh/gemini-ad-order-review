@@ -1,6 +1,6 @@
 {
   "primary": {
-    "generatedAt": "2026-07-10T02:34:54.385Z",
+    "generatedAt": "2026-07-10T08:07:30.454Z",
     "disclaimer": "Twelve-document demo set. Results are directional and are not a partner SLA.",
     "aggregate": {
       "model": "gemini-3.5-flash",
@@ -9,28 +9,28 @@
       "schemaValidity": 1,
       "acceptanceRate": 0.75,
       "acceptedCriticalFieldAccuracy": 1,
-      "perFieldPassRate": 0.883495145631068,
-      "hallucinationRate": 0.06796116504854369,
+      "perFieldPassRate": 0.8737864077669902,
+      "hallucinationRate": 0.07766990291262135,
       "missingValueRate": 0,
-      "lineItemPrecision": 0.29245283018867924,
-      "lineItemRecall": 0.2897196261682243,
-      "lineItemF1": 0.29107981220657275,
+      "lineItemPrecision": 0.5943396226415094,
+      "lineItemRecall": 0.5887850467289719,
+      "lineItemF1": 0.5915492957746479,
       "lineItemDocumentsScored": 11,
       "lineItemGoldRowsScored": 107,
       "lineItemGoldRowsTotal": 171,
-      "matchedRowLeafAccuracy": 0.7921052631578948,
-      "criticalFieldsAllCorrectRate": 0.9166666666666666,
+      "matchedRowLeafAccuracy": 0.9552631578947368,
+      "criticalFieldsAllCorrectRate": 0.8333333333333334,
       "latencyMs": {
-        "median": 3728,
-        "p95": 30400
+        "median": 4122,
+        "p95": 31137
       },
       "tokens": {
-        "input": 40160,
-        "output": 16365,
+        "input": 43676,
+        "output": 16152,
         "thought": 0
       },
-      "estimatedCostUsd": 0.20752500000000002,
-      "estimatedCostPerAcceptedDocumentUsd": 0.023058333333333333,
+      "estimatedCostUsd": 0.21088200000000001,
+      "estimatedCostPerAcceptedDocumentUsd": 0.023431333333333335,
       "failedDocuments": [],
       "reviewSlices": [
         {
@@ -70,11 +70,13 @@
         "missingCritical": [],
         "fieldPassRate": 0.7777777777777778,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 6,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 6433,
-        "estimatedCostUsd": 0.0085545
+        "latencyMs": 7278,
+        "estimatedCostUsd": 0.008994
       },
       {
         "documentId": "00c3353e-a25f-574a-a9db-39a41579895a",
@@ -88,11 +90,13 @@
         "missingCritical": [],
         "fieldPassRate": 1,
         "lineItemF1": 1,
+        "lineItemMatches": 1,
+        "goldLineItems": 1,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 3728,
-        "estimatedCostUsd": 0.0043245
+        "latencyMs": 3271,
+        "estimatedCostUsd": 0.004764
       },
       {
         "documentId": "c1ede720-d1f9-dcb4-e56f-65bf46300e84",
@@ -106,11 +110,13 @@
         "missingCritical": [],
         "fieldPassRate": 0.7777777777777778,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 4,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 3866,
-        "estimatedCostUsd": 0.0074205
+        "latencyMs": 4077,
+        "estimatedCostUsd": 0.007859999999999999
       },
       {
         "documentId": "493546-warren-for-senate-est-12911-10-26-12-10-28-12",
@@ -124,11 +130,13 @@
         "missingCritical": [],
         "fieldPassRate": 0.8571428571428571,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 21,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 8801,
-        "estimatedCostUsd": 0.023086500000000003
+        "latencyMs": 9535,
+        "estimatedCostUsd": 0.024453000000000003
       },
       {
         "documentId": "0892f433-a82d-eae3-d2ae-e578edea8656",
@@ -141,12 +149,14 @@
         "reasons": [],
         "missingCritical": [],
         "fieldPassRate": 0.8888888888888888,
-        "lineItemF1": 0,
+        "lineItemF1": 1,
+        "lineItemMatches": 31,
+        "goldLineItems": 31,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 10606,
-        "estimatedCostUsd": 0.027772500000000002
+        "latencyMs": 10287,
+        "estimatedCostUsd": 0.025395
       },
       {
         "documentId": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2",
@@ -164,11 +174,13 @@
         ],
         "fieldPassRate": 1,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 2,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 3153,
-        "estimatedCostUsd": 0.005197500000000001
+        "latencyMs": 5623,
+        "estimatedCostUsd": 0.005583
       },
       {
         "documentId": "464180-senate-conservatives-action-request-form",
@@ -189,11 +201,13 @@
         ],
         "fieldPassRate": 0.6666666666666666,
         "lineItemF1": 1,
+        "lineItemMatches": 0,
+        "goldLineItems": 0,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": false,
-        "latencyMs": 2573,
-        "estimatedCostUsd": 0.0032175000000000003
+        "latencyMs": 2574,
+        "estimatedCostUsd": 0.003666
       },
       {
         "documentId": "749e7f7f-371f-772d-62e9-2970b3883d56",
@@ -207,17 +221,18 @@
           "critical_field_missing"
         ],
         "missingCritical": [
-          "contract_num",
           "flight_from",
           "flight_to"
         ],
-        "fieldPassRate": 0.875,
+        "fieldPassRate": 0.75,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 0,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
-        "criticalFieldsAllCorrect": true,
-        "latencyMs": 2731,
-        "estimatedCostUsd": 0.0043965
+        "criticalFieldsAllCorrect": false,
+        "latencyMs": 2876,
+        "estimatedCostUsd": 0.0047729999999999995
       },
       {
         "documentId": "c442b691-e6c8-7e9d-3970-a205dc05b56d",
@@ -231,11 +246,13 @@
         "missingCritical": [],
         "fieldPassRate": 0.8888888888888888,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 4,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 3728,
-        "estimatedCostUsd": 0.0076215
+        "latencyMs": 4122,
+        "estimatedCostUsd": 0.008043
       },
       {
         "documentId": "5691cccd-228d-fab4-6d9b-bbf8df92a94a",
@@ -248,12 +265,14 @@
         "reasons": [],
         "missingCritical": [],
         "fieldPassRate": 1,
-        "lineItemF1": 0,
+        "lineItemF1": 1,
+        "lineItemMatches": 1,
+        "goldLineItems": 1,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 2983,
-        "estimatedCostUsd": 0.0043005000000000005
+        "latencyMs": 2975,
+        "estimatedCostUsd": 0.004668
       },
       {
         "documentId": "782276fb-5d1c-af75-b44f-d75997a7b168",
@@ -267,11 +286,13 @@
         "missingCritical": [],
         "fieldPassRate": 0.8571428571428571,
         "lineItemF1": 0.8333333333333334,
+        "lineItemMatches": 30,
+        "goldLineItems": 37,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 25844,
-        "estimatedCostUsd": 0.0412215
+        "latencyMs": 29045,
+        "estimatedCostUsd": 0.041661000000000004
       },
       {
         "documentId": "48310d93-0e1d-5377-b3e1-8bcdfaaa6422",
@@ -285,55 +306,50 @@
         "missingCritical": [],
         "fieldPassRate": 1,
         "lineItemF1": null,
+        "lineItemMatches": null,
+        "goldLineItems": 64,
         "lineItemsScored": false,
         "lineItemScoreExclusionReason": "Source audit found truncated row dates and Comments text spliced into program descriptions.",
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 30400,
-        "estimatedCostUsd": 0.0704115
+        "latencyMs": 31137,
+        "estimatedCostUsd": 0.071022
       }
     ]
   },
   "challenger": {
-    "generatedAt": "2026-07-10T02:38:46.949Z",
+    "generatedAt": "2026-07-10T08:08:40.321Z",
     "disclaimer": "Twelve-document demo set. Results are directional and are not a partner SLA.",
     "aggregate": {
       "model": "gemini-3.1-flash-lite",
       "documentsAttempted": 12,
       "documentsCompleted": 12,
       "schemaValidity": 1,
-      "acceptanceRate": 0.6666666666666666,
-      "acceptedCriticalFieldAccuracy": 0.875,
-      "perFieldPassRate": 0.8155339805825242,
-      "hallucinationRate": 0.06796116504854369,
-      "missingValueRate": 0.009708737864077669,
-      "lineItemPrecision": 0.29523809523809524,
-      "lineItemRecall": 0.2897196261682243,
-      "lineItemF1": 0.29245283018867924,
+      "acceptanceRate": 0.75,
+      "acceptedCriticalFieldAccuracy": 1,
+      "perFieldPassRate": 0.8446601941747572,
+      "hallucinationRate": 0.07766990291262135,
+      "missingValueRate": 0,
+      "lineItemPrecision": 0.6,
+      "lineItemRecall": 0.5887850467289719,
+      "lineItemF1": 0.5943396226415093,
       "lineItemDocumentsScored": 11,
       "lineItemGoldRowsScored": 107,
       "lineItemGoldRowsTotal": 171,
-      "matchedRowLeafAccuracy": 0.8869565217391304,
-      "criticalFieldsAllCorrectRate": 0.75,
+      "matchedRowLeafAccuracy": 0.9675675675675676,
+      "criticalFieldsAllCorrectRate": 0.8333333333333334,
       "latencyMs": {
-        "median": 2826,
-        "p95": 17081
+        "median": 2677,
+        "p95": 17499
       },
       "tokens": {
-        "input": 40160,
-        "output": 15688,
+        "input": 43676,
+        "output": 15616,
         "thought": 0
       },
-      "estimatedCostUsd": 0.033572000000000005,
-      "estimatedCostPerAcceptedDocumentUsd": 0.004196500000000001,
+      "estimatedCostUsd": 0.034343,
+      "estimatedCostPerAcceptedDocumentUsd": 0.0038158888888888886,
       "failedDocuments": [],
       "reviewSlices": [
-        {
-          "documentId": "c1ede720-d1f9-dcb4-e56f-65bf46300e84",
-          "slice": "baseline",
-          "reasons": [
-            "critical_field_missing"
-          ]
-        },
         {
           "documentId": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2",
           "slice": "missing_fields",
@@ -356,12 +372,7 @@
           ]
         }
       ],
-      "acceptedSemanticFailures": [
-        {
-          "documentId": "1b3d499b-17c6-eca9-1255-29ea55100b3d",
-          "slice": "demo"
-        }
-      ]
+      "acceptedSemanticFailures": []
     },
     "runs": [
       {
@@ -374,13 +385,15 @@
         "route": "accept",
         "reasons": [],
         "missingCritical": [],
-        "fieldPassRate": 0.4444444444444444,
+        "fieldPassRate": 0.7777777777777778,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 6,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
-        "criticalFieldsAllCorrect": false,
-        "latencyMs": 6183,
-        "estimatedCostUsd": 0.00145875
+        "criticalFieldsAllCorrect": true,
+        "latencyMs": 6776,
+        "estimatedCostUsd": 0.001559
       },
       {
         "documentId": "00c3353e-a25f-574a-a9db-39a41579895a",
@@ -392,13 +405,15 @@
         "route": "accept",
         "reasons": [],
         "missingCritical": [],
-        "fieldPassRate": 0.8888888888888888,
+        "fieldPassRate": 1,
         "lineItemF1": 1,
+        "lineItemMatches": 1,
+        "goldLineItems": 1,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 2045,
-        "estimatedCostUsd": 0.00075675
+        "latencyMs": 1933,
+        "estimatedCostUsd": 0.000794
       },
       {
         "documentId": "c1ede720-d1f9-dcb4-e56f-65bf46300e84",
@@ -407,20 +422,18 @@
         "pages": 1,
         "expectedLineItems": 4,
         "status": "completed",
-        "route": "review",
-        "reasons": [
-          "critical_field_missing"
-        ],
-        "missingCritical": [
-          "gross_amount"
-        ],
-        "fieldPassRate": 0.6666666666666666,
+        "route": "accept",
+        "reasons": [],
+        "missingCritical": [],
+        "fieldPassRate": 0.7777777777777778,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 4,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
-        "criticalFieldsAllCorrect": false,
-        "latencyMs": 2841,
-        "estimatedCostUsd": 0.0011722500000000001
+        "criticalFieldsAllCorrect": true,
+        "latencyMs": 2678,
+        "estimatedCostUsd": 0.00131
       },
       {
         "documentId": "493546-warren-for-senate-est-12911-10-26-12-10-28-12",
@@ -432,13 +445,15 @@
         "route": "accept",
         "reasons": [],
         "missingCritical": [],
-        "fieldPassRate": 0.7142857142857143,
+        "fieldPassRate": 0.8571428571428571,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 21,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 5686,
-        "estimatedCostUsd": 0.00374125
+        "latencyMs": 6451,
+        "estimatedCostUsd": 0.0035265
       },
       {
         "documentId": "0892f433-a82d-eae3-d2ae-e578edea8656",
@@ -450,13 +465,15 @@
         "route": "accept",
         "reasons": [],
         "missingCritical": [],
-        "fieldPassRate": 0.8888888888888888,
-        "lineItemF1": 0,
+        "fieldPassRate": 0.7777777777777778,
+        "lineItemF1": 1,
+        "lineItemMatches": 31,
+        "goldLineItems": 31,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 6537,
-        "estimatedCostUsd": 0.00425525
+        "latencyMs": 6748,
+        "estimatedCostUsd": 0.0042295
       },
       {
         "documentId": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2",
@@ -474,11 +491,13 @@
         ],
         "fieldPassRate": 1,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 2,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 2291,
-        "estimatedCostUsd": 0.00086625
+        "latencyMs": 2139,
+        "estimatedCostUsd": 0.0009395
       },
       {
         "documentId": "464180-senate-conservatives-action-request-form",
@@ -497,13 +516,15 @@
           "flight_to",
           "gross_amount"
         ],
-        "fieldPassRate": 0.7777777777777778,
+        "fieldPassRate": 0.6666666666666666,
         "lineItemF1": 1,
+        "lineItemMatches": 0,
+        "goldLineItems": 0,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": false,
-        "latencyMs": 1608,
-        "estimatedCostUsd": 0.00053325
+        "latencyMs": 1771,
+        "estimatedCostUsd": 0.000611
       },
       {
         "documentId": "749e7f7f-371f-772d-62e9-2970b3883d56",
@@ -517,17 +538,18 @@
           "critical_field_missing"
         ],
         "missingCritical": [
-          "contract_num",
           "flight_from",
           "flight_to"
         ],
-        "fieldPassRate": 0.875,
+        "fieldPassRate": 0.75,
         "lineItemF1": 1,
+        "lineItemMatches": 0,
+        "goldLineItems": 0,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
-        "criticalFieldsAllCorrect": true,
-        "latencyMs": 1717,
-        "estimatedCostUsd": 0.0005737499999999999
+        "criticalFieldsAllCorrect": false,
+        "latencyMs": 1683,
+        "estimatedCostUsd": 0.0006605
       },
       {
         "documentId": "c442b691-e6c8-7e9d-3970-a205dc05b56d",
@@ -539,13 +561,15 @@
         "route": "accept",
         "reasons": [],
         "missingCritical": [],
-        "fieldPassRate": 0.8888888888888888,
+        "fieldPassRate": 0.7777777777777778,
         "lineItemF1": 0,
+        "lineItemMatches": 0,
+        "goldLineItems": 4,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 2826,
-        "estimatedCostUsd": 0.00131675
+        "latencyMs": 2677,
+        "estimatedCostUsd": 0.0013465
       },
       {
         "documentId": "5691cccd-228d-fab4-6d9b-bbf8df92a94a",
@@ -557,13 +581,15 @@
         "route": "accept",
         "reasons": [],
         "missingCritical": [],
-        "fieldPassRate": 0.8888888888888888,
-        "lineItemF1": 0,
+        "fieldPassRate": 1,
+        "lineItemF1": 1,
+        "lineItemMatches": 1,
+        "goldLineItems": 1,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 2654,
-        "estimatedCostUsd": 0.0007257499999999999
+        "latencyMs": 2072,
+        "estimatedCostUsd": 0.000778
       },
       {
         "documentId": "782276fb-5d1c-af75-b44f-d75997a7b168",
@@ -577,11 +603,13 @@
         "missingCritical": [],
         "fieldPassRate": 0.7142857142857143,
         "lineItemF1": 0.8333333333333334,
+        "lineItemMatches": 30,
+        "goldLineItems": 37,
         "lineItemsScored": true,
         "lineItemScoreExclusionReason": null,
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 17081,
-        "estimatedCostUsd": 0.00686575
+        "latencyMs": 17499,
+        "estimatedCostUsd": 0.006939
       },
       {
         "documentId": "48310d93-0e1d-5377-b3e1-8bcdfaaa6422",
@@ -595,11 +623,13 @@
         "missingCritical": [],
         "fieldPassRate": 1,
         "lineItemF1": null,
+        "lineItemMatches": null,
+        "goldLineItems": 64,
         "lineItemsScored": false,
         "lineItemScoreExclusionReason": "Source audit found truncated row dates and Comments text spliced into program descriptions.",
         "criticalFieldsAllCorrect": true,
-        "latencyMs": 14067,
-        "estimatedCostUsd": 0.01130625
+        "latencyMs": 15834,
+        "estimatedCostUsd": 0.0116495
       }
     ]
   }

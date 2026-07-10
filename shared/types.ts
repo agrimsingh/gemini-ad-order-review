@@ -77,6 +77,22 @@ export type ComparisonResult = {
     passed: boolean;
     excluded: boolean;
   }>;
+  spotComparisons: Array<{
+    kind: "gold" | "extra";
+    goldIndex: number | null;
+    predictedIndex: number | null;
+    label: string;
+    fullyMatched: boolean;
+    paired: boolean;
+    fieldPasses: number;
+    fieldTotal: number;
+    fields: Array<{
+      field: LineField;
+      expected: NullableText;
+      actual: NullableText | null;
+      passed: boolean;
+    }>;
+  }>;
 };
 
 export type Telemetry = {
@@ -102,6 +118,6 @@ export type ExtractionResponse = {
     thinking: "minimal" | "low";
     store: false;
     inputMode: "rasterized_pdf_pages" | "inline_pdf_document";
-    normalizationVersion: "address-contact-v1";
+    normalizationVersion: "address-contact-v1" | "org-name-address-v1" | "org-name-address-v2";
   };
 };

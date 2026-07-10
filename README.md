@@ -120,11 +120,11 @@ The current Gemini 3.5 Flash run produced:
 | Schema-valid responses | 100% |
 | Documents bypassing header review | 9 / 12 |
 | Accepted documents correct on advertiser, order ID, and gross | 100% |
-| Scored header-field pass rate | 88.3% |
-| Exact line-item row F1 | 29.1% on 107 rows |
-| Aligned line-item field accuracy | 79.2% |
-| Median latency | 3.7 s |
-| Total measured inference cost | $0.2075 |
+| Scored header-field pass rate | 87.4% |
+| Exact line-item row F1 | 59.2% on 107 rows |
+| Aligned line-item field accuracy | 95.5% |
+| Median latency | 4.1 s |
+| Total measured inference cost | $0.2109 |
 
 Exact-row F1 is deliberately strict. A line item receives credit only when channel, description, both dates, and amount all match one gold row. The aligned-field metric shows partial correctness when a row misses exact credit because one field differs.
 

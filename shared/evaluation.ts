@@ -68,12 +68,9 @@ export function parseDate(value: NullableText) {
 function valuesMatch(field: HeaderField | LineField, expected: NullableText, actual: NullableText) {
   if (expected === null || actual === null) return expected === actual;
   if (field === "gross_amount" || field === "sub_amount") {
-    const toPrice = (value: string) => Number(value.replace(/[^0-9.]/g, ""));
-    const expectedPrice = toPrice(expected);
-    const actualPrice = toPrice(actual);
-    return Number.isFinite(expectedPrice) && Number.isFinite(actualPrice)
-      ? Math.abs(expectedPrice - actualPrice) <= 0.01
-      : false;
+    const expectedCents = parseMoneyToCents(expected);
+    const actualCents = parseMoneyToCents(actual);
+    return expectedCents !== null && actualCents !== null && expectedCents === actualCents;
   }
   if (
     field === "flight_from" ||
@@ -258,29 +255,101 @@ export function compareToGold(
     }
   });
 
+  const IDENTITY_FIELDS: LineField[] = ["channel", "program_desc", "program_start_date", "program_end_date"];
   const unusedForAlignment = new Set(predicted.line_items.map((_, index) => index));
-  const alignedRows: Array<{ predicted: LineItem; expected: LineItem }> = [];
-  gold.line_items.forEach((expected) => {
+  const spotComparisons: ComparisonResult["spotComparisons"] = [];
+  gold.line_items.forEach((expected, goldIndex) => {
+    // Identity evidence must come from values present on both sides; null==null says
+    // nothing about whether two rows are the same spot.
+    const nonNullIdentity = (row: LineItem) =>
+      IDENTITY_FIELDS.filter(
+        (field) => expected[field] !== null && row[field] !== null && valuesMatch(field, expected[field], row[field]),
+      ).length;
+    const nonNullLeaf = (row: LineItem) =>
+      LINE_FIELDS.filter(
+        (field) => expected[field] !== null && row[field] !== null && valuesMatch(field, expected[field], row[field]),
+      ).length;
+
     let bestIndex: number | null = null;
-    let bestIdentityMatches = 0;
-    let bestLeafMatches = 0;
+    let bestIdentityMatches = -1;
+    let bestLeafMatches = -1;
     unusedForAlignment.forEach((index) => {
       const row = predicted.line_items[index];
-      const identityMatches = (["channel", "program_desc", "program_start_date", "program_end_date"] as LineField[])
-        .filter((field) => valuesMatch(field, expected[field], row[field])).length;
-      const leafMatches = LINE_FIELDS.filter((field) => valuesMatch(field, expected[field], row[field])).length;
+      const identityMatches = nonNullIdentity(row);
+      const leafMatches = nonNullLeaf(row);
       if (identityMatches > bestIdentityMatches || (identityMatches === bestIdentityMatches && leafMatches > bestLeafMatches)) {
         bestIndex = index;
         bestIdentityMatches = identityMatches;
         bestLeafMatches = leafMatches;
       }
     });
-    if (bestIndex !== null && bestIdentityMatches >= 2) {
-      alignedRows.push({ predicted: predicted.line_items[bestIndex], expected });
-      unusedForAlignment.delete(bestIndex);
-    }
+
+    const goldIdentityAvailable = IDENTITY_FIELDS.filter((field) => expected[field] !== null).length;
+    const bestRow = bestIndex !== null ? predicted.line_items[bestIndex] : null;
+    // Sparse gold rows (<2 usable identity fields) fall back to program + amount agreement.
+    const sparseFallback =
+      bestRow !== null &&
+      valuesMatch("program_desc", expected.program_desc, bestRow.program_desc) &&
+      expected.sub_amount !== null &&
+      bestRow.sub_amount !== null &&
+      valuesMatch("sub_amount", expected.sub_amount, bestRow.sub_amount);
+    const paired =
+      bestIndex !== null && (goldIdentityAvailable >= 2 ? bestIdentityMatches >= 2 : sparseFallback);
+    const predictedRow = paired && bestIndex !== null ? predicted.line_items[bestIndex] : null;
+    if (paired && bestIndex !== null) unusedForAlignment.delete(bestIndex);
+
+    const fields = LINE_FIELDS.map((field) => {
+      if (!predictedRow) {
+        return { field, expected: expected[field], actual: null, passed: false };
+      }
+      return {
+        field,
+        expected: expected[field],
+        actual: predictedRow[field],
+        passed: valuesMatch(field, expected[field], predictedRow[field]),
+      };
+    });
+    const fieldPasses = fields.filter((row) => row.passed).length;
+    const fullyMatched = Boolean(predictedRow) && fieldPasses === LINE_FIELDS.length;
+
+    spotComparisons.push({
+      kind: "gold",
+      goldIndex,
+      predictedIndex: paired ? bestIndex : null,
+      label: expected.program_desc?.trim() || `Spot ${goldIndex + 1}`,
+      fullyMatched,
+      paired,
+      fieldPasses,
+      fieldTotal: LINE_FIELDS.length,
+      fields,
+    });
   });
 
+  // Predicted rows that never paired with a reference row are surfaced as extras
+  // so over-extraction is visible instead of silently dropped.
+  [...unusedForAlignment]
+    .sort((left, right) => left - right)
+    .forEach((predictedIndex) => {
+      const row = predicted.line_items[predictedIndex];
+      spotComparisons.push({
+        kind: "extra",
+        goldIndex: null,
+        predictedIndex,
+        label: row.program_desc?.trim() || `Model spot ${predictedIndex + 1}`,
+        fullyMatched: false,
+        paired: false,
+        fieldPasses: 0,
+        fieldTotal: LINE_FIELDS.length,
+        fields: LINE_FIELDS.map((field) => ({
+          field,
+          expected: null,
+          actual: row[field],
+          passed: false,
+        })),
+      });
+    });
+
+  const alignedRows = spotComparisons.filter((spot) => spot.paired);
   const precision = predicted.line_items.length
     ? lineItemMatches / predicted.line_items.length
     : gold.line_items.length
@@ -293,10 +362,8 @@ export function compareToGold(
       : 1;
   const lineItemF1 = precision + recall ? (2 * precision * recall) / (precision + recall) : 0;
   let matchedLeafPasses = 0;
-  alignedRows.forEach(({ predicted: row, expected }) => {
-    LINE_FIELDS.forEach((field) => {
-      if (valuesMatch(field, expected[field], row[field])) matchedLeafPasses += 1;
-    });
+  alignedRows.forEach((spot) => {
+    matchedLeafPasses += spot.fieldPasses;
   });
   const matchedLeafTotal = alignedRows.length * LINE_FIELDS.length;
 
@@ -324,5 +391,6 @@ export function compareToGold(
     matchedLeafPasses,
     matchedLeafTotal,
     fieldRows,
+    spotComparisons,
   };
 }

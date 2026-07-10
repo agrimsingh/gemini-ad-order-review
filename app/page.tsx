@@ -20,6 +20,7 @@ import {
   FileSearch,
   FileText,
   Gauge,
+  CircleHelp,
   Info,
   Layers3,
   LockKeyhole,
@@ -29,6 +30,7 @@ import {
   ShieldCheck,
   TableProperties,
   Upload,
+  X,
   XCircle,
   Zap,
 } from "lucide-react";
@@ -106,7 +108,7 @@ const FEATURED_SCENARIOS = [
 
 type RunState = "idle" | "running" | "complete" | "error";
 type ViewMode = "live" | "benchmark";
-type TabName = "Extraction" | "Validation" | "Gold" | "Prompt" | "JSON";
+type TabName = "Extraction" | "Validation" | "Reference" | "Prompt" | "JSON";
 
 type EvalAggregate = {
   model: string;
@@ -147,6 +149,8 @@ type EvalRun = {
   missingCritical: string[];
   fieldPassRate: number | null;
   lineItemF1: number | null;
+  lineItemMatches: number | null;
+  goldLineItems: number;
   lineItemsScored: boolean;
   lineItemScoreExclusionReason: string | null;
   criticalFieldsAllCorrect: boolean;
@@ -195,13 +199,16 @@ export default function Home() {
   const [tab, setTab] = useState<TabName>("Extraction");
   const [keyConfigured, setKeyConfigured] = useState<boolean | null>(null);
   const [allDocumentsOpen, setAllDocumentsOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [helpOpen, setHelpOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const settingsRef = useRef<HTMLDivElement>(null);
   const timersRef = useRef<Array<ReturnType<typeof setTimeout>>>([]);
+  const HELP_STORAGE_KEY = "ad-order-review-help-seen-v3";
 
   const selected = documents.find((entry) => entry.document_id === selectedId) ?? null;
   const primary = evaluation.primary?.aggregate ?? null;
   const challenger = evaluation.challenger?.aggregate ?? null;
-  const selectedMeasuredRun = evaluation.primary?.runs.find((run) => run.documentId === selectedId) ?? null;
   const previewUrl = uploadedUrl ?? `/api/documents/${selectedId}/preview?page=${pageNumber}`;
 
   const comparison = useMemo<ComparisonResult | null>(() => {
@@ -284,6 +291,52 @@ export default function Home() {
       if (uploadedUrl) URL.revokeObjectURL(uploadedUrl);
     };
   }, [uploadedUrl]);
+
+  useEffect(() => {
+    if (!settingsOpen) return;
+    function onPointerDown(event: MouseEvent) {
+      if (settingsRef.current && !settingsRef.current.contains(event.target as Node)) {
+        setSettingsOpen(false);
+      }
+    }
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") setSettingsOpen(false);
+    }
+    document.addEventListener("mousedown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [settingsOpen]);
+
+  useEffect(() => {
+    try {
+      if (window.localStorage.getItem(HELP_STORAGE_KEY) !== "1") {
+        setHelpOpen(true);
+      }
+    } catch {
+      setHelpOpen(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!helpOpen) return;
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key === "Escape") dismissHelp();
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [helpOpen]);
+
+  function dismissHelp() {
+    setHelpOpen(false);
+    try {
+      window.localStorage.setItem(HELP_STORAGE_KEY, "1");
+    } catch {
+      // ignore
+    }
+  }
 
   function clearTimers() {
     timersRef.current.forEach(clearTimeout);
@@ -373,6 +426,7 @@ export default function Home() {
     setDetailsOpen(true);
   }
 
+
   return (
     <div className="app-shell">
       <header className="topbar">
@@ -394,36 +448,52 @@ export default function Home() {
         </nav>
 
         <div className="topbar-actions">
-          <span className={`key-state ${keyConfigured ? "connected" : "disconnected"}`}>
-            {keyConfigured ? <ShieldCheck size={14} /> : <AlertTriangle size={14} />}
-            {keyConfigured === null ? "Checking key" : keyConfigured ? "API ready" : "API key missing"}
-          </span>
-          <details className="settings-menu">
-            <summary aria-label="Run settings"><Settings2 size={16} /><span>Run settings</span><ChevronDown size={13} /></summary>
-            <div className="settings-popover">
-              <div className="settings-heading">
-                <div><span>MODEL STRATEGY</span><strong>Quality-first default</strong></div>
-                <Gauge size={18} />
+          <button
+            type="button"
+            className={`help-trigger ${keyConfigured === false ? "help-trigger-warn" : ""}`}
+            onClick={() => setHelpOpen(true)}
+            aria-haspopup="dialog"
+            aria-expanded={helpOpen}
+          >
+            {keyConfigured === false ? <AlertTriangle size={14} /> : <CircleHelp size={14} />}
+            <span>{keyConfigured === false ? "API key missing · How this works" : "How this works"}</span>
+          </button>
+          <div className={`settings-menu ${settingsOpen ? "open" : ""}`} ref={settingsRef}>
+            <button
+              type="button"
+              className="settings-trigger"
+              aria-label="Run settings"
+              aria-expanded={settingsOpen}
+              onClick={() => setSettingsOpen((open) => !open)}
+            >
+              <Settings2 size={16} /><span>Run settings</span><ChevronDown size={13} />
+            </button>
+            {settingsOpen && (
+              <div className="settings-popover">
+                <div className="settings-heading">
+                  <div><span>MODEL STRATEGY</span><strong>Quality-first default</strong></div>
+                  <Gauge size={18} />
+                </div>
+                <label>
+                  Model
+                  <select value={model} onChange={(event) => { setModel(event.target.value); resetRun(); }}>
+                    {MODEL_OPTIONS.map((option) => (
+                      <option key={option.value} value={option.value}>{option.label} · {option.role}</option>
+                    ))}
+                  </select>
+                </label>
+                <SettingRow label="API" value="Interactions" />
+                <SettingRow label="Media" value={pdfInputLabel} />
+                <SettingRow label="Thinking" value={model === "gemini-3.1-pro-preview" ? "Low" : "Minimal"} />
+                <SettingRow label="Storage" value="store=false" />
+                <details className="settings-prompt">
+                  <summary><Braces size={13} /><span>View extraction prompt</span><ChevronDown size={12} /></summary>
+                  <pre>{EXTRACTION_REQUEST_PROMPT}</pre>
+                </details>
+                <p>3.5 Flash is the measured primary. Flash-Lite remains a visible cost challenger.</p>
               </div>
-              <label>
-                Model
-                <select value={model} onChange={(event) => { setModel(event.target.value); resetRun(); }}>
-                  {MODEL_OPTIONS.map((option) => (
-                    <option key={option.value} value={option.value}>{option.label} · {option.role}</option>
-                  ))}
-                </select>
-              </label>
-              <SettingRow label="API" value="Interactions" />
-              <SettingRow label="Media" value={pdfInputLabel} />
-              <SettingRow label="Thinking" value={model === "gemini-3.1-pro-preview" ? "Low" : "Minimal"} />
-              <SettingRow label="Storage" value="store=false" />
-              <details className="settings-prompt">
-                <summary><Braces size={13} /><span>View extraction prompt</span><ChevronDown size={12} /></summary>
-                <pre>{EXTRACTION_REQUEST_PROMPT}</pre>
-              </details>
-              <p>3.5 Flash is the measured primary. Flash-Lite remains a visible cost challenger.</p>
-            </div>
-          </details>
+            )}
+          </div>
         </div>
       </header>
 
@@ -439,7 +509,7 @@ export default function Home() {
             {sourcesAvailable === false ? (
               <div className="hosted-source-note">
                 <LockKeyhole size={16} />
-                <span><strong>Benchmark sources stay local</strong><small>Upload a PDF using the hosted inline-PDF fallback. Saved results use the measured 180 DPI path.</small></span>
+                <span><strong>Benchmark sources stay local</strong><small>Upload a PDF using the hosted inline-PDF fallback. Saved benchmark results stay on the measured local path.</small></span>
               </div>
             ) : (
               <div className="scenario-list">
@@ -458,7 +528,7 @@ export default function Home() {
                       <strong>{scenario.title}</strong>
                       <span>{scenario.expectation}</span>
                     </span>
-                    <span className="scenario-pages">{metadata?.page_count ?? "–"}p</span>
+                    {metadata?.page_count != null && <span className="scenario-pages">{metadata.page_count}p</span>}
                   </button>
                 );
                 })}
@@ -499,7 +569,7 @@ export default function Home() {
 
             <div className="rail-evidence">
               <Database size={15} />
-              <span><strong>{summary.documents} docs · {summary.pages} pages · {summary.lineItems} rows</strong>{summary.scoreExclusions} ambiguous gold fields excluded</span>
+              <span><strong>{summary.documents} docs · {summary.pages} pages · {summary.lineItems} spots</strong>{summary.scoreExclusions} ambiguous reference fields excluded</span>
             </div>
           </aside>
 
@@ -523,7 +593,6 @@ export default function Home() {
                 keyConfigured={keyConfigured}
                 model={model}
                 onRun={runExtraction}
-                selectedMeasuredRun={selectedMeasuredRun}
                 hasGold={!uploadedFile && sourcesAvailable === true}
                 canRun={Boolean(uploadedFile || sourcesAvailable === true)}
                 mediaLabel={pdfInputLabel}
@@ -544,7 +613,6 @@ export default function Home() {
                 model={model}
                 detailsOpen={detailsOpen}
                 tab={tab}
-                gold={gold}
                 onOpenDetails={openDetails}
                 onCloseDetails={() => setDetailsOpen(false)}
                 onTabChange={setTab}
@@ -569,6 +637,139 @@ export default function Home() {
       ) : (
         <BenchmarkUnavailable state={evaluationState} />
       )}
+
+      {helpOpen && (
+        <HelpModal
+          keyConfigured={keyConfigured}
+          onClose={dismissHelp}
+        />
+      )}
+    </div>
+  );
+}
+
+function HelpModal({
+  keyConfigured,
+  onClose,
+}: {
+  keyConfigured: boolean | null;
+  onClose: () => void;
+}) {
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+    const previouslyFocused = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    const focusable = () =>
+      [...dialog.querySelectorAll<HTMLElement>("button, [href], input, select, textarea, [tabindex]:not([tabindex='-1'])")]
+        .filter((element) => !element.hasAttribute("disabled"));
+
+    focusable()[0]?.focus();
+
+    function onKeyDown(event: KeyboardEvent) {
+      if (event.key !== "Tab") return;
+      const elements = focusable();
+      if (!elements.length) return;
+      const first = elements[0];
+      const last = elements[elements.length - 1];
+      const active = document.activeElement;
+      if (event.shiftKey && (active === first || !dialog?.contains(active))) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (active === last || !dialog?.contains(active))) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      previouslyFocused?.focus();
+    };
+  }, []);
+
+  return (
+    <div className="help-overlay" role="presentation" onClick={onClose}>
+      <div
+        ref={dialogRef}
+        className="help-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="help-modal-title"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="help-modal-header">
+          <div>
+            <span className="eyebrow">QUICK GUIDE</span>
+            <h2 id="help-modal-title">How this app works</h2>
+          </div>
+          <button type="button" className="help-close" onClick={onClose} aria-label="Close guide">
+            <X size={16} />
+          </button>
+        </div>
+
+        <div className="help-modal-body">
+          <section>
+            <h3>What you are looking at</h3>
+            <p>
+              Gemini extracts fields from an ad-buy PDF. Deterministic code then decides whether
+              headers can <strong>auto-accept</strong> or must go to <strong>partner review</strong>.
+              Extraction quality and partner routing are separate judgments.
+            </p>
+          </section>
+
+          <section>
+            <h3>Two views</h3>
+            <ul>
+              <li><strong>Live document</strong> — pick a scenario (or upload a PDF), run extraction, inspect the decision.</li>
+              <li><strong>Benchmark</strong> — saved results across the 12-document VRDU pack: quality, cost, latency.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Reading a result</h3>
+            <ul>
+              <li><strong>Partner route</strong> — AUTO-ACCEPT only if required headers are present: advertiser, order/contract ID, flight dates, gross amount. Missing in the source means review, not a model error.</li>
+              <li><strong>Headers</strong> — document-level fields (station, advertiser, amounts, dates).</li>
+              <li><strong>Spots</strong> — individual ad placements on the order schedule (channel, program, dates, amount). Posting them stays manual in this version.</li>
+              <li><strong>Reference labels</strong> — VRDU ground truth used only to score extraction (also called gold). They never change the partner route.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Spot scores (the confusing bit)</h3>
+            <ul>
+              <li><strong>Fully matched spots</strong> — every field on that spot agrees with the reference (channel, program, both dates, and amount). One mismatch → that spot fails this score.</li>
+              <li><strong>Spot fields correct</strong> — after pairing similar spots, how many individual fields still match. Use this when fully matched looks harsh.</li>
+              <li><strong>Advertiser / order ID / gross</strong> — a narrow reference check, not the partner route and not a whole-document grade. Route still requires flight dates too.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h3>Suggested demo path</h3>
+            <ol>
+              <li>Run <strong>Complete order</strong> — should auto-accept.</li>
+              <li>Run <strong>Invoice + order IDs</strong> — correct extraction, but review because gross is absent in source.</li>
+              <li>Open <strong>Benchmark</strong> for the measured pack.</li>
+            </ol>
+          </section>
+
+          {keyConfigured === false && (
+            <p className="help-api-warn">
+              <AlertTriangle size={14} /> Gemini API key is missing. Add <code>GEMINI_API_KEY</code> to <code>.env.local</code> to run live extraction.
+            </p>
+          )}
+        </div>
+
+        <div className="help-modal-footer">
+          <button type="button" className="primary-action" onClick={onClose}>
+            Got it
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -607,7 +808,9 @@ function DocumentPanel({
         <div className="document-heading">
           <span className="eyebrow">{uploadedFile ? "PARTNER DOCUMENT" : hostedEmpty ? "HOSTED DEMO" : (SLICE_NAMES[selected?.slice ?? ""] ?? "BENCHMARK DOCUMENT").toUpperCase()}</span>
           <h2>{uploadedFile ? uploadedFile.name : hostedEmpty ? "Upload a partner PDF" : TITLES[selectedId] ?? "Loading document"}</h2>
-          <p>{uploadedFile ? "Transient upload · no gold label" : hostedEmpty ? "Source benchmark documents are intentionally not deployed." : selected?.include_reason ?? "Loading benchmark metadata"}</p>
+          <p title={uploadedFile ? "Transient upload · no reference label" : hostedEmpty ? "Source benchmark documents are intentionally not deployed." : selected?.include_reason ?? "Loading benchmark metadata"}>
+            {uploadedFile ? "Transient upload · no reference label" : hostedEmpty ? "Source benchmark documents are intentionally not deployed." : selected?.include_reason ?? "Loading benchmark metadata"}
+          </p>
         </div>
         <div className="icon-actions">
           {!uploadedFile && sourcesAvailable && <a href={`/api/documents/${selectedId}/pdf`} target="_blank" rel="noreferrer" title="Open source PDF"><ExternalLink size={15} /></a>}
@@ -622,7 +825,7 @@ function DocumentPanel({
           <div className="hosted-upload-empty">
             <span><Upload size={22} /></span>
             <h3>Run your own document</h3>
-            <p>The PDF stays transient and the API request uses <code>store=false</code>.</p>
+            <p>The PDF stays transient.</p>
             <button onClick={onUpload}><Upload size={15} /> Choose PDF</button>
           </div>
         ) : benchmarkPreviewMode === "inline_pdf" ? (
@@ -633,7 +836,6 @@ function DocumentPanel({
               <button aria-label="Previous page" disabled={pageNumber <= 1} onClick={() => onPageChange((current) => Math.max(1, current - 1))}><ChevronLeft size={15} /></button>
               <strong>{pageNumber} / {pageCount}</strong>
               <button aria-label="Next page" disabled={pageNumber >= pageCount} onClick={() => onPageChange((current) => Math.min(pageCount, current + 1))}><ChevronRight size={15} /></button>
-              <span>Source preview · 150 DPI</span>
             </div>
             <div className="preview-canvas">
               <img src={previewUrl} alt={`Page ${pageNumber} of ${TITLES[selectedId] ?? "benchmark document"}`} />
@@ -644,7 +846,7 @@ function DocumentPanel({
 
       <div className="document-footer">
         <span><FileText size={13} />{uploadedFile ? "Uploaded PDF" : hostedEmpty ? "Bring your own PDF" : `${pageCount} page${pageCount === 1 ? "" : "s"}`}</span>
-        <span>{uploadedFile || hostedEmpty ? "No benchmark comparison" : `${selected?.line_item_count ?? 0} annotated row${selected?.line_item_count === 1 ? "" : "s"}`}</span>
+        <span>{uploadedFile || hostedEmpty ? "No benchmark comparison" : `${selected?.line_item_count ?? 0} annotated spot${selected?.line_item_count === 1 ? "" : "s"}`}</span>
         <span>{uploadedFile ? mediaLabel : hostedEmpty ? "Source files not deployed" : benchmarkPreviewMode === "inline_pdf" ? "Browser PDF preview" : "High-resolution page images"}</span>
       </div>
     </section>
@@ -655,7 +857,6 @@ function PreRunDecision({
   keyConfigured,
   model,
   onRun,
-  selectedMeasuredRun,
   hasGold,
   canRun,
   mediaLabel,
@@ -663,40 +864,37 @@ function PreRunDecision({
   keyConfigured: boolean | null;
   model: string;
   onRun: () => void;
-  selectedMeasuredRun: EvalRun | null;
   hasGold: boolean;
   canRun: boolean;
   mediaLabel: string;
 }) {
   return (
     <div className="decision-state pre-run-state">
-      <div className="decision-kicker"><span>EXAMPLE PARTNER WORKFLOW</span><FileSearch size={18} /></div>
+      <div className="decision-kicker"><span>PARTNER WORKFLOW</span><FileSearch size={18} /></div>
       <h2>Will this clear the partner review rule?</h2>
-      <p>Extraction quality and partner routing are evaluated separately.</p>
 
       <button className="primary-action" disabled={keyConfigured === false || !canRun} onClick={onRun}>
         <Play size={16} fill="currentColor" /> {canRun ? "Run decision" : "Upload a PDF to run"}
         <ArrowRight size={15} />
       </button>
-      <div className="run-model"><Zap size={13} /><span>{modelLabel(model)}</span><small>{mediaLabel.toLowerCase()} · store=false</small></div>
+      <div className="run-model"><Zap size={13} /><span>{modelLabel(model)}</span><small>{mediaLabel.toLowerCase()}</small></div>
 
       <div className="gate-preview">
         <div className="section-heading"><span>EXAMPLE PARTNER POLICY</span><small>deterministic</small></div>
         <div className="policy-contract">
           <span>REQUIRED TO AUTO-ACCEPT</span>
           <strong>Advertiser · order / contract ID · flight dates · gross amount</strong>
-          <small>Absent in the source means partner review, not an extraction error.</small>
         </div>
         <GateRule icon={<Braces size={15} />} label="Valid schema" />
         <GateRule icon={<Clock3 size={15} />} label="Dates ordered and amount parseable" />
-        <GateRule icon={<TableProperties size={15} />} label="Line-item posting stays manual" />
+        <GateRule icon={<TableProperties size={15} />} label="Spot posting stays manual" />
       </div>
 
       <div className="pre-run-evidence">
         <ShieldCheck size={16} />
         <div>
-          <strong>{hasGold ? "Gold remains hidden until the run" : canRun ? "No benchmark label for this upload" : "Upload a PDF to begin"}</strong>
-          <span>{hasGold && selectedMeasuredRun ? "A prior measured result exists, but it does not determine this run." : hasGold ? "Gold scores extraction quality; the policy determines routing." : canRun ? "The deterministic partner gate still runs without reference labels." : "Saved VRDU results remain available in Benchmark."}</span>
+          <strong>{hasGold ? "Reference labels score extraction after the run" : canRun ? "No benchmark label for this upload" : "Upload a PDF to begin"}</strong>
+          <span>{hasGold ? "The partner policy determines routing independently." : canRun ? "The deterministic partner gate still runs without reference labels." : "Saved VRDU results remain available in Benchmark."}</span>
         </div>
       </div>
     </div>
@@ -756,7 +954,6 @@ function CompletedDecision({
   model,
   detailsOpen,
   tab,
-  gold,
   onOpenDetails,
   onCloseDetails,
   onTabChange,
@@ -772,7 +969,6 @@ function CompletedDecision({
   model: string;
   detailsOpen: boolean;
   tab: TabName;
-  gold: Extraction | null;
   onOpenDetails: (tab: TabName) => void;
   onCloseDetails: () => void;
   onTabChange: (tab: TabName) => void;
@@ -783,37 +979,30 @@ function CompletedDecision({
   const acceptedCount = primary
     ? Math.round(primary.documentsCompleted * primary.acceptanceRate)
     : null;
+  const inspectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    if (!detailsOpen) return;
+    requestAnimationFrame(() => {
+      inspectionRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }, [detailsOpen]);
+
   return (
     <div className="decision-state completed-state result-reveal">
       <div className="outcome-heading">
-        <div><span className="eyebrow">LIVE API RESULT · EXAMPLE PARTNER POLICY</span><h2>{accepted ? "Partner policy cleared" : "Partner policy sends this to review"}</h2></div>
+        <div><span className="eyebrow">LIVE API RESULT · PARTNER POLICY</span><h2>{accepted ? "Partner policy cleared" : "Partner policy sends this to review"}</h2></div>
         <span className={`route-status ${accepted ? "accept" : "review"}`}>{accepted ? <CheckCircle2 size={15} /> : <AlertTriangle size={15} />}{accepted ? "AUTO-ACCEPT" : "REVIEW"}</span>
       </div>
 
-      <div className="decision-split">
+      <div className="decision-banner">
         <section className={`decision-lane ${accepted ? "accept" : "review"}`}>
           <span>PARTNER ROUTE</span>
           <strong>{accepted ? "AUTO-ACCEPT" : "SEND TO REVIEW"}</strong>
           <small>{accepted ? "All required partner fields are present." : routeReason(result.validation)}</small>
-        </section>
-        <section className="decision-lane rows-manual">
-          <span>LINE-ITEM SCOPE</span>
-          <strong>MANUAL POSTING</strong>
-          <small className="lane-evidence">
-            {comparison ? (
-              <>
-                <span>{rowScoreHeadline(comparison)}</span>
-                <span>{rowScoreDetail(comparison)}</span>
-              </>
-            ) : (
-              <>
-                <span>Current upload: no gold row comparison</span>
-                <span>Partner routing still uses deterministic checks.</span>
-              </>
-            )}
-            <span>V1 never auto-posts rows; this is a scope boundary, not an extraction failure.</span>
-            <span>{primary ? `Benchmark: ${percent(primary.lineItemF1)} exact-row F1 on ${primary.lineItemGoldRowsScored ?? "scored"} rows` : "Saved benchmark unavailable"}</span>
-          </small>
+          {!accepted && !result.validation.rowShapeValid && (
+            <small className="decision-footnote">Some spots are incomplete. That is advisory and did not affect this route.</small>
+          )}
         </section>
       </div>
 
@@ -824,15 +1013,19 @@ function CompletedDecision({
       </div>
 
       <section className="evidence-section">
-        <div className="section-heading"><span>EXTRACTION QUALITY</span><small>{hasGold ? "API output vs VRDU gold" : "no gold label"}</small></div>
+        <div className="section-heading"><span>EXTRACTION QUALITY</span><small>{hasGold ? "API output vs reference labels" : "no reference label"}</small></div>
         {comparison ? (
           <div className="evidence-metrics">
-            <EvidenceMetric label="Key-field gold match" value={comparison.criticalFieldsAllCorrect ? "All correct" : "Mismatch"} tone={comparison.criticalFieldsAllCorrect ? "good" : "bad"} />
-            <EvidenceMetric label="Header field pass" value={percent(comparison.fieldPassRate)} />
-            <EvidenceMetric label="Aligned line-item fields" value={alignedFieldMetric(comparison)} />
+            <EvidenceMetric
+              label="Advertiser · order ID · gross"
+              value={comparison.criticalFieldsAllCorrect ? "Match reference" : "Differ from reference"}
+              tone={comparison.criticalFieldsAllCorrect ? "good" : "bad"}
+            />
+            <EvidenceMetric label="Header fields correct" value={percent(comparison.fieldPassRate)} />
+            <EvidenceMetric label="Spot fields correct" value={alignedFieldMetric(comparison)} />
           </div>
         ) : (
-          <div className="no-gold-evidence"><Database size={16} /><span><strong>No gold label for this document.</strong>Extraction cannot be scored; the partner route still uses policy checks.</span></div>
+          <div className="no-gold-evidence"><Database size={16} /><span><strong>No reference label for this document.</strong>Extraction cannot be scored; the partner route still uses policy checks.</span></div>
         )}
         <p className="evidence-note">
           {runEvidenceNote(result.validation, comparison, primary, acceptedCount, benchmarkGeneratedAt)}
@@ -846,7 +1039,7 @@ function CompletedDecision({
 
       <div className="result-actions">
         <button className="secondary-action" onClick={() => onOpenDetails("Extraction")}><FileSearch size={14} />Inspect extraction</button>
-        {hasGold && <button className="secondary-action" onClick={() => onOpenDetails("Gold")}><Gauge size={14} />Compare with gold</button>}
+        {hasGold && <button className="secondary-action" onClick={() => onOpenDetails("Reference")}><Gauge size={14} />Compare with reference</button>}
         <button className="secondary-action prompt-action" onClick={() => onOpenDetails("Prompt")}><Braces size={14} />View prompt</button>
         <button className="icon-button" title="Run again" onClick={onRunAgain}><RotateCcw size={15} /></button>
       </div>
@@ -858,20 +1051,20 @@ function CompletedDecision({
       )}
 
       {detailsOpen && (
-        <section className="inspection-panel">
+        <section className="inspection-panel" ref={inspectionRef}>
           <div className="inspection-header">
             <div><span className="eyebrow">RUN EVIDENCE</span><strong>{modelLabel(model)}</strong></div>
             <button onClick={onCloseDetails} aria-label="Close run evidence"><XCircle size={16} /></button>
           </div>
           <div className="tabs" role="tablist">
-            {(["Extraction", "Validation", "Gold", "Prompt", "JSON"] as TabName[]).map((name) => (
+            {(["Extraction", "Validation", "Reference", "Prompt", "JSON"] as TabName[]).map((name) => (
               <button key={name} role="tab" aria-selected={tab === name} className={tab === name ? "active" : ""} onClick={() => onTabChange(name)}>{name}</button>
             ))}
           </div>
           <div className="inspection-content">
             {tab === "Extraction" && <ExtractionView extraction={result.extraction} />}
             {tab === "Validation" && <ValidationView validation={result.validation} />}
-            {tab === "Gold" && <GoldView comparison={comparison} hasGold={hasGold} />}
+            {tab === "Reference" && <GoldView comparison={comparison} hasGold={hasGold} />}
             {tab === "Prompt" && <PromptView result={result} />}
             {tab === "JSON" && <JsonView extraction={result.extraction} />}
           </div>
@@ -917,6 +1110,10 @@ function BenchmarkView({
     acceptedCount * primary.acceptedCriticalFieldAccuracy,
   );
   const challengerFailureCount = challenger.acceptedSemanticFailures.length;
+  const costRatio =
+    challenger.estimatedCostPerAcceptedDocumentUsd > 0
+      ? primary.estimatedCostPerAcceptedDocumentUsd / challenger.estimatedCostPerAcceptedDocumentUsd
+      : null;
   const runsById = new Map(runs.map((run) => [run.documentId, run]));
   return (
     <main className="benchmark-view view-enter">
@@ -925,31 +1122,38 @@ function BenchmarkView({
           <span className="eyebrow">SAVED EVALUATION</span>
           <h1>Benchmark results</h1>
         </div>
-        <div className="dataset-stamp"><Database size={17} /><span><strong>Gemini 3.5 Flash</strong>{summary.documents} docs · {summary.pages} pages · {summary.lineItems} rows · {formatReportDate(generatedAt)}</span><small>SAVED · 180 DPI</small></div>
+        <div className="dataset-stamp"><Database size={17} /><span><strong>Gemini 3.5 Flash</strong>{summary.documents} docs · {summary.pages} pages · {summary.lineItems} spots · {formatReportDate(generatedAt)}</span><small>SAVED · Poppler 180 DPI</small></div>
       </section>
 
       <section className="headline-metrics" aria-label="Primary benchmark results">
-        <HeadlineMetric value={`${acceptedCount}/${primary.documentsCompleted}`} label="bypass partner review" detail={`${percent(primary.acceptanceRate)} auto-accept`} />
+        <HeadlineMetric value={`${acceptedCount}/${primary.documentsCompleted}`} label="bypass partner review" detail={`${reviewCount} sent to review · ${percent(primary.acceptanceRate)} auto-accept`} />
         <HeadlineMetric value={percent(primary.acceptedCriticalFieldAccuracy)} label="accepted key fields correct" detail={`${acceptedCriticalCount}/${acceptedCount} docs · advertiser, order ID, gross`} tone="good" />
-        <HeadlineMetric value={String(reviewCount)} label="sent to partner review" detail="required policy fields absent" />
-        <HeadlineMetric value={formatCost(primary.estimatedCostPerAcceptedDocumentUsd)} label="workload cost / accepted" detail={`${formatCost(primary.estimatedCostUsd)} total run`} />
+        <HeadlineMetric value={percent(primary.hallucinationRate)} label="hallucinated values" detail="model value where reference is null" />
+        <HeadlineMetric value={formatCost(primary.estimatedCostPerAcceptedDocumentUsd)} label="cost per accepted doc" detail={`${formatCost(primary.estimatedCostUsd)} total run`} />
       </section>
 
       <section className="policy-section">
         <div className="policy-copy">
           <span className="eyebrow">EXAMPLE PARTNER POLICY</span>
-          <h2>Auto-accept complete headers. Keep line-item posting manual.</h2>
+          <h2>Auto-accept complete headers. Keep spot posting manual.</h2>
           <p><strong>Required:</strong> advertiser · order / contract ID · flight dates · gross amount<br /><span>Absent in source means review, not extraction error.</span></p>
         </div>
         <div className="policy-rails">
           <div className="policy-rail good"><span>ACCEPTED QUALITY</span><strong>{percent(primary.acceptedCriticalFieldAccuracy)}</strong><small>advertiser · order ID · gross</small></div>
-          <div className="policy-rail caution"><span>EXACT ROW F1</span><strong>{percent(primary.lineItemF1)}</strong><small>{primary.lineItemGoldRowsScored ?? summary.lineItems}/{primary.lineItemGoldRowsTotal ?? summary.lineItems} gold rows scored · {percent(primary.matchedRowLeafAccuracy)} aligned fields</small></div>
+          <div className="policy-rail caution"><span>REFERENCE SPOTS MATCHED</span><strong>{percent(primary.lineItemRecall)}</strong><small>{primary.lineItemGoldRowsScored ?? summary.lineItems}/{primary.lineItemGoldRowsTotal ?? summary.lineItems} reference spots scored · {percent(primary.matchedRowLeafAccuracy)} fields correct</small></div>
         </div>
       </section>
 
       <section className="benchmark-section model-section">
         <div className="benchmark-section-heading">
-          <div><span className="eyebrow">MODEL COMPARISON</span><h2>Gemini 3.5 Flash</h2></div>
+          <div>
+            <span className="eyebrow">MODEL COMPARISON</span>
+            <h2>Flash vs Flash-Lite</h2>
+            <p className="model-finding">
+              Flash-Lite is cheaper but had {challengerFailureCount} accepted failure{challengerFailureCount === 1 ? "" : "s"}
+              {costRatio !== null ? ` · Flash costs ~${costRatio.toFixed(1)}× per accepted doc` : ""}.
+            </p>
+          </div>
         </div>
         <div className="model-table" role="table" aria-label="Model benchmark comparison">
           <div className="model-table-row model-table-head" role="row">
@@ -980,8 +1184,8 @@ function BenchmarkView({
           <div className="reliability-list">
             <ReliabilityRow label="Schema-valid responses" value={percent(primary.schemaValidity)} />
             <ReliabilityRow label="Header field pass" value={percent(primary.perFieldPassRate)} note={`${summary.scoreExclusions} ambiguous labels excluded`} />
-            <ReliabilityRow label="Model value / gold null" value={percent(primary.hallucinationRate)} />
-            <ReliabilityRow label="Row scoring coverage" value={`${primary.lineItemGoldRowsScored ?? summary.lineItems}/${primary.lineItemGoldRowsTotal ?? summary.lineItems}`} />
+            <ReliabilityRow label="Model value / reference null" value={percent(primary.hallucinationRate)} />
+            <ReliabilityRow label="Spot scoring coverage" value={`${primary.lineItemGoldRowsScored ?? summary.lineItems}/${primary.lineItemGoldRowsTotal ?? summary.lineItems}`} />
             <ReliabilityRow label="Latency p50 / p95" value={`${(primary.latencyMs.median / 1000).toFixed(1)}s / ${(primary.latencyMs.p95 / 1000).toFixed(1)}s`} />
           </div>
         </div>
@@ -992,14 +1196,19 @@ function BenchmarkView({
           <div><span className="eyebrow">RUNS</span><h2>Document results</h2></div>
         </div>
         <div className="run-table">
-          <div className="run-table-row run-table-head"><span>DOCUMENT</span><span>SLICE</span><span>PARTNER ROUTE</span><span>FIELD PASS</span><span title="All five line-item fields must match one gold row">EXACT ROW F1</span><span>LATENCY</span><span>COST</span></div>
+          <div className="run-table-row run-table-head"><span>DOCUMENT</span><span>SLICE</span><span>PARTNER ROUTE</span><span>FIELD PASS</span><span title="Fully matched spots / reference spots. A spot fully matches only when channel, program, both dates, and amount all agree.">SPOTS MATCHED</span><span>LATENCY</span><span>COST</span></div>
           {runs.map((run) => (
             <button className="run-table-row" key={run.documentId} disabled={!sourcesAvailable} title={sourcesAvailable ? "Open live document" : "Source document is not included in the hosted demo"} onClick={() => onOpenLive(run.documentId)}>
-              <span><strong>{TITLES[run.documentId] ?? run.documentId}</strong><small>{run.pages}p · {run.expectedLineItems} rows</small></span>
+              <span><strong>{TITLES[run.documentId] ?? run.documentId}</strong><small>{run.pages}p · {run.expectedLineItems} spots</small></span>
               <span>{SLICE_NAMES[run.slice] ?? run.slice}</span>
               <span className={`table-route ${run.route}`}>{run.route}</span>
               <span>{run.fieldPassRate === null ? "–" : percent(run.fieldPassRate)}</span>
-              <span>{!run.lineItemsScored ? "excluded" : run.lineItemF1 === null ? "–" : percent(run.lineItemF1)}</span>
+              <span
+                className={!run.lineItemsScored || run.lineItemMatches === null ? undefined : run.lineItemMatches === 0 && run.goldLineItems > 0 ? "row-match-zero" : undefined}
+                title={!run.lineItemsScored ? (run.lineItemScoreExclusionReason ?? "Spot score excluded") : "Fully matched spots / reference spots"}
+              >
+                {!run.lineItemsScored ? "excluded" : run.lineItemMatches === null ? "–" : `${run.lineItemMatches}/${run.goldLineItems}`}
+              </span>
               <span>{run.latencyMs === null ? "–" : `${(run.latencyMs / 1000).toFixed(1)}s`}</span>
               <span>{run.estimatedCostUsd === null ? "–" : formatCost(run.estimatedCostUsd)}</span>
             </button>
@@ -1021,7 +1230,7 @@ function ExtractionView({ extraction }: { extraction: Extraction }) {
           <div className="field-row" key={field}><span>{fieldLabel(field)}</span><strong className={extraction.document[field] === null ? "null-value" : ""}>{extraction.document[field] ?? "null"}</strong></div>
         ))}
       </div>
-      <div className="section-label"><span>LINE ITEMS</span><span>{extraction.line_items.length} rows</span></div>
+      <div className="section-label"><span>SPOTS</span><span>{extraction.line_items.length} on schedule</span></div>
       {extraction.line_items.length ? (
         <div className="line-items">
           {extraction.line_items.slice(0, 16).map((row, index) => (
@@ -1031,9 +1240,9 @@ function ExtractionView({ extraction }: { extraction: Extraction }) {
               <strong>{row.sub_amount ?? "null"}</strong>
             </div>
           ))}
-          {extraction.line_items.length > 16 && <div className="more-rows">+ {extraction.line_items.length - 16} more rows</div>}
+          {extraction.line_items.length > 16 && <div className="more-rows">+ {extraction.line_items.length - 16} more spots</div>}
         </div>
-      ) : <div className="empty-state">No line items in model output.</div>}
+      ) : <div className="empty-state">No spots in model output.</div>}
     </div>
   );
 }
@@ -1041,9 +1250,9 @@ function ExtractionView({ extraction }: { extraction: Extraction }) {
 function ValidationView({ validation }: { validation: ValidationResult }) {
   return (
     <div className="validation-view">
-      <div className={`route-decision ${validation.route}`}><span>{validation.route === "accept" ? <CheckCircle2 size={20} /> : <AlertTriangle size={20} />}</span><div><small>EXAMPLE PARTNER ROUTE</small><strong>{validation.route === "accept" ? "Auto-accept" : "Send to review"}</strong></div></div>
+      <div className={`route-decision ${validation.route}`}><span>{validation.route === "accept" ? <CheckCircle2 size={20} /> : <AlertTriangle size={20} />}</span><div><small>PARTNER ROUTE</small><strong>{validation.route === "accept" ? "Auto-accept" : "Send to review"}</strong></div></div>
       <ValidationChecks validation={validation} />
-      <div className="advisory-note"><AlertTriangle size={14} /><span>Amount check is informational. Line items sum to gross in only 219 of 271 eligible VRDU documents, so this check does not affect the partner route.</span></div>
+      <div className="advisory-note"><AlertTriangle size={14} /><span>Amount check is informational. Spots sum to gross in only 219 of 271 eligible VRDU documents, so this check does not affect the partner route.</span></div>
     </div>
   );
 }
@@ -1068,7 +1277,7 @@ function ValidationChecks({ validation, compact = false }: { validation: Validat
       <CheckRow label="Required partner fields" value={validation.missingCritical.length ? `${capitalize(formatFieldList(validation.missingCritical))} absent` : "all 5 present"} ok={validation.missingCritical.length === 0} wide />
       <CheckRow label="JSON schema" value={validation.schemaValid ? "valid" : "invalid"} ok={validation.schemaValid} />
       <CheckRow label="Dates and money" value={validation.dateOrderOk && validation.grossAmountParseable ? "valid" : "needs review"} ok={validation.dateOrderOk && validation.grossAmountParseable} />
-      <CheckRow label="Row structure" value={validation.rowShapeValid ? "complete" : "sparse rows"} ok={validation.rowShapeValid} advisory />
+      <CheckRow label="Spot structure" value={validation.rowShapeValid ? "complete" : "incomplete spots"} ok={validation.rowShapeValid} advisory />
       {!compact && <CheckRow label="Arithmetic reconciliation" value={validation.reconciliation.replace("_", " ")} ok={validation.reconciliation !== "mismatch"} advisory />}
     </div>
   );
@@ -1076,22 +1285,52 @@ function ValidationChecks({ validation, compact = false }: { validation: Validat
 
 function GoldView({ comparison, hasGold }: { comparison: ComparisonResult | null; hasGold: boolean }) {
   if (!comparison) {
-    return <div className="gold-empty"><Gauge size={26} /><strong>{hasGold ? "Gold comparison unavailable" : "No gold label"}</strong><span>Uploaded partner documents are routed without benchmark labels.</span></div>;
+    return <div className="gold-empty"><Gauge size={26} /><strong>{hasGold ? "Reference comparison unavailable" : "No reference label"}</strong><span>Uploaded partner documents are routed without benchmark labels.</span></div>;
   }
+
+  const headerPasses = comparison.fieldRows.filter((row) => !row.excluded && row.passed).length;
+  const hallucinatedCount = comparison.fieldRows.filter((row) => !row.excluded && row.expected === null && row.actual !== null).length;
+  const missedCount = comparison.fieldRows.filter((row) => !row.excluded && row.expected !== null && row.actual === null).length;
+  const scored = comparison.scoredHeaderFields;
+
   return (
     <div className="gold-view">
-      <div className="metric-grid">
-        <Metric label="Field pass" value={percent(comparison.fieldPassRate)} />
-        <Metric label="Value where gold is null" value={percent(comparison.hallucinationRate)} warning />
-        <Metric label="Missing where gold has value" value={percent(comparison.missingValueRate)} inverse />
-        <Metric label="Exact row F1" value={comparison.lineItemsScored ? percent(comparison.lineItemF1) : "Not scored"} />
-        <Metric label="Aligned row fields" value={comparison.lineItemsScored ? alignedFieldMetric(comparison) : "Not scored"} />
-        <Metric label="Key fields all correct" value={comparison.criticalFieldsAllCorrect ? "PASS" : "FAIL"} inverse={!comparison.criticalFieldsAllCorrect} />
+      <div className={`gold-verdict ${comparison.criticalFieldsAllCorrect ? "pass" : "fail"}`}>
+        <span>Advertiser, order ID, and gross match reference</span>
+        <strong>{comparison.criticalFieldsAllCorrect ? "YES" : "NO"}</strong>
       </div>
+
+      <div className="metric-group">
+        <span className="metric-group-label">Headers</span>
+        <div className="metric-grid metric-grid-3">
+          <Metric label="Header fields correct" value={formatRate(headerPasses, scored)} tone={accuracyTone(comparison.fieldPassRate)} />
+          <Metric label="Hallucinated values" value={formatRate(hallucinatedCount, scored)} tone={errorCountTone(hallucinatedCount)} />
+          <Metric label="Missed values" value={formatRate(missedCount, scored)} tone={errorCountTone(missedCount)} />
+        </div>
+      </div>
+
+      <div className="metric-group">
+        <span className="metric-group-label">Spots</span>
+        <div className="metric-grid metric-grid-2">
+          <Metric
+            label="Fully matched spots"
+            value={comparison.lineItemsScored ? exactRowMetric(comparison) : "Not scored"}
+            tone={comparison.lineItemsScored ? accuracyTone(comparison.lineItemF1) : "neutral"}
+          />
+          <Metric
+            label="Spot fields correct"
+            value={comparison.lineItemsScored ? alignedFieldMetric(comparison) : "Not scored"}
+            tone={comparison.lineItemsScored ? accuracyTone(comparison.matchedRowLeafAccuracy) : "neutral"}
+          />
+        </div>
+      </div>
+
       {comparison.lineItemsScored && <div className="row-score-explanation"><Info size={13} /><span>{rowScoreExplanation(comparison)}</span></div>}
-      {!comparison.lineItemsScored && <div className="row-score-exclusion"><Database size={13} /><span>Row score excluded: {comparison.lineItemScoreExclusionReason}</span></div>}
+      {!comparison.lineItemsScored && <div className="row-score-exclusion"><Database size={13} /><span>Spot score excluded: {comparison.lineItemScoreExclusionReason}</span></div>}
+      {comparison.lineItemsScored && <SpotFailurePanel spots={comparison.spotComparisons} />}
+      <div className="section-label"><span>HEADERS</span><span>{headerPasses}/{scored} correct</span></div>
       <div className="gold-table">
-        <div className="gold-table-head"><span>FIELD</span><span>MODEL</span><span>GOLD</span><span>RESULT</span></div>
+        <div className="gold-table-head"><span>FIELD</span><span>MODEL</span><span>REFERENCE</span><span>RESULT</span></div>
         {comparison.fieldRows.map((row) => (
           <div className={`gold-row ${row.excluded ? "excluded" : ""}`} key={row.field}>
             <span>{fieldLabel(row.field)}{row.excluded && <small>excluded</small>}</span>
@@ -1105,11 +1344,71 @@ function GoldView({ comparison, hasGold }: { comparison: ComparisonResult | null
   );
 }
 
+function SpotFailurePanel({ spots }: { spots: ComparisonResult["spotComparisons"] }) {
+  const goldSpots = spots.filter((spot) => spot.kind === "gold");
+  const extraSpots = spots.filter((spot) => spot.kind === "extra");
+  const failures = spots.filter((spot) => !spot.fullyMatched);
+  if (!spots.length) return null;
+  if (!failures.length) {
+    return <div className="spot-failure-ok"><CheckCircle2 size={13} /><span>All reference spots fully matched.</span></div>;
+  }
+
+  const failedGold = failures.length - extraSpots.length;
+  const counter = extraSpots.length
+    ? `${failedGold} of ${goldSpots.length} · +${extraSpots.length} extra`
+    : `${failedGold} of ${goldSpots.length}`;
+
+  return (
+    <div className="spot-failure-panel">
+      <div className="section-label"><span>SPOT FAILURES</span><span>{counter}</span></div>
+      {failures.map((spot) => {
+        const failingFields = spot.fields.filter((field) => !field.passed);
+        const heading =
+          spot.kind === "extra"
+            ? `EXTRA ${spot.label}`
+            : `${String((spot.goldIndex ?? 0) + 1).padStart(2, "0")} ${spot.label}`;
+        return (
+          <div className="spot-failure" key={`${spot.kind}-${spot.goldIndex ?? spot.predictedIndex}`}>
+            <div className="spot-failure-head">
+              <strong>{heading}</strong>
+              <span>{spot.kind === "extra" ? "not in reference" : spot.paired ? `${spot.fieldPasses}/${spot.fieldTotal} fields` : "unpaired"}</span>
+            </div>
+            {spot.kind === "extra" ? (
+              <div className="spot-failure-note">
+                The model returned this spot, but no reference spot matches it. It counts against fully-matched spots.
+              </div>
+            ) : !spot.paired ? (
+              <div className="spot-failure-note">No model spot shared enough identity fields to pair (need ≥2 of channel / program / dates).</div>
+            ) : (
+              failingFields.map((field) => (
+                <div className="spot-failure-row" key={field.field}>
+                  <span>{fieldLabel(field.field)}</span>
+                  <strong className={field.actual === null ? "null-value" : ""}>{field.actual ?? "null"}</strong>
+                  <strong className={field.expected === null ? "null-value" : ""}>{field.expected ?? "null"}</strong>
+                  <SpotFieldResult expected={field.expected} actual={field.actual} />
+                </div>
+              ))
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function SpotFieldResult({ expected, actual }: { expected: string | null; actual: string | null }) {
+  if (expected === null && actual !== null) {
+    return <span className="overfill" title="Model returned a value where the reference label is null"><AlertTriangle size={13} />overfill</span>;
+  }
+  if (expected !== null && actual === null) return <span className="diff"><XCircle size={13} />missing</span>;
+  return <span className="diff"><XCircle size={13} />diff</span>;
+}
+
 function GoldRowResult({ row }: { row: ComparisonResult["fieldRows"][number] }) {
   if (row.excluded) return <span className="excluded-result"><Database size={13} />excluded</span>;
   if (row.passed) return <span className="match"><CheckCircle2 size={13} />match</span>;
   if (row.expected === null && row.actual !== null) {
-    return <span className="overfill" title="Model returned a value where VRDU gold is null"><AlertTriangle size={13} />overfill</span>;
+    return <span className="overfill" title="Model returned a value where the reference label is null"><AlertTriangle size={13} />overfill</span>;
   }
   if (row.expected !== null && row.actual === null) return <span className="diff"><XCircle size={13} />missing</span>;
   return <span className="diff"><XCircle size={13} />diff</span>;
@@ -1136,8 +1435,8 @@ function EvidenceMetric({ label, value, tone = "neutral" }: { label: string; val
   return <div className={`evidence-metric ${tone}`}><span>{label}</span><strong>{value}</strong></div>;
 }
 
-function Metric({ label, value, inverse = false, warning = false }: { label: string; value: string; inverse?: boolean; warning?: boolean }) {
-  return <div className={`metric ${inverse && value !== "0%" ? "metric-bad" : ""} ${warning && value !== "0%" ? "metric-warn" : ""}`}><span>{label}</span><strong>{value}</strong></div>;
+function Metric({ label, value, tone = "neutral" }: { label: string; value: string; tone?: "good" | "bad" | "warn" | "neutral" }) {
+  return <div className={`metric metric-${tone}`}><span>{label}</span><strong>{value}</strong></div>;
 }
 
 function TelemetryItem({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
@@ -1164,46 +1463,57 @@ function percent(value: number) {
   return `${(value * 100).toFixed(value === 1 || value === 0 ? 0 : 1)}%`;
 }
 
+function formatRate(passes: number, total: number, unit?: string) {
+  if (total === 0) return "n/a";
+  const count = unit ? `${passes}/${total} ${unit}` : `${passes}/${total}`;
+  if (total <= 20) {
+    return `${count} (${percent(passes / total)})`;
+  }
+  return percent(passes / total);
+}
+
+function exactRowMetric(comparison: ComparisonResult) {
+  const extras = comparison.spotComparisons.filter((spot) => spot.kind === "extra").length;
+  const base = `${comparison.lineItemMatches}/${comparison.goldLineItems}`;
+  return extras > 0 ? `${base} (+${extras} extra)` : base;
+}
+
 function alignedFieldMetric(comparison: ComparisonResult) {
-  if (comparison.matchedLeafTotal === 0) return "No aligned rows";
-  return `${comparison.matchedLeafPasses}/${comparison.matchedLeafTotal} · ${percent(comparison.matchedRowLeafAccuracy)}`;
+  if (comparison.matchedLeafTotal === 0) return "No matched spots";
+  return formatRate(comparison.matchedLeafPasses, comparison.matchedLeafTotal, "fields");
 }
 
-function rowScoreHeadline(comparison: ComparisonResult) {
-  if (!comparison.lineItemsScored) return "Current: row score excluded; gold labels are unreliable";
-  if (comparison.goldLineItems === 0) {
-    if (comparison.predictedLineItems === 0) return "Current: no line items in model or gold";
-    return `Current: ${comparison.predictedLineItems} model row${comparison.predictedLineItems === 1 ? "" : "s"}; gold has none`;
-  }
-  return `Current: ${comparison.lineItemMatches} exact · ${comparison.predictedLineItems} model / ${comparison.goldLineItems} gold rows`;
+function accuracyTone(rate: number): "good" | "bad" | "warn" {
+  if (rate >= 0.9) return "good";
+  if (rate >= 0.5) return "warn";
+  return "bad";
 }
 
-function rowScoreDetail(comparison: ComparisonResult) {
-  if (!comparison.lineItemsScored) return "Header scoring and partner routing still run.";
-  if (comparison.goldLineItems === 0 && comparison.predictedLineItems === 0) return "No rows is the correct result.";
-  if (comparison.matchedLeafTotal > 0) {
-    return `${comparison.matchedLeafPasses}/${comparison.matchedLeafTotal} aligned fields match; an exact row requires all 5.`;
-  }
-  return "An exact row requires channel, description, both dates, and amount.";
+function errorCountTone(count: number): "good" | "bad" {
+  return count === 0 ? "good" : "bad";
 }
 
 function rowScoreExplanation(comparison: ComparisonResult) {
   if (comparison.goldLineItems === 0 && comparison.predictedLineItems === 0) {
-    return "Gold and the model both contain no line items, so exact-row F1 is 100%.";
+    return "Reference and the model both contain no spots, so fully matched is 100%.";
   }
   if (comparison.goldLineItems === 0) {
-    return `Gold contains no line items, but the model returned ${comparison.predictedLineItems}. Exact-row F1 is therefore 0%.`;
+    return `Reference contains no spots, but the model returned ${comparison.predictedLineItems}. Fully matched is therefore 0%.`;
   }
-  const goldRows = `${comparison.goldLineItems} gold row${comparison.goldLineItems === 1 ? "" : "s"}`;
-  const modelRows = `${comparison.predictedLineItems} model row${comparison.predictedLineItems === 1 ? "" : "s"}`;
-  const alignedFields = comparison.matchedLeafTotal > 0
-    ? ` ${comparison.matchedLeafPasses}/${comparison.matchedLeafTotal} fields matched after aligning similar rows.`
-    : " No rows could be aligned for field-level comparison.";
-  return `Exact row means channel, description, both dates, and amount all match. ${comparison.lineItemMatches} of ${goldRows} matched across ${modelRows}.${alignedFields}`;
+  const goldItems = `${comparison.goldLineItems} reference spot${comparison.goldLineItems === 1 ? "" : "s"}`;
+  const modelItems = `${comparison.predictedLineItems} model spot${comparison.predictedLineItems === 1 ? "" : "s"}`;
+  const fieldCredit = comparison.matchedLeafTotal > 0
+    ? ` ${comparison.matchedLeafPasses}/${comparison.matchedLeafTotal} fields still matched after pairing similar spots.`
+    : " No spots could be paired for field-level comparison.";
+  return `A spot fully matches only when channel, program, both dates, and amount all agree with the reference. ${comparison.lineItemMatches} of ${goldItems} fully matched across ${modelItems}.${fieldCredit}`;
 }
 
 function fieldLabel(field: string) {
   if (field === "contract_num") return "order / contract ID";
+  if (field === "program_desc") return "program";
+  if (field === "program_start_date") return "start date";
+  if (field === "program_end_date") return "end date";
+  if (field === "sub_amount") return "amount";
   return field.replaceAll("_", " ");
 }
 
@@ -1243,7 +1553,7 @@ function evaluationRunReason(run: EvalRun | undefined, fallbackReasons: string[]
   if (reason === "schema_invalid") return "JSON schema invalid";
   if (reason === "date_order_invalid") return "Flight dates out of order";
   if (reason === "gross_amount_unparseable") return "Gross amount unreadable";
-  if (reason === "line_item_shape_invalid") return "Incomplete line item";
+  if (reason === "line_item_shape_invalid") return "Incomplete spot";
   return "Review required";
 }
 
@@ -1259,10 +1569,10 @@ function runEvidenceNote(
   );
   if (goldNullFields.length) {
     const fields = formatFieldList(goldNullFields);
-    return `Gold also marks ${fields} null. That extraction is correct; the example partner policy still sends it to review.`;
+    return `Reference also marks ${fields} null. That extraction is correct; the example partner policy still sends it to review.`;
   }
   if (primary && acceptedCount !== null) {
-    return `Saved benchmark: ${acceptedCount}/${acceptedCount} accepted documents matched gold on advertiser, order ID, and gross${benchmarkGeneratedAt ? ` · ${formatReportDate(benchmarkGeneratedAt)}` : ""}.`;
+    return `Saved benchmark: ${acceptedCount}/${acceptedCount} accepted documents matched reference on advertiser, order ID, and gross${benchmarkGeneratedAt ? ` · ${formatReportDate(benchmarkGeneratedAt)}` : ""}.`;
   }
   return "No saved benchmark is loaded. This route uses the current extraction and policy checks.";
 }

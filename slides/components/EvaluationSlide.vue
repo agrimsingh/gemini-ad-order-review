@@ -22,19 +22,19 @@
           <div class="model-name"><span>Primary</span><strong>Gemini 3.5 Flash</strong></div>
           <div class="model-measure"><span>Auto-accept</span><strong>75.0%</strong></div>
           <div class="model-measure"><span>Accepted key fields</span><strong>100%</strong></div>
-          <div class="model-measure"><span>Total cost / accepted</span><strong>$0.0231</strong></div>
+          <div class="model-measure"><span>Total cost / accepted</span><strong>$0.0234</strong></div>
           <div class="decision-tag">Use</div>
         </div>
 
         <div class="model-result challenger">
           <div class="model-name"><span>Cost challenger</span><strong>Gemini 3.1 Flash-Lite</strong></div>
-          <div class="model-measure"><span>Auto-accept</span><strong>66.7%</strong></div>
-          <div class="model-measure bad-measure"><span>Accepted key fields</span><strong>87.5%</strong></div>
-          <div class="model-measure"><span>Total cost / accepted</span><strong>$0.0042</strong></div>
+          <div class="model-measure"><span>Auto-accept</span><strong>75.0%</strong></div>
+          <div class="model-measure"><span>Accepted key fields</span><strong>100%</strong></div>
+          <div class="model-measure"><span>Total cost / accepted</span><strong>$0.0038</strong></div>
           <div class="decision-tag reject-tag">Hold</div>
         </div>
 
-        <p class="model-conclusion">Flash-Lite is cheaper, but one wrong critical header bypassed review. That breaks the operating rule.</p>
+        <p class="model-conclusion">Flash-Lite matched quality on this run, but an earlier run auto-accepted a wrong critical header. It stays on hold pending a larger paired run.</p>
       </section>
 
       <aside class="eval-method">
@@ -57,9 +57,9 @@
 
     <div class="quality-strip" aria-label="Primary model evaluation metrics">
       <div><span>Schema valid</span><strong>100%</strong></div>
-      <div><span>Header field pass</span><strong>88.3%</strong></div>
-      <div><span>Exact row F1</span><strong>29.1%</strong><small>31 exact · 106 extracted / 107 reference rows</small></div>
-      <div><span>Aligned row fields</span><strong>79.2%</strong><small>301 of 380 fields</small></div>
+      <div><span>Header field pass</span><strong>87.4%</strong></div>
+      <div><span>Exact row F1</span><strong>59.2%</strong><small>63 exact · 106 extracted / 107 reference rows</small></div>
+      <div><span>Aligned row fields</span><strong>95.5%</strong><small>363 of 380 fields</small></div>
     </div>
   </div>
 </template>

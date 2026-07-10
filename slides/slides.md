@@ -20,7 +20,7 @@ The policy is conservative by design. A document bypasses header review only whe
 
 Nine of twelve documents cleared that rule. All nine matched the benchmark on advertiser, order ID, and gross amount. The cost per accepted document includes inference spent on the three reviewed documents, so it reflects the workload rather than cherry-picking successful calls.
 
-Line items are a separate decision. Exact-row F1 is 29.1% because all five row fields must match for credit. That is useful diagnostic evidence, but it is not ready for automatic posting.
+Line items are a separate decision. Exact-row F1 is 59.2% because all five row fields must match for credit. That is useful diagnostic evidence, but it is not ready for automatic posting.
 -->
 
 ---

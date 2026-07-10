@@ -26,6 +26,8 @@ function readReport(model: string) {
       missingCritical: run.result?.validation?.missingCritical ?? [],
       fieldPassRate: run.comparison?.fieldPassRate ?? null,
       lineItemF1: run.comparison?.lineItemsScored === false ? null : run.comparison?.lineItemF1 ?? null,
+      lineItemMatches: run.comparison?.lineItemsScored === false ? null : run.comparison?.lineItemMatches ?? null,
+      goldLineItems: run.comparison?.goldLineItems ?? run.expectedLineItems,
       lineItemsScored: run.comparison?.lineItemsScored ?? true,
       lineItemScoreExclusionReason: run.comparison?.lineItemScoreExclusionReason ?? null,
       criticalFieldsAllCorrect: run.comparison?.criticalFieldsAllCorrect ?? false,
