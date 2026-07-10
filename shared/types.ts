@@ -98,10 +98,10 @@ export type ExtractionResponse = {
   configuration: {
     model: string;
     api: "interactions";
-    resolution: "high";
+    resolution: "high" | "api_default";
     thinking: "minimal" | "low";
     store: false;
-    inputMode: "rasterized_pdf_pages";
+    inputMode: "rasterized_pdf_pages" | "inline_pdf_document";
     normalizationVersion: "address-contact-v1";
   };
 };

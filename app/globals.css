@@ -241,6 +241,20 @@ button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visib
 .scenario-copy strong { overflow: hidden; font-size: 11px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
 .scenario-copy span { margin-top: 2px; overflow: hidden; color: var(--ink-soft); font-size: 9px; line-height: 1.3; text-overflow: ellipsis; white-space: nowrap; }
 .scenario-pages { color: var(--ink-faint); font-family: "SFMono-Regular", Consolas, monospace; font-size: 9px; }
+.hosted-source-note {
+  margin: 0 9px;
+  padding: 11px;
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 8px;
+  color: var(--amber);
+  background: var(--amber-soft);
+  border: 1px solid oklch(0.85 0.06 75);
+  border-radius: var(--radius);
+}
+.hosted-source-note > span { display: flex; flex-direction: column; gap: 3px; }
+.hosted-source-note strong { color: var(--ink); font-size: 10px; }
+.hosted-source-note small { color: var(--ink-soft); font-size: 8px; line-height: 1.4; }
 .upload-button {
   min-height: 38px;
   margin: 12px 9px 8px;
@@ -351,6 +365,24 @@ button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visib
 .icon-actions a:hover, .icon-actions button:hover, .icon-button:hover { color: var(--ink); border-color: var(--line-strong); }
 .pdf-stage { min-height: 0; display: grid; grid-template-rows: auto minmax(0, 1fr); overflow: hidden; background: var(--pdf); }
 .pdf-stage iframe { width: calc(100% - 24px); height: calc(100% - 24px); margin: 12px; border: 0; border-radius: 3px; background: var(--surface); box-shadow: var(--shadow); }
+.hosted-upload-empty {
+  grid-row: 1 / -1;
+  height: 100%;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  background: var(--surface-muted);
+  text-align: center;
+}
+.hosted-upload-empty > span { width: 48px; height: 48px; display: grid; place-items: center; color: var(--green); background: var(--green-soft); border-radius: 6px; }
+.hosted-upload-empty h3 { margin: 14px 0 6px; color: var(--ink); font-size: 18px; }
+.hosted-upload-empty p { max-width: 360px; margin: 0; font-size: 10px; line-height: 1.5; }
+.hosted-upload-empty code { color: var(--ink); font-family: "SFMono-Regular", Consolas, monospace; }
+.hosted-upload-empty button { min-height: 38px; margin-top: 16px; padding: 0 13px; display: inline-flex; align-items: center; gap: 7px; color: white; border: 1px solid var(--green-hover); border-radius: var(--radius); background: var(--green); cursor: pointer; font-size: 10px; font-weight: 750; }
+.hosted-upload-empty button:hover { background: var(--green-hover); }
 .preview-toolbar {
   min-height: 38px;
   padding: 0 11px;
@@ -797,6 +829,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visib
   cursor: pointer;
 }
 .review-slice-list button:hover { background: var(--amber-soft); }
+.review-slice-list button:disabled { cursor: default; opacity: 0.72; }
+.review-slice-list button:disabled:hover { background: var(--surface); }
 .review-icon { width: 25px; height: 25px; display: grid; place-items: center; color: var(--amber); background: var(--amber-soft); border-radius: 4px; }
 .review-slice-list button > span:nth-child(2) { display: flex; flex-direction: column; gap: 2px; }
 .review-slice-list strong { font-size: 9px; text-transform: capitalize; }
@@ -811,6 +845,8 @@ button:focus-visible, a:focus-visible, select:focus-visible, summary:focus-visib
 .run-table-row { width: 100%; min-width: 920px; min-height: 48px; padding: 7px 10px; display: grid; grid-template-columns: minmax(220px, 1.4fr) minmax(120px, 0.8fr) 75px 85px 70px 70px 70px; align-items: center; gap: 8px; border: 0; border-bottom: 1px solid var(--line); background: transparent; text-align: left; }
 button.run-table-row { cursor: pointer; }
 button.run-table-row:hover { background: var(--surface-muted); }
+button.run-table-row:disabled { color: inherit; cursor: default; opacity: 0.8; }
+button.run-table-row:disabled:hover { background: transparent; }
 .run-table-row:last-child { border-bottom: 0; }
 .run-table-head { min-height: 32px; color: var(--ink-faint); background: var(--surface-muted); font-size: 7px; font-weight: 800; }
 .run-table-row > span { font-family: "SFMono-Regular", Consolas, monospace; font-size: 8px; }

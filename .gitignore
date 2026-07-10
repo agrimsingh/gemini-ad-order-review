@@ -24,6 +24,7 @@ data/vrdu-mini/*
 # pack remain local.
 outputs/*
 !outputs/EVALUATION_SUMMARY.md
+!outputs/evaluation-public.json
 
 # Internal planning notes are not part of the public project.
 EXECUTION_PLAN.md

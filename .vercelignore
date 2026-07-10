@@ -1,0 +1,11 @@
+.git
+.next
+.env
+.env.local
+node_modules
+slides/node_modules
+slides/dist
+tmp
+data/vrdu-mini
+outputs/eval-*.json
+outputs/vrdu-mini-ai-studio.zip

@@ -4,6 +4,8 @@ import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 
+const publicSnapshotPath = path.join(process.cwd(), "outputs", "evaluation-public.json");
+
 function readReport(model: string) {
   const reportPath = path.join(process.cwd(), "outputs", `eval-${model}.json`);
   if (!fs.existsSync(reportPath)) return null;
@@ -34,8 +36,13 @@ function readReport(model: string) {
 }
 
 export function GET() {
+  const primary = readReport("gemini-3.5-flash");
+  const challenger = readReport("gemini-3.1-flash-lite");
+  if ((!primary || !challenger) && fs.existsSync(publicSnapshotPath)) {
+    return NextResponse.json(JSON.parse(fs.readFileSync(publicSnapshotPath, "utf8")));
+  }
   return NextResponse.json({
-    primary: readReport("gemini-3.5-flash"),
-    challenger: readReport("gemini-3.1-flash-lite"),
+    primary,
+    challenger,
   });
 }

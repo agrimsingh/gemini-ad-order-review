@@ -1,0 +1,194 @@
+[
+  {
+    "document_id": "1b3d499b-17c6-eca9-1255-29ea55100b3d",
+    "filename": "1b3d499b-17c6-eca9-1255-29ea55100b3d.pdf",
+    "slice": "demo",
+    "difficulty": "medium",
+    "demo_rank": 1,
+    "include_reason": "Primary live-demo document: one scanned page, all nine header fields, six repeated line items, and complete line-item amounts.",
+    "page_count": 1,
+    "line_item_count": 6,
+    "score_excluded_fields": [],
+    "missing_header_fields": [],
+    "amount_sum_status": "matches_gross"
+  },
+  {
+    "document_id": "00c3353e-a25f-574a-a9db-39a41579895a",
+    "filename": "00c3353e-a25f-574a-a9db-39a41579895a.pdf",
+    "slice": "baseline",
+    "difficulty": "easy",
+    "demo_rank": 2,
+    "include_reason": "Fast smoke test with one page, one line item, and a complete amount reconciliation.",
+    "page_count": 1,
+    "line_item_count": 1,
+    "score_excluded_fields": [],
+    "missing_header_fields": [
+      "tv_address"
+    ],
+    "amount_sum_status": "matches_gross"
+  },
+  {
+    "document_id": "c1ede720-d1f9-dcb4-e56f-65bf46300e84",
+    "filename": "c1ede720-d1f9-dcb4-e56f-65bf46300e84.pdf",
+    "slice": "baseline",
+    "difficulty": "medium",
+    "demo_rank": 3,
+    "include_reason": "Compact one-page form with all nine header fields and four complete line items.",
+    "page_count": 1,
+    "line_item_count": 4,
+    "score_excluded_fields": [],
+    "missing_header_fields": [],
+    "amount_sum_status": "matches_gross"
+  },
+  {
+    "document_id": "493546-warren-for-senate-est-12911-10-26-12-10-28-12",
+    "filename": "493546-warren-for-senate-est-12911-10-26-12-10-28-12.pdf",
+    "slice": "layout",
+    "difficulty": "hard",
+    "demo_rank": 4,
+    "include_reason": "Rotated multi-page layout with all nine header fields and 21 line items; tests native visual understanding.",
+    "page_count": 2,
+    "line_item_count": 21,
+    "score_excluded_fields": [
+      "flight_from",
+      "tv_address"
+    ],
+    "missing_header_fields": [],
+    "amount_sum_status": "matches_gross"
+  },
+  {
+    "document_id": "0892f433-a82d-eae3-d2ae-e578edea8656",
+    "filename": "0892f433-a82d-eae3-d2ae-e578edea8656.pdf",
+    "slice": "density",
+    "difficulty": "hard",
+    "demo_rank": 5,
+    "include_reason": "Dense three-page table with 31 line items and a complete amount reconciliation.",
+    "page_count": 3,
+    "line_item_count": 31,
+    "score_excluded_fields": [],
+    "missing_header_fields": [
+      "property"
+    ],
+    "amount_sum_status": "matches_gross"
+  },
+  {
+    "document_id": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2",
+    "filename": "42adf390-6e50-6fbc-fbbe-65117a1ffcb2.pdf",
+    "slice": "missing_fields",
+    "difficulty": "medium",
+    "demo_rank": 6,
+    "include_reason": "Invoice contains both Invoice # and Order # plus a Net Total but no explicit Gross Amount; tests the partner identifier precedence and gross-vs-net field contract.",
+    "page_count": 1,
+    "line_item_count": 2,
+    "score_excluded_fields": [],
+    "missing_header_fields": [
+      "agency",
+      "product",
+      "gross_amount"
+    ],
+    "amount_sum_status": "not_applicable"
+  },
+  {
+    "document_id": "464180-senate-conservatives-action-request-form",
+    "filename": "464180-senate-conservatives-action-request-form.pdf",
+    "slice": "out_of_scope",
+    "difficulty": "hard",
+    "demo_rank": 7,
+    "include_reason": "Advertising request sheet rather than an invoice; only agency is labeled, making it a strong hallucination and routing trap.",
+    "page_count": 1,
+    "line_item_count": 0,
+    "score_excluded_fields": [],
+    "missing_header_fields": [
+      "property",
+      "tv_address",
+      "advertiser",
+      "product",
+      "contract_num",
+      "flight_from",
+      "flight_to",
+      "gross_amount"
+    ],
+    "amount_sum_status": "not_applicable"
+  },
+  {
+    "document_id": "749e7f7f-371f-772d-62e9-2970b3883d56",
+    "filename": "749e7f7f-371f-772d-62e9-2970b3883d56.pdf",
+    "slice": "financial_edge",
+    "difficulty": "medium",
+    "demo_rank": 8,
+    "include_reason": "Credit memo with a negative gross amount and no line items; tests parentheses-style money parsing.",
+    "page_count": 1,
+    "line_item_count": 0,
+    "score_excluded_fields": [
+      "property"
+    ],
+    "missing_header_fields": [
+      "agency",
+      "contract_num",
+      "flight_from",
+      "flight_to"
+    ],
+    "amount_sum_status": "not_applicable"
+  },
+  {
+    "document_id": "c442b691-e6c8-7e9d-3970-a205dc05b56d",
+    "filename": "c442b691-e6c8-7e9d-3970-a205dc05b56d.pdf",
+    "slice": "financial_edge",
+    "difficulty": "hard",
+    "demo_rank": 9,
+    "include_reason": "Zero gross amount alongside non-zero line-item amounts; demonstrates why arithmetic consistency is advisory, not a hard accuracy rule.",
+    "page_count": 2,
+    "line_item_count": 4,
+    "score_excluded_fields": [],
+    "missing_header_fields": [
+      "property"
+    ],
+    "amount_sum_status": "differs_from_gross"
+  },
+  {
+    "document_id": "5691cccd-228d-fab4-6d9b-bbf8df92a94a",
+    "filename": "5691cccd-228d-fab4-6d9b-bbf8df92a94a.pdf",
+    "slice": "financial_edge",
+    "difficulty": "hard",
+    "demo_rank": 10,
+    "include_reason": "All nine header fields are present, but the single annotated line amount does not equal gross; another legitimate arithmetic anomaly.",
+    "page_count": 1,
+    "line_item_count": 1,
+    "score_excluded_fields": [],
+    "missing_header_fields": [],
+    "amount_sum_status": "differs_from_gross"
+  },
+  {
+    "document_id": "782276fb-5d1c-af75-b44f-d75997a7b168",
+    "filename": "782276fb-5d1c-af75-b44f-d75997a7b168.pdf",
+    "slice": "ocr_quality",
+    "difficulty": "stress",
+    "demo_rank": 11,
+    "include_reason": "Eight-page scan with 37 line items and malformed OCR in the labeled gross amount; tests parser and label-quality handling.",
+    "page_count": 8,
+    "line_item_count": 37,
+    "score_excluded_fields": [
+      "gross_amount",
+      "product"
+    ],
+    "missing_header_fields": [
+      "agency"
+    ],
+    "amount_sum_status": "partial_line_amounts"
+  },
+  {
+    "document_id": "48310d93-0e1d-5377-b3e1-8bcdfaaa6422",
+    "filename": "48310d93-0e1d-5377-b3e1-8bcdfaaa6422.pdf",
+    "slice": "long_document",
+    "difficulty": "stress",
+    "demo_rank": 12,
+    "include_reason": "Ten-page form with all nine header fields, 64 line items, and partial line-item amounts; bounded stress test for latency and output completeness.",
+    "page_count": 10,
+    "line_item_count": 64,
+    "score_excluded_fields": [],
+    "score_line_items": false,
+    "line_item_score_exclusion_reason": "Source audit found truncated row dates and Comments text spliced into program descriptions.",
+    "missing_header_fields": [],
+    "amount_sum_status": "partial_line_amounts"
+  }
+]

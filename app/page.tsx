@@ -45,7 +45,7 @@ import type {
 const BASELINE_ID = "00c3353e-a25f-574a-a9db-39a41579895a";
 const NULL_TRAP_ID = "42adf390-6e50-6fbc-fbbe-65117a1ffcb2";
 const LONG_STRESS_ID = "48310d93-0e1d-5377-b3e1-8bcdfaaa6422";
-const EXTRACTION_REQUEST_PROMPT = `${EXTRACTION_PROMPT}\n\nThe images are consecutive pages from one PDF. Extract this document now.`;
+const EXTRACTION_REQUEST_PROMPT = `${EXTRACTION_PROMPT}\n\nExtract this PDF document now.`;
 
 const MODEL_OPTIONS = [
   { value: "gemini-3.5-flash", label: "Gemini 3.5 Flash", role: "Recommended" },
@@ -175,6 +175,9 @@ export default function Home() {
     lineItems: 0,
     scoreExclusions: 0,
   });
+  const [sourcesAvailable, setSourcesAvailable] = useState<boolean | null>(null);
+  const [pdfInputLabel, setPdfInputLabel] = useState("Detecting input mode");
+  const [maxPdfBytes, setMaxPdfBytes] = useState(50 * 1024 * 1024);
   const [evaluation, setEvaluation] = useState<EvaluationPayload>({ primary: null, challenger: null });
   const [evaluationState, setEvaluationState] = useState<"loading" | "ready" | "error">("loading");
   const [selectedId, setSelectedId] = useState(BASELINE_ID);
@@ -218,6 +221,7 @@ export default function Home() {
         return response.json();
       })
       .then((benchmark) => {
+        const available = Boolean(benchmark.sourcesAvailable);
         setDocuments(
           [...benchmark.documents].sort((left: ManifestEntry, right: ManifestEntry) => {
             if (left.document_id === BASELINE_ID) return -1;
@@ -226,13 +230,25 @@ export default function Home() {
           }),
         );
         setSummary(benchmark.summary);
+        setSourcesAvailable(available);
+        if (!available) setView("benchmark");
       })
-      .catch(() => setDocuments([]));
+      .catch(() => {
+        setDocuments([]);
+        setSourcesAvailable(false);
+      });
 
     fetch("/api/health")
       .then((response) => response.json())
-      .then((health) => setKeyConfigured(Boolean(health.keyConfigured)))
-      .catch(() => setKeyConfigured(false));
+      .then((health) => {
+        setKeyConfigured(Boolean(health.keyConfigured));
+        setPdfInputLabel(health.pdfInput ?? "PDF document");
+        if (Number.isFinite(health.maxPdfBytes)) setMaxPdfBytes(health.maxPdfBytes);
+      })
+      .catch(() => {
+        setKeyConfigured(false);
+        setPdfInputLabel("PDF document");
+      });
 
     fetch("/api/evaluation")
       .then((response) => {
@@ -250,7 +266,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (uploadedFile) {
+    if (uploadedFile || sourcesAvailable !== true) {
       setGold(null);
       return;
     }
@@ -258,7 +274,7 @@ export default function Home() {
       .then((response) => (response.ok ? response.json() : null))
       .then(setGold)
       .catch(() => setGold(null));
-  }, [selectedId, uploadedFile]);
+  }, [selectedId, uploadedFile, sourcesAvailable]);
 
   useEffect(() => {
     return () => {
@@ -293,6 +309,11 @@ export default function Home() {
 
   function uploadDocument(file?: File) {
     if (!file) return;
+    if (file.size > maxPdfBytes) {
+      setError(`PDF exceeds the ${Math.floor(maxPdfBytes / 1024 / 1024)} MB limit.`);
+      setRunState("error");
+      return;
+    }
     if (file.type !== "application/pdf" && !file.name.toLowerCase().endsWith(".pdf")) {
       setError("Only PDF documents are supported.");
       setRunState("error");
@@ -306,6 +327,11 @@ export default function Home() {
   }
 
   async function runExtraction() {
+    if (!uploadedFile && sourcesAvailable === false) {
+      setError("Upload a PDF to run extraction in the hosted demo.");
+      setRunState("error");
+      return;
+    }
     clearTimers();
     setRunState("running");
     setProgressStep(0);
@@ -386,7 +412,7 @@ export default function Home() {
                 </select>
               </label>
               <SettingRow label="API" value="Interactions" />
-              <SettingRow label="Media" value="High resolution" />
+              <SettingRow label="Media" value={pdfInputLabel} />
               <SettingRow label="Thinking" value={model === "gemini-3.1-pro-preview" ? "Low" : "Minimal"} />
               <SettingRow label="Storage" value="store=false" />
               <details className="settings-prompt">
@@ -403,13 +429,19 @@ export default function Home() {
         <main className="live-workspace view-enter">
           <aside className="scenario-rail">
             <div className="rail-heading">
-              <span className="eyebrow">CHOOSE A PROOF</span>
-              <h1>Demo scenarios</h1>
-              <p>Start clean, then test whether the gate catches risk.</p>
+              <span className="eyebrow">{sourcesAvailable === false ? "LIVE DOCUMENT" : "CHOOSE A PROOF"}</span>
+              <h1>{sourcesAvailable === false ? "Live extraction" : "Demo scenarios"}</h1>
+              <p>{sourcesAvailable === false ? "Upload a PDF to run the same extraction and review gate." : "Start clean, then test whether the gate catches risk."}</p>
             </div>
 
-            <div className="scenario-list">
-              {FEATURED_SCENARIOS.map((scenario) => {
+            {sourcesAvailable === false ? (
+              <div className="hosted-source-note">
+                <LockKeyhole size={16} />
+                <span><strong>Benchmark sources stay local</strong><small>Upload a PDF using the hosted inline-PDF fallback. Saved results use the measured 180 DPI path.</small></span>
+              </div>
+            ) : (
+              <div className="scenario-list">
+                {FEATURED_SCENARIOS.map((scenario) => {
                 const metadata = documents.find((entry) => entry.document_id === scenario.id);
                 const active = !uploadedFile && selectedId === scenario.id;
                 return (
@@ -427,8 +459,9 @@ export default function Home() {
                     <span className="scenario-pages">{metadata?.page_count ?? "–"}p</span>
                   </button>
                 );
-              })}
-            </div>
+                })}
+              </div>
+            )}
 
             <button className="upload-button" onClick={() => inputRef.current?.click()}>
               <Upload size={15} />
@@ -442,7 +475,7 @@ export default function Home() {
               onChange={(event) => uploadDocument(event.target.files?.[0])}
             />
 
-            <section className={`all-documents ${allDocumentsOpen ? "open" : ""}`}>
+            {sourcesAvailable !== false && <section className={`all-documents ${allDocumentsOpen ? "open" : ""}`}>
               <button className="document-list-toggle" aria-expanded={allDocumentsOpen} onClick={() => setAllDocumentsOpen((open) => !open)}>
                 <Layers3 size={14} /><span>All benchmark documents</span><span>{summary.documents}</span><ChevronDown size={13} />
               </button>
@@ -460,7 +493,7 @@ export default function Home() {
                   ))}
                 </div>
               )}
-            </section>
+            </section>}
 
             <div className="rail-evidence">
               <Database size={15} />
@@ -474,8 +507,11 @@ export default function Home() {
             selected={selected}
             selectedId={selectedId}
             pageNumber={pageNumber}
+            sourcesAvailable={sourcesAvailable === true}
+            mediaLabel={pdfInputLabel}
             onPageChange={setPageNumber}
             onReset={resetRun}
+            onUpload={() => inputRef.current?.click()}
           />
 
           <aside className="decision-panel">
@@ -485,7 +521,9 @@ export default function Home() {
                 model={model}
                 onRun={runExtraction}
                 selectedMeasuredRun={selectedMeasuredRun}
-                hasGold={!uploadedFile}
+                hasGold={!uploadedFile && sourcesAvailable === true}
+                canRun={Boolean(uploadedFile || sourcesAvailable === true)}
+                mediaLabel={pdfInputLabel}
               />
             )}
             {runState === "running" && <RunningDecision progressStep={progressStep} />}
@@ -522,6 +560,7 @@ export default function Home() {
           acceptedCount={Math.round(primary.documentsCompleted * primary.acceptanceRate)}
           reviewCount={primary.documentsCompleted - Math.round(primary.documentsCompleted * primary.acceptanceRate)}
           summary={summary}
+          sourcesAvailable={sourcesAvailable === true}
           onOpenLive={(id) => { chooseDocument(id); setView("live"); }}
         />
       ) : (
@@ -537,28 +576,35 @@ function DocumentPanel({
   selected,
   selectedId,
   pageNumber,
+  sourcesAvailable,
+  mediaLabel,
   onPageChange,
   onReset,
+  onUpload,
 }: {
   uploadedFile: File | null;
   previewUrl: string;
   selected: ManifestEntry | null;
   selectedId: string;
   pageNumber: number;
+  sourcesAvailable: boolean;
+  mediaLabel: string;
   onPageChange: React.Dispatch<React.SetStateAction<number>>;
   onReset: () => void;
+  onUpload: () => void;
 }) {
   const pageCount = selected?.page_count ?? 1;
+  const hostedEmpty = !uploadedFile && !sourcesAvailable;
   return (
     <section className="document-panel">
       <div className="document-toolbar">
         <div className="document-heading">
-          <span className="eyebrow">{uploadedFile ? "PARTNER DOCUMENT" : (SLICE_NAMES[selected?.slice ?? ""] ?? "BENCHMARK DOCUMENT").toUpperCase()}</span>
-          <h2>{uploadedFile ? uploadedFile.name : TITLES[selectedId] ?? "Loading document"}</h2>
-          <p>{uploadedFile ? "Transient upload · no gold label" : selected?.include_reason ?? "Loading benchmark metadata"}</p>
+          <span className="eyebrow">{uploadedFile ? "PARTNER DOCUMENT" : hostedEmpty ? "HOSTED DEMO" : (SLICE_NAMES[selected?.slice ?? ""] ?? "BENCHMARK DOCUMENT").toUpperCase()}</span>
+          <h2>{uploadedFile ? uploadedFile.name : hostedEmpty ? "Upload a partner PDF" : TITLES[selectedId] ?? "Loading document"}</h2>
+          <p>{uploadedFile ? "Transient upload · no gold label" : hostedEmpty ? "Source benchmark documents are intentionally not deployed." : selected?.include_reason ?? "Loading benchmark metadata"}</p>
         </div>
         <div className="icon-actions">
-          {!uploadedFile && <a href={`/api/documents/${selectedId}/pdf`} target="_blank" rel="noreferrer" title="Open source PDF"><ExternalLink size={15} /></a>}
+          {!uploadedFile && sourcesAvailable && <a href={`/api/documents/${selectedId}/pdf`} target="_blank" rel="noreferrer" title="Open source PDF"><ExternalLink size={15} /></a>}
           <button onClick={onReset} title="Reset run"><RotateCcw size={15} /></button>
         </div>
       </div>
@@ -566,6 +612,13 @@ function DocumentPanel({
       <div className="pdf-stage">
         {uploadedFile ? (
           <iframe title="Uploaded PDF document preview" src={previewUrl} />
+        ) : hostedEmpty ? (
+          <div className="hosted-upload-empty">
+            <span><Upload size={22} /></span>
+            <h3>Run your own document</h3>
+            <p>The PDF stays transient and the API request uses <code>store=false</code>.</p>
+            <button onClick={onUpload}><Upload size={15} /> Choose PDF</button>
+          </div>
         ) : (
           <>
             <div className="preview-toolbar">
@@ -582,9 +635,9 @@ function DocumentPanel({
       </div>
 
       <div className="document-footer">
-        <span><FileText size={13} />{uploadedFile ? "Uploaded PDF" : `${pageCount} page${pageCount === 1 ? "" : "s"}`}</span>
-        <span>{uploadedFile ? "No benchmark comparison" : `${selected?.line_item_count ?? 0} annotated row${selected?.line_item_count === 1 ? "" : "s"}`}</span>
-        <span>High-resolution page images</span>
+        <span><FileText size={13} />{uploadedFile ? "Uploaded PDF" : hostedEmpty ? "Bring your own PDF" : `${pageCount} page${pageCount === 1 ? "" : "s"}`}</span>
+        <span>{uploadedFile || hostedEmpty ? "No benchmark comparison" : `${selected?.line_item_count ?? 0} annotated row${selected?.line_item_count === 1 ? "" : "s"}`}</span>
+        <span>{uploadedFile ? mediaLabel : hostedEmpty ? "Source files not deployed" : "High-resolution page images"}</span>
       </div>
     </section>
   );
@@ -596,12 +649,16 @@ function PreRunDecision({
   onRun,
   selectedMeasuredRun,
   hasGold,
+  canRun,
+  mediaLabel,
 }: {
   keyConfigured: boolean | null;
   model: string;
   onRun: () => void;
   selectedMeasuredRun: EvalRun | null;
   hasGold: boolean;
+  canRun: boolean;
+  mediaLabel: string;
 }) {
   return (
     <div className="decision-state pre-run-state">
@@ -609,11 +666,11 @@ function PreRunDecision({
       <h2>Will this clear the partner review rule?</h2>
       <p>Extraction quality and partner routing are evaluated separately.</p>
 
-      <button className="primary-action" disabled={keyConfigured === false} onClick={onRun}>
-        <Play size={16} fill="currentColor" /> Run decision
+      <button className="primary-action" disabled={keyConfigured === false || !canRun} onClick={onRun}>
+        <Play size={16} fill="currentColor" /> {canRun ? "Run decision" : "Upload a PDF to run"}
         <ArrowRight size={15} />
       </button>
-      <div className="run-model"><Zap size={13} /><span>{modelLabel(model)}</span><small>high resolution · store=false</small></div>
+      <div className="run-model"><Zap size={13} /><span>{modelLabel(model)}</span><small>{mediaLabel.toLowerCase()} · store=false</small></div>
 
       <div className="gate-preview">
         <div className="section-heading"><span>EXAMPLE PARTNER POLICY</span><small>deterministic</small></div>
@@ -630,8 +687,8 @@ function PreRunDecision({
       <div className="pre-run-evidence">
         <ShieldCheck size={16} />
         <div>
-          <strong>{hasGold ? "Gold remains hidden until the run" : "No gold label for this upload"}</strong>
-          <span>{selectedMeasuredRun ? "A prior measured result exists, but it does not determine this run." : "Gold scores extraction quality; the policy determines routing."}</span>
+          <strong>{hasGold ? "Gold remains hidden until the run" : canRun ? "No benchmark label for this upload" : "Upload a PDF to begin"}</strong>
+          <span>{hasGold && selectedMeasuredRun ? "A prior measured result exists, but it does not determine this run." : hasGold ? "Gold scores extraction quality; the policy determines routing." : canRun ? "The deterministic partner gate still runs without reference labels." : "Saved VRDU results remain available in Benchmark."}</span>
         </div>
       </div>
     </div>
@@ -834,6 +891,7 @@ function BenchmarkView({
   acceptedCount,
   reviewCount,
   summary,
+  sourcesAvailable,
   onOpenLive,
 }: {
   primary: EvalAggregate;
@@ -843,6 +901,7 @@ function BenchmarkView({
   acceptedCount: number;
   reviewCount: number;
   summary: { documents: number; pages: number; lineItems: number; scoreExclusions: number };
+  sourcesAvailable: boolean;
   onOpenLive: (id: string) => void;
 }) {
   const acceptedCriticalCount = Math.round(
@@ -857,7 +916,7 @@ function BenchmarkView({
           <span className="eyebrow">SAVED EVALUATION</span>
           <h1>Benchmark results</h1>
         </div>
-        <div className="dataset-stamp"><Database size={17} /><span><strong>Gemini 3.5 Flash</strong>{summary.documents} docs · {summary.pages} pages · {summary.lineItems} rows · {formatReportDate(generatedAt)}</span><small>SAVED</small></div>
+        <div className="dataset-stamp"><Database size={17} /><span><strong>Gemini 3.5 Flash</strong>{summary.documents} docs · {summary.pages} pages · {summary.lineItems} rows · {formatReportDate(generatedAt)}</span><small>SAVED · 180 DPI</small></div>
       </section>
 
       <section className="headline-metrics" aria-label="Primary benchmark results">
@@ -897,7 +956,7 @@ function BenchmarkView({
           <div className="benchmark-section-heading compact"><div><span className="eyebrow">PARTNER REVIEW QUEUE</span><h2>{reviewCount} documents</h2></div></div>
           <div className="review-slice-list">
             {primary.reviewSlices.map((slice) => (
-              <button key={slice.documentId} onClick={() => onOpenLive(slice.documentId)}>
+              <button key={slice.documentId} disabled={!sourcesAvailable} title={sourcesAvailable ? "Open live document" : "Source document is not included in the hosted demo"} onClick={() => onOpenLive(slice.documentId)}>
                 <span className="review-icon"><AlertTriangle size={14} /></span>
                 <span><strong>{SLICE_NAMES[slice.slice] ?? slice.slice}</strong><small>{TITLES[slice.documentId] ?? slice.documentId}</small></span>
                 <span>{evaluationRunReason(runsById.get(slice.documentId), slice.reasons)}</span>
@@ -926,7 +985,7 @@ function BenchmarkView({
         <div className="run-table">
           <div className="run-table-row run-table-head"><span>DOCUMENT</span><span>SLICE</span><span>PARTNER ROUTE</span><span>FIELD PASS</span><span title="All five line-item fields must match one gold row">EXACT ROW F1</span><span>LATENCY</span><span>COST</span></div>
           {runs.map((run) => (
-            <button className="run-table-row" key={run.documentId} onClick={() => onOpenLive(run.documentId)}>
+            <button className="run-table-row" key={run.documentId} disabled={!sourcesAvailable} title={sourcesAvailable ? "Open live document" : "Source document is not included in the hosted demo"} onClick={() => onOpenLive(run.documentId)}>
               <span><strong>{TITLES[run.documentId] ?? run.documentId}</strong><small>{run.pages}p · {run.expectedLineItems} rows</small></span>
               <span>{SLICE_NAMES[run.slice] ?? run.slice}</span>
               <span className={`table-route ${run.route}`}>{run.route}</span>

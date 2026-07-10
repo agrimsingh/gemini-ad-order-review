@@ -1,6 +1,7 @@
 import crypto from "node:crypto";
 import { GoogleGenAI } from "@google/genai";
 import { renderPdfPages } from "@/lib/pdf";
+import { configuredPdfInputMode } from "@/lib/runtime-config";
 import { isExtractionShape, validateExtraction } from "@/shared/evaluation";
 import { NORMALIZATION_VERSION, normalizeExtraction } from "@/shared/normalization";
 import { EXTRACTION_PROMPT, EXTRACTION_SCHEMA } from "@/shared/schema";
@@ -71,19 +72,28 @@ export async function extractPdf(
   const thinking: "minimal" | "low" =
     model === "gemini-3.1-pro-preview" ? "low" : "minimal";
   const started = performance.now();
-  const renderedPages = await renderPdfPages(pdfBuffer);
-  const requestPrompt = `${EXTRACTION_PROMPT}\n\nThe images are consecutive pages from one PDF. Extract this document now.`;
+  const inputMode = configuredPdfInputMode();
+  const mediaInput = inputMode === "inline_pdf_document"
+    ? [{
+        type: "document" as const,
+        data: pdfBuffer.toString("base64"),
+        mime_type: "application/pdf" as const,
+      }]
+    : (await renderPdfPages(pdfBuffer)).map((page) => ({
+        type: "image" as const,
+        data: page.toString("base64"),
+        mime_type: "image/jpeg" as const,
+        resolution: "high" as const,
+      }));
+  const requestPrompt = inputMode === "inline_pdf_document"
+    ? `${EXTRACTION_PROMPT}\n\nThe input is one PDF document. Extract it now.`
+    : `${EXTRACTION_PROMPT}\n\nThe images are consecutive pages from one PDF. Extract this document now.`;
   const ai = new GoogleGenAI({ apiKey });
   const interaction = await ai.interactions.create({
     model,
     store: false,
     input: [
-      ...renderedPages.map((page) => ({
-        type: "image" as const,
-        data: page.toString("base64"),
-        mime_type: "image/jpeg" as const,
-        resolution: "high" as const,
-      })),
+      ...mediaInput,
       {
         type: "text",
         text: requestPrompt,
@@ -114,10 +124,10 @@ export async function extractPdf(
   const settings = {
     model,
     api: "interactions" as const,
-    resolution: "high" as const,
+    resolution: inputMode === "inline_pdf_document" ? "api_default" as const : "high" as const,
     thinking,
     store: false as const,
-    inputMode: "rasterized_pdf_pages" as const,
+    inputMode,
     normalizationVersion: NORMALIZATION_VERSION,
   };
   const telemetry: Telemetry = {

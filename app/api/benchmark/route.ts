@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getManifest } from "@/lib/benchmark";
+import { benchmarkSourcesAvailable, getManifest } from "@/lib/benchmark";
 
 export const runtime = "nodejs";
 
@@ -7,6 +7,7 @@ export function GET() {
   const documents = getManifest();
   return NextResponse.json({
     documents,
+    sourcesAvailable: benchmarkSourcesAvailable(),
     summary: {
       documents: documents.length,
       pages: documents.reduce((total, entry) => total + entry.page_count, 0),

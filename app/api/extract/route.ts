@@ -5,7 +5,7 @@ import { extractPdf, isSupportedModel } from "@/lib/gemini";
 export const runtime = "nodejs";
 export const maxDuration = 120;
 
-const MAX_PDF_BYTES = 50 * 1024 * 1024;
+const MAX_PDF_BYTES = process.env.VERCEL === "1" ? 4 * 1024 * 1024 : 50 * 1024 * 1024;
 
 export async function POST(request: Request) {
   try {
@@ -21,7 +21,8 @@ export async function POST(request: Request) {
 
     if (upload instanceof File && upload.size > 0) {
       if (upload.size > MAX_PDF_BYTES) {
-        return NextResponse.json({ error: "PDF exceeds the 50 MB limit." }, { status: 413 });
+        const limitMb = Math.floor(MAX_PDF_BYTES / 1024 / 1024);
+        return NextResponse.json({ error: `PDF exceeds the ${limitMb} MB limit.` }, { status: 413 });
       }
       if (upload.type !== "application/pdf" && !upload.name.toLowerCase().endsWith(".pdf")) {
         return NextResponse.json({ error: "Only PDF documents are supported." }, { status: 415 });
