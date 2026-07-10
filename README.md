@@ -1,5 +1,7 @@
 # Gemini Ad Order Review
 
+**Try it live:** [gemini-ad-order-review.vercel.app](https://gemini-ad-order-review.vercel.app)
+
 This is a working document-extraction and review-gating prototype for media-buy orders, contracts, invoices, credit memos, and request sheets. Locally it sends high-resolution page images to Gemini; the Vercel deployment sends the original PDF as an inline document. Both paths validate the structured response in deterministic code and decide whether the document has enough information to bypass header review.
 
 The app also includes an evaluation harness built around the VRDU Ad-buy Forms dataset. Every model run can be compared with gold labels and reported with quality, latency, token, and cost metrics.
