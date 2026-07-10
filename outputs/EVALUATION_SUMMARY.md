@@ -2,23 +2,25 @@
 
 Run date: July 10, 2026. Demo set: 12 documents, 32 pages, and 171 annotated line items. One source-audited document has corrupted VRDU row labels, so exact row metrics use 107 rows across 11 documents.
 
+Numbers below are from the post-scoring-fix benchmark rerun (signed money comparison, non-null spot pairing, org-name address stripper v2, and parenthetical name-code prompt fix).
+
 ## Model Comparison
 
 | Metric | Gemini 3.5 Flash | Gemini 3.1 Flash-Lite |
 |---|---:|---:|
 | Schema-valid responses | 100% | 100% |
-| Partner auto-accept rate | **75.0%** | 66.7% |
-| Accepted key-field accuracy | **100%** | 87.5% |
-| Header-field pass rate | **88.3%** | 81.6% |
-| Model value where gold is null | 6.8% | 6.8% |
-| Missing-value rate | 0% | 1.0% |
-| Exact line-item F1 (107 rows) | 29.1% | 29.2% |
-| Matched-row leaf accuracy | 79.2% | 88.7% |
-| Median / p95 latency | 3.7s / 30.4s | 2.8s / 17.1s |
-| Total estimated cost | $0.2075 | $0.0336 |
-| Cost per auto-accepted document | $0.0231 | $0.0042 |
+| Partner auto-accept rate | **75.0%** | 75.0% |
+| Accepted key-field accuracy | **100%** | 100% |
+| Header-field pass rate | **87.4%** | 84.5% |
+| Model value where gold is null | 7.8% | 7.8% |
+| Missing-value rate | 0% | 0% |
+| Exact line-item F1 (107 rows) | **59.2%** | 59.4% |
+| Matched-row leaf accuracy | 95.5% | **96.8%** |
+| Median / p95 latency | 4.1s / 31.1s | **2.7s / 17.5s** |
+| Total estimated cost | $0.2109 | **$0.0343** |
+| Cost per auto-accepted document | $0.0234 | **$0.0038** |
 
-Use Gemini 3.5 Flash for the primary route. Flash-Lite is cheaper but auto-accepted one document with a key-field error.
+Use Gemini 3.5 Flash for the primary route. Flash-Lite matched acceptance quality on this run and is materially cheaper, but an earlier paired run auto-accepted a wrong critical header, so it stays on hold pending a larger paired evaluation.
 
 ## Partner Policy
 
@@ -34,4 +36,4 @@ Its 64 VRDU row annotations truncate dates and splice Comments text into `progra
 
 ## Boundary
 
-Header automation is supported by this demo. Line-item posting is not: exact-row F1 is about 29% on the 107 trustworthy row labels. A partner pilot should use 100-200 stratified, co-labeled documents before setting a production threshold.
+Header automation is supported by this demo. Line-item posting is not: exact-row F1 is about 59% on the 107 trustworthy row labels, even though aligned spot fields match about 95–97% of the time. A partner pilot should use 100-200 stratified, co-labeled documents before setting a production threshold.
