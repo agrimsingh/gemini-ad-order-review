@@ -6,52 +6,52 @@
     </div>
 
     <header class="slide-heading">
-      <p class="eyebrow">Measured document automation</p>
+      <p class="eyebrow">Media-buy operations</p>
       <h1>Which documents can skip review?</h1>
-      <p class="lede">Gemini extracts the order. Deterministic checks decide whether a person still needs to see it.</p>
+      <p class="lede">Turn messy order PDFs into a structured record. Gemini reads the page; code decides whether a person still needs to look.</p>
     </header>
 
     <main class="decision-layout">
       <section class="decision-proof">
         <div class="policy-line">
           <span>Example partner rule</span>
-          <strong>Accept only when advertiser, order ID, flight dates, and explicit gross amount are present and valid.</strong>
+          <strong>Auto-accept headers only when advertiser, order ID, flight dates, and explicit gross amount are present and valid.</strong>
         </div>
 
         <div class="primary-result">
           <div class="result-number">9<span>/12</span></div>
           <div class="result-copy">
-            <strong>bypassed header review</strong>
-            <span>All 9 had the correct advertiser, order ID, and gross amount.</span>
+            <strong>skipped header review</strong>
+            <span>All 9 still matched the reference on advertiser, order ID, and gross.</span>
           </div>
         </div>
 
         <div class="result-strip" aria-label="Primary benchmark result">
           <div><strong>4.1s</strong><span>median decision time</span></div>
-          <div><strong>100%</strong><span>accepted key fields correct</span></div>
-          <div><strong>$0.0234</strong><span>total run cost / accepted doc</span></div>
+          <div><strong>100%</strong><span>accepted headers correct</span></div>
+          <div><strong>$0.0234</strong><span>workload cost / accepted doc</span></div>
         </div>
       </section>
 
       <aside class="scope-boundary">
         <p class="section-label">Where the line sits</p>
         <div class="scope-item scope-pass">
-          <span>Header fields</span>
-          <strong>Promising enough for a controlled pilot</strong>
-          <p>The gate removes routine review while preserving a visible queue.</p>
+          <span>Headers</span>
+          <strong>Ready for a controlled pilot</strong>
+          <p>Routine header review drops; incomplete or invalid headers stay in a visible queue.</p>
         </div>
         <div class="scope-item scope-review">
-          <span>Line items</span>
+          <span>Spots</span>
           <strong>Keep human review</strong>
-          <p><b>59.2% exact-row F1</b> across 107 trustworthy rows. One wrong field makes the whole row incorrect.</p>
+          <p><b>59% of reference spots fully matched.</b> One wrong field fails the whole spot. Not ready to auto-post.</p>
         </div>
       </aside>
     </main>
 
     <footer class="slide-footer">
-      <span>Gemini 3.5 Flash</span>
-      <span>12 documents · 32 pages · 171 annotated rows</span>
-      <span>Demo set, not an SLA</span>
+      <span>Gemini 3.5 Flash · n=12 demo, not an SLA</span>
+      <span>gemini-ad-order-review.vercel.app</span>
+      <span>github.com/agrimsingh/gemini-ad-order-review</span>
     </footer>
   </div>
 </template>

@@ -527,16 +527,19 @@
 
 .dataset-line {
   display: grid;
-  grid-template-columns: 60px 1fr;
+  grid-template-columns: minmax(88px, max-content) 1fr;
   gap: 10px;
+  align-items: start;
   align-items: baseline;
   padding: 3px 0;
 }
 
 .dataset-line strong {
   color: var(--forest);
-  font-size: 26px;
-  line-height: 1;
+  font-size: 14px;
+  line-height: 1.25;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
 }
 
 .dataset-line span {

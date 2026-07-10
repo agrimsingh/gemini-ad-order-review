@@ -14,13 +14,13 @@ lineNumbers: false
 <DecisionSlide />
 
 <!--
-Start with the partner's decision, not the model. A media-buying operations team receives orders, contracts, invoices, credit memos, and request sheets. They need to know which documents can move forward without someone checking every header.
+Open with the partner job, not the model. Media-buy ops receives orders, contracts, invoices, credit memos, and request sheets. They need to know which documents can move without someone checking every header.
 
-The policy is conservative by design. A document bypasses header review only when advertiser, the underlying order or contract ID, both flight dates, and an explicit gross amount are present and valid. A correctly extracted null still sends the document to review.
+The rule is conservative: auto-accept headers only when advertiser, order ID, flight dates, and explicit gross are present and valid. A correct null still goes to review.
 
-Nine of twelve documents cleared that rule. All nine matched the benchmark on advertiser, order ID, and gross amount. The cost per accepted document includes inference spent on the three reviewed documents, so it reflects the workload rather than cherry-picking successful calls.
+Nine of twelve cleared that rule. All nine still matched the reference on advertiser, order ID, and gross. Cost per accepted document includes the three reviewed docs, so it is workload cost.
 
-Line items are a separate decision. Exact-row F1 is 59.2% because all five row fields must match for credit. That is useful diagnostic evidence, but it is not ready for automatic posting.
+Spots are a separate decision. 59% of reference spots fully matched. One wrong field fails the whole spot, so posting stays manual.
 -->
 
 ---
@@ -28,13 +28,11 @@ Line items are a separate decision. Exact-row F1 is 59.2% because all five row f
 <ArchitectureSlide />
 
 <!--
-Gemini handles the part deterministic code is bad at: reading varied layouts and mapping them to a field contract. It returns source-faithful strings or explicit nulls. Code owns everything that can be made reproducible: normalization, date and money parsing, validation, routing, scoring, and cost calculation.
+Gemini does the layout reading. Code owns everything that must stay reproducible: normalization, date and money parsing, validation, routing, scoring, and cost.
 
-This split prevents a prompt change from silently changing business policy. The address normalizer is a concrete example. One credit memo included Main and Billing phone numbers after the station address. A versioned suffix rule removes those contact fields before validation.
+Three trade-offs: keep source wording until parsers run; never route on model confidence; score labels after routing so noisy gold cannot rewrite partner policy.
 
-The PDF path required a workaround. Interactions rejected resolution controls on PDF document items. Rendering each page at 180 DPI and sending high-resolution image items produced the intended request, although the extra preprocessing should not be necessary.
-
-I use minimal thinking because this is extraction, and store is explicitly false because document privacy should not depend on a default. Batch belongs in a throughput extension. It uses generateContent rather than Interactions, so adding it to the live proof would create a second integration path before the quality decision is settled.
+The PDF path needed a workaround because Interactions rejected resolution on PDF document items. Page images at 180 DPI with resolution high worked. Minimal thinking, store false, versioned normalizer.
 -->
 
 ---
@@ -42,13 +40,13 @@ I use minimal thinking because this is extraction, and store is explicitly false
 <EvaluationSlide />
 
 <!--
-The evaluator measures the same path the partner would run. A saved benchmark document and a live upload both go through extraction, deterministic checks, and the review gate. Comparison with the reference labels happens afterward and never changes the route.
+Package the auto-rater as three questions: review saved, accept correctness, remaining failure modes.
 
-The paired model run makes the trade-off concrete. Flash-Lite was much cheaper, but it allowed one incorrect critical header through the gate. Under this policy, that disqualifies it as the primary model even though its average cost looks better.
+Failure modes we score: wrong field semantics, overfill where gold is null, and spot misses where one bad field fails the whole placement.
 
-Exact-row F1 needs context. The primary model produced 31 exact matches from 106 extracted rows and 107 reference rows. Among rows that could be aligned, 301 of 380 individual fields matched. That gap shows where row grouping or one bad value turns a mostly correct row into an exact miss.
+Flash-Lite matched this run and is cheaper. Held because a prior run let a wrong critical header through. Under this policy that is a disqualifier until a larger paired run.
 
-Twelve documents are enough to exercise the harness, but too few to set a production threshold. One result moves a rate by 8.3 percentage points. A partner pilot should expand to 100 to 200 jointly labeled documents, add confidence intervals, and monitor review corrections plus random audits of accepted documents.
+The 59% fully matched vs 95.5% spot-field gap is the calibration signal: mostly-correct spots still fail exact match. n=12 is too small for a production threshold.
 -->
 
 ---
@@ -56,11 +54,12 @@ Twelve documents are enough to exercise the harness, but too few to set a produc
 <FrictionSlide />
 
 <!--
-The AI Studio failure was the first blocker. Build mode returned the same permission RPC across three model choices after a paid Tier 1 key was selected. The message did not identify the denied principal or missing permission. After about thirty minutes, I moved the UI to local Next.js and kept the same Gemini key, prompt, schema, and request settings.
+Frame this as signals for product and research, not a complaint list.
 
-The PDF issue was separate and reproducible in code. Interactions rejected both resolution controls on PDF document blocks, while image blocks accepted high resolution. Local page rendering worked, but the service behavior, SDK types, and documentation should agree.
+Product: opaque Build errors waste partner time on the wrong layer.
+API: PDF quality controls do not work as documented.
+Eval: schema-valid JSON can still be the wrong business value.
+Data: field contracts and label quality must ship with the benchmark.
 
-The other two issues affect trust. Structured output can be valid and still choose the wrong business value. Benchmarks can also contain ambiguous or corrupt labels. Both require explicit field definitions, provenance, deterministic checks, and monitoring around the model.
-
-Most extraction examples stop once the model returns JSON. Partners also need to see how that output is checked, routed, measured, and monitored in production.
+Close on the research ask: examples should continue past JSON into checks, routing, failure-mode scoring, and post-accept monitoring.
 -->

@@ -6,51 +6,51 @@
     </div>
 
     <header class="slide-heading compact-heading friction-heading">
-      <p class="eyebrow">Observed during the build</p>
+      <p class="eyebrow">Signals for product and research</p>
       <h1>Friction worth fixing</h1>
-      <p class="lede">Reproduced problem, partner impact, workaround, and the product change that would remove it.</p>
+      <p class="lede">Each row is a reproducible issue, the partner impact, what we did, and the change that would remove it.</p>
     </header>
 
     <main class="friction-table" role="table" aria-label="Observed developer friction">
       <div class="friction-row friction-head" role="row">
-        <div role="columnheader">Issue</div>
-        <div role="columnheader">Evidence and partner impact</div>
+        <div role="columnheader">Signal</div>
+        <div role="columnheader">What broke / why it matters</div>
         <div role="columnheader">Workaround</div>
-        <div role="columnheader">Product ask</div>
+        <div role="columnheader">Ask</div>
       </div>
 
       <div class="friction-row" role="row">
-        <div class="friction-issue" role="cell"><span>P1 · 30 min</span><strong>AI Studio Build RPC</strong></div>
-        <div role="cell"><code>The caller does not have permission</code> on three models after a paid Tier 1 key was selected. The UI did not identify whether the problem was the key, project, model, or builder.</div>
-        <div role="cell">Built the Next.js prototype locally with the same Gemini key; kept AI Studio for prompt and schema work.</div>
-        <div role="cell">Show the denied principal, missing permission, and a direct fix in the error.</div>
+        <div class="friction-issue" role="cell"><span>P1 · product</span><strong>Opaque Build errors</strong></div>
+        <div role="cell">AI Studio Build returned <code>permission</code> across three models after a paid key was selected. Could not tell if the fault was key, project, model, or builder.</div>
+        <div role="cell">Built the app locally with the same Gemini key; kept AI Studio for prompt work.</div>
+        <div role="cell">Name the denied principal, missing permission, and the fix in the error.</div>
       </div>
 
       <div class="friction-row" role="row">
-        <div class="friction-issue" role="cell"><span>P1 · 20 min</span><strong>PDF resolution controls</strong></div>
-        <div role="cell"><code>resolution</code> and <code>media_resolution</code> on Interactions PDF items returned 400. Service behavior, SDK types, and document guidance did not agree.</div>
-        <div role="cell">Rendered pages at 180 DPI and sent image items with <code>resolution: high</code>.</div>
-        <div role="cell">Align the API, SDK, and docs. Add one executable high-resolution PDF example.</div>
+        <div class="friction-issue" role="cell"><span>P1 · API</span><strong>PDF quality knob missing</strong></div>
+        <div role="cell"><code>resolution</code> / <code>media_resolution</code> on Interactions PDF items returned 400. Docs, SDK types, and service behavior disagreed.</div>
+        <div role="cell">Rendered pages at 180 DPI and sent images with <code>resolution: high</code>.</div>
+        <div role="cell">Align API, SDK, and docs. Ship one executable high-res PDF example.</div>
       </div>
 
       <div class="friction-row" role="row">
-        <div class="friction-issue" role="cell"><span>P1 · quality</span><strong>Valid JSON, wrong value</strong></div>
-        <div role="cell">Flash-Lite returned schema-valid output and still auto-accepted one wrong critical header. Shape validation alone can create silent errors.</div>
-        <div role="cell">Kept normalization, semantic checks, routing, benchmark comparison, and audit outside the model.</div>
-        <div role="cell">Publish a reference extractor that covers structured output, semantic evaluation, and monitoring.</div>
+        <div class="friction-issue" role="cell"><span>P1 · eval</span><strong>Valid JSON, wrong value</strong></div>
+        <div role="cell">Schema-valid output still chose the wrong business field and once auto-accepted a bad critical header. Shape checks alone hide failure modes.</div>
+        <div role="cell">Kept field checks, routing, label comparison, and audit outside the model.</div>
+        <div role="cell">Publish a reference that covers structured output, semantic scoring, and monitoring.</div>
       </div>
 
       <div class="friction-row" role="row">
-        <div class="friction-issue" role="cell"><span>P1 · 15 min</span><strong>Field contract and labels</strong></div>
-        <div role="cell">Invoice #, Order #, and Net Total were all plausible until the target contract was written. Source audit also found five conflicting headers and 64 corrupted row labels.</div>
-        <div role="cell">Defined field precedence, recorded adjudications, and excluded disputed labels from headline metrics.</div>
-        <div role="cell">Ship field definitions, annotation provenance, and label-quality flags with extraction benchmarks.</div>
+        <div class="friction-issue" role="cell"><span>P1 · data</span><strong>Field contract vs labels</strong></div>
+        <div role="cell">Invoice #, Order #, and Net Total were all plausible until precedence was written. Source audit found 5 conflicting headers and 64 corrupted spot labels.</div>
+        <div role="cell">Defined field precedence, recorded adjudications, excluded disputed labels from headline metrics.</div>
+        <div role="cell">Ship field definitions, label provenance, and quality flags with extraction benchmarks.</div>
       </div>
     </main>
 
     <footer class="friction-close">
-      <span>What partners need</span>
-      <strong>A useful reference should show what happens after the model returns JSON.</strong>
+      <span>Research takeaway</span>
+      <strong>Stop the example at “returns JSON.” Show how output is checked, routed, scored by failure mode, and monitored after accept.</strong>
     </footer>
   </div>
 </template>

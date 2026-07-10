@@ -8,7 +8,7 @@
     <header class="slide-heading compact-heading">
       <p class="eyebrow">System boundary</p>
       <h1>Keep business decisions outside the model</h1>
-      <p class="lede">Gemini reads the source. Versioned code normalizes values, checks the contract, routes the document, and measures the result.</p>
+      <p class="lede">Gemini reads the source. Versioned code normalizes values, checks the field contract, routes the document, and measures the result.</p>
     </header>
 
     <main class="architecture-main">
@@ -26,7 +26,7 @@
         </div>
         <div class="pipe-arrow">→</div>
         <div class="pipe-step shape-step">
-          <span>03 · Contract</span>
+          <span>03 · Shape</span>
           <strong>JSON Schema</strong>
           <small>strings or explicit null</small>
         </div>
@@ -38,9 +38,9 @@
         </div>
         <div class="pipe-arrow">→</div>
         <div class="pipe-step outcome-step">
-          <span>05 · Route + report</span>
+          <span>05 · Decide</span>
           <strong>Accept or review</strong>
-          <small>compare with labels when available</small>
+          <small>score against labels after</small>
         </div>
       </div>
 
@@ -51,19 +51,19 @@
 
       <section class="architecture-reasons">
         <div>
-          <p class="section-label">Source-faithful values</p>
+          <p class="section-label">Trade-off 1</p>
           <h2>Preserve what the document says</h2>
-          <p>Dates and money stay as strings until deterministic parsers handle them. Net Total never silently becomes Gross Amount.</p>
+          <p>Dates and money stay as printed strings until parsers handle them. Net Total never silently becomes Gross Amount.</p>
         </div>
         <div>
-          <p class="section-label">No confidence score in the gate</p>
-          <h2>Use checks and measured error rates</h2>
-          <p>Field checks, review corrections, and benchmark regressions are observable. The model's own score is not used for routing.</p>
+          <p class="section-label">Trade-off 2</p>
+          <h2>No model confidence in the gate</h2>
+          <p>Routing uses required fields and deterministic checks. Quality is measured afterward against labels, not a self-score.</p>
         </div>
         <div>
-          <p class="section-label">VRDU Ad-buy Forms benchmark</p>
-          <h2>19% of eligible documents do not reconcile</h2>
-          <p>Gross does not equal the labeled row totals in those documents. We report the mismatch but do not fail the document.</p>
+          <p class="section-label">Trade-off 3</p>
+          <h2>Score labels separately from routing</h2>
+          <p>Reference comparison never changes accept/review. That keeps partner policy stable when the benchmark is noisy.</p>
         </div>
       </section>
     </main>
@@ -72,8 +72,8 @@
       <code>resolution: high</code>
       <code>thinking: minimal</code>
       <code>store: false</code>
-      <code>normalizer: address-contact-v1</code>
-      <span>Scale extension: Batch via generateContent, not built in v1.</span>
+      <code>normalizer: org-name-address-v2</code>
+      <span>Scale later: Batch via generateContent — not built in v1.</span>
     </div>
   </div>
 </template>
